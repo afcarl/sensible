@@ -1,2 +1,4 @@
-# sensor-fusion-research
-datasets and algorithms for evaluating multi-object multi-sensor sensor fusion approaches
+# Sensible
+
+**Sens**ible is a sensor-fusion library for multi-sensor multi-target
+applications.

@@ -1,0 +1,7 @@
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7E 2E 7C 0E 21 00 00 00 00 11 AB 5A C0 CE EA DC 92
+        00 00 33 33 08 01 C2 01 2C 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
