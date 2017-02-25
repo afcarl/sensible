@@ -1,66 +1,93 @@
 from __future__ import absolute_import
+from __future__ import division
 
-import zmq
-import socket
 import xml.etree.cElementTree as ElementTree
 from collections import deque
-from twisted.internet import task
-from twisted.internet import reactor
-import cPickle as pickle
 
-from .stoppable_thread import StoppableThread
-from ..util.exceptions import ParseError
+import zmq
+import time
+
+from sensible.util.sensible_threading import SensorThread, StoppableThread
 from ..util import ops
+from ..util.exceptions import ParseError
+
+try:  # python 2.7
+    import cPickle as pickle
+except ImportError:  # python 3.5 or 3.6
+    import pickle
 
 
-class DSRC(StoppableThread):
+class DSRC(SensorThread):
     """Thread that listens for incoming DSRC radio messages and pre-processes them.
 
     """
 
-    def __init__(self, ip_address, port, name="DSRC"):
-        super(DSRC, self).__init__(name)
-        self.ip_address = ip_address
-        self.port = port
-        self.msg_len = 277
-        self.blob_len = 58
-        self.publish_freq = 5  # Hz
+    def __init__(self, ip_address, remote_port, local_port, msg_len=277, name="DSRC"):
+        super(DSRC, self).__init__(name, msg_len)
+        self._queue = deque()
+        self._ip_address = ip_address
+        self._port = remote_port
+        self._local_port = local_port
+        self._blob_len = 58
 
-        self.radio_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.queue = deque()
-        self.context = zmq.Context()
-        self.publisher = self.context.socket(zmq.PUB)
+        class DSRCSynchronizer(StoppableThread):
+            """Publish messages from a thread-safe queue"""
 
-        self.synchronizer = task.LoopingCall(self.send)
+            def __init__(self, queue, local_port, name="DSRCSynchronizer"):
+                super(DSRCSynchronizer, self).__init__(name)
+                self._publish_freq = 5  # Hz
+                self._queue = queue
+                self._context = zmq.Context()
+                self._publisher = self._context.socket(zmq.PUB)
+                # bind to tcp port _local_port
+                self._publisher.bind("tcp://*:{}".format(local_port))
+                self._topic = "DSRC"
+
+            def send(self):
+                """If the queue is not empty, send the message stored at front of the queue.
+
+                Here, the invariant is assumed to be that the queue only
+                contains the unique message sent within a time frame of 0.2 seconds. The dictionary
+                is pickled, so it should be un-pickled at the subscriber.
+                """
+                if len(self._queue) > 0:
+                    self._publisher.send_string("{} {}".format(self._topic, pickle.dumps(self._queue.pop())))
+
+            def run(self):
+                while not self.stopped():
+                    self.send()
+                    time.sleep(1 / self._publish_freq)
+
+        self._synchronizer = DSRCSynchronizer(self._queue, self._local_port)
+
+    @property
+    def queue(self):
+        """Accessor for the synchronized queue."""
+        return self._queue
+
+    def stop(self):
+        self._synchronizer.stop()
+        super(DSRC, self).stop()
 
     def connect(self):
         # open connection to incoming DSRC messages
-        self.radio_sock.bind((self.ip_address, self.port))
-        self.radio_sock.setblocking(0)
+        self._sock.bind((self._ip_address, self._port))
+        self._sock.setblocking(0)
 
-        # start publisher as a Twisted looping call
-        self.publisher.bind("udp://localhost:6666")
-        self.synchronizer.start(1. / self.publish_freq)
-        reactor.run()
+        # Start publishing outgoing parsed messages
+        self._synchronizer.start()
 
-    def run(self):
-        while not self.stopped():
-            try:
-                data, address = self.radio_sock.recvfrom(self.msg_len)
-            except socket.error:
-                continue
+    def push(self, msg):
+        """Process incoming data. Overrides StoppableThread's push method."""
+        self.add_to_queue(self.parse(msg))
 
-            try:
-                self.push(self.parse(data))
-            except ParseError:
-                # Optionally log parse error messages
-                continue
-
-        self.radio_sock.close()
-
-    def stop(self):
-        self.stop_thread()
-        self.join()
+    def add_to_queue(self, msg):
+        """If the queue doesn't contain an identical message, add msg to the queue."""
+        for queued_msg in self._queue:
+            if msg['s'] == queued_msg['s']:
+                # Found a duplicate
+                return
+        self._queue.append(msg)
 
     def parse(self, msg):
         """Convert msg data from hex to decimal and filter msgs.
@@ -80,7 +107,7 @@ class DSRC(StoppableThread):
         blob1 = root.find('blob1')
         data = ''.join(blob1.text.split())
 
-        if len(data) != self.blob_len:
+        if len(data) != self._blob_len:
             raise ParseError('Incorrect number of bytes in msg data')
 
         # convert hex values to decimal
@@ -120,19 +147,3 @@ class DSRC(StoppableThread):
             'served': served
         }
 
-    def push(self, msg):
-        """If the queue doesn't contain an identical message, add msg to the queue."""
-        for queued_msg in self.queue:
-            if msg['s'] == queued_msg['s']:
-                return
-        self.queue.append(msg)
-
-    def send(self):
-        """If the queue is not empty, send the message stored at front of the queue.
-
-        Here, the invariant is assumed to be that the queue only
-        contains the unique message sent within a time frame of 0.2 seconds. The dictionary
-        is pickled, so it should be un-pickled at the subscriber.
-        """
-        if len(self.queue) > 1:
-            self.publisher.send_string(pickle.dumps(self.queue.pop()))

@@ -1,11 +1,18 @@
 from __future__ import absolute_import
-
+from __future__ import division
 import xml.etree.cElementTree as ElementTree
-import sensible.util.ops as ops
 import pytest
-
+import zmq
+import time
+import sensible.util.ops as ops
 from sensible.sensors.DSRC import DSRC
 from sensible.util.exceptions import ParseError
+from sensible.util.radio_emulator import RadioEmulator
+
+try:  # python 2.7
+    import cPickle as pickle
+except ImportError:  # python 3.5 or 3.6
+    import pickle
 
 
 def test_xml_parsing():
@@ -22,7 +29,7 @@ def test_xml_parsing():
 
 def test_csm_parsing0():
     """Test that a csm can be parsed correctly."""
-    dsrc = DSRC("", 4200)
+    dsrc = DSRC("", remote_port=4200, local_port=6666)
 
     with open("data/csm-nb.txt") as f:
         csm = f.read()
@@ -45,7 +52,7 @@ def test_csm_parsing0():
 
 def test_csm_parsing1():
     """Test that a bad message is ignored and a ParseError is thrown"""
-    dsrc = DSRC("", 4200)
+    dsrc = DSRC("", remote_port=4200, local_port=6666)
 
     with open("data/csm-nb-bad.txt") as f:
         csm = f.read()
@@ -70,8 +77,8 @@ def test_lat_lon():
 
 
 def test_push_msg0():
-    """Test that a non-unique message won't get added"""
-    dsrc = DSRC("", 4200)
+    """Test pushing new messages onto the queue."""
+    dsrc = DSRC("", remote_port=4200, local_port=6666)
 
     test0 = {
         'msg_count': 0,
@@ -107,10 +114,72 @@ def test_push_msg0():
         'served': 0
     }
 
-    dsrc.queue.append(test0)
+    dsrc.add_to_queue(test0)
     assert len(dsrc.queue) == 1
-    dsrc.push(test1)
+    dsrc.add_to_queue(test1)
     assert len(dsrc.queue) == 1
     test1['s'] = 34000.00
-    dsrc.push(test1)
+    dsrc.add_to_queue(test1)
     assert len(dsrc.queue) == 2
+
+def test_synchronization():
+    """Test the Pub/Sub component of the DSRC thread"""
+    remote_port = 4200
+    local_port = 6666
+    dsrc = DSRC("localhost", remote_port=remote_port, local_port=local_port)
+
+    # Subscriber
+    context = zmq.Context()
+    subscriber = context.socket(zmq.SUB)
+
+    subscriber.connect("tcp://localhost:{}".format(local_port))
+    filter = "DSRC"
+    if isinstance(filter, bytes):
+        filter = filter.decode('ascii')
+    subscriber.setsockopt_string(zmq.SUBSCRIBE, filter)
+
+    radio = RadioEmulator(port=4200, pub_freq=21)
+    radio.start()
+
+    # Connect and start the DSRC thread.
+    try:
+        dsrc.connect()
+    except Exception:
+        pytest.fail("Unable to connect DSRC thread.")
+
+    # start the DSRC thread
+    dsrc.start()
+
+    # Process for 2.2 seconds, 1 message will be dropped due to start-up time
+    t_end = time.time() + 2.2
+    msgs = []
+    while time.time() < t_end:
+        try:
+            string = subscriber.recv_string(flags=zmq.NOBLOCK)
+            topic, msg = string.split(" ")
+            msgs.append(pickle.loads(str(msg)))
+        except zmq.Again as e:
+            continue
+
+    # Stop the DSRC sender and receiver
+    dsrc.stop()
+    radio.stop()
+
+    # Expect to only receive 10 messages
+    assert len(msgs) == 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
