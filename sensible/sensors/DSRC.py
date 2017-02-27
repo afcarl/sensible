@@ -33,15 +33,15 @@ class DSRC(SensorThread):
         class DSRCSynchronizer(StoppableThread):
             """Publish messages from a thread-safe queue"""
 
-            def __init__(self, queue, local_port, name="DSRCSynchronizer"):
+            def __init__(self, queue, port, topic, name="DSRCSynchronizer"):
                 super(DSRCSynchronizer, self).__init__(name)
                 self._publish_freq = 5  # Hz
                 self._queue = queue
                 self._context = zmq.Context()
                 self._publisher = self._context.socket(zmq.PUB)
                 # bind to tcp port _local_port
-                self._publisher.bind("tcp://*:{}".format(local_port))
-                self._topic = "DSRC"
+                self._publisher.bind("tcp://*:{}".format(port))
+                self._topic = topic
 
             def send(self):
                 """If the queue is not empty, send the message stored at front of the queue.
@@ -58,12 +58,16 @@ class DSRC(SensorThread):
                     self.send()
                     time.sleep(1 / self._publish_freq)
 
-        self._synchronizer = DSRCSynchronizer(self._queue, self._local_port)
+        self._synchronizer = DSRCSynchronizer(self._queue, self._local_port, self.topic())
 
     @property
     def queue(self):
         """Accessor for the synchronized queue."""
         return self._queue
+
+    @staticmethod
+    def topic():
+        return "DSRC"
 
     def stop(self):
         self._synchronizer.stop()

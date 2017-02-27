@@ -122,6 +122,7 @@ def test_push_msg0():
     dsrc.add_to_queue(test1)
     assert len(dsrc.queue) == 2
 
+
 def test_synchronization():
     """Test the Pub/Sub component of the DSRC thread"""
     remote_port = 4200

@@ -4,6 +4,7 @@ from sensible.util.sensible_threading import StoppableThread
 import socket
 import time
 
+
 class RadioEmulator(StoppableThread):
     """Utility class for emulating a DSRC radio. Used for testing."""
     def __init__(self, port, pub_freq, name="RadioEmulator"):
