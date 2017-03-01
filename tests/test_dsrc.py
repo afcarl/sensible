@@ -134,10 +134,10 @@ def test_synchronization():
     subscriber = context.socket(zmq.SUB)
 
     subscriber.connect("tcp://localhost:{}".format(local_port))
-    filter = "DSRC"
-    if isinstance(filter, bytes):
-        filter = filter.decode('ascii')
-    subscriber.setsockopt_string(zmq.SUBSCRIBE, filter)
+    t_filter = "DSRC"
+    if isinstance(t_filter, bytes):
+        t_filter = t_filter.decode('ascii')
+    subscriber.setsockopt_string(zmq.SUBSCRIBE, t_filter)
 
     radio = RadioEmulator(port=4200, pub_freq=21)
     radio.start()

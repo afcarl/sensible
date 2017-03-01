@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from sensible.sensors.DSRC import DSRC
+from sensible.sensors.Radar import Radar
 from .track_state import TrackState
 import zmq
 import time
@@ -13,9 +14,15 @@ except ImportError:  # python 3.5 or 3.6
 
 class TrackSpecialist:
     """
-    Manages all tracks and network connections
+    Manages the ZeroMQ subscribers to all sensor topics, as well as oversees
+    publishing BSMs to the optimization algorithm.
+
+    Responsible for updating track states and carrying out data association
+    for new measurements.
+
     """
-    def __init__(self, sensor_network_port, topic_filters, run_for, frequency,
+    def __init__(self, sensor_network_port, topic_filters, run_for,
+                 frequency=5,
                  track_confirmation_threshold=5,
                  track_zombie_threshold=5,
                  track_drop_threshold=8,
@@ -39,10 +46,19 @@ class TrackSpecialist:
             self._subscribers[t_filter].connect("tcp://localhost:{}".format(sensor_network_port))
             self._subscribers[t_filter].setsockopt_string(zmq.SUBSCRIBE, t_filter)
 
+    @property
+    def subscribers(self):
+        return self._subscribers
+
     def run(self):
         """
+        Loop for a set amount of time. Each loop lasts for self._period seconds.
+        A loop consists of attempts at reading self._max_n_tracks messages from each sensor.
 
-        :return:
+        New sensor measurements are first associated to existing or new tracks, and then
+        all tracks are updated by the new measurements. Tracks that didn't receive new measurements
+        are also updated accordingly.
+
         """
         t_end = time.time() + self._run_for
 
@@ -81,9 +97,11 @@ class TrackSpecialist:
 
     def associate(self, topic, msg):
         """
+        Simple data association. For DSRC messages, vehicle IDs can be used.
+        For radar zone detections, we can use global nearest neighbors.
 
-        :param topic:
-        :param msg:
+        :param topic: The sensor topic for this message
+        :param msg: The new sensor measurement
         :return:
         """
         if topic == DSRC.topic():
@@ -105,9 +123,12 @@ class TrackSpecialist:
             self.global_nearest_neighbors(msg)
 
     def create_track(self, msg):
+        pass
 
     def delete_track(self, track):
+        pass
 
     def global_nearest_neighbors(self, radar_msg):
+        pass
 
 
