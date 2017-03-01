@@ -1,9 +1,9 @@
 from __future__ import division
 import zmq
-import time
 import pytest
 from sensible.tracking.track_specialist import TrackSpecialist
 from sensible.util.sensible_threading import StoppableThread
+from sensible.tracking.track_state import TrackState
 
 
 class MockSensor(StoppableThread):
@@ -26,6 +26,36 @@ class MockSensor(StoppableThread):
         while not self.stopped():
             for t_filter in self._topic_filters:
                 self._pub.send_string("{} {}".format(t_filter, self._test_msg))
+
+
+def fake_msg():
+    """Return a fake DSRC message for tests"""
+    return {
+        'msg_count': 0,
+        'veh_id': '00000111',
+        'h': 14,
+        'm': 14,
+        's': 14,
+        'lat': 29.12123,
+        'lon': -82.345234,
+        'heading': 0,
+        'speed': 20,
+        'lane': 1,
+        'veh_len': 15,
+        'max_accel': 3.2,
+        'max_decel': -3.2,
+        'served': 0
+    }
+
+
+def get_track_specialist():
+    """Return a standard TrackSpecialist object for testing."""
+    sensor_port = 6666
+    topic_filters = ["DSRC", "Radar"]
+    run_for = 60  # seconds
+    # TODO: replace with mocked file
+    log_file = None
+    return TrackSpecialist(sensor_port, topic_filters, run_for, log_file)
 
 
 def test_initialize_track_specialist():
@@ -83,8 +113,18 @@ def test_vehicle_id_association_no_match():
 
 def test_track_creation():
     """This tests whether a new track is created with
-    the correct state, i.e., UNCONFIRMED"""
-    pytest.fail('Unimplemented test')
+    the correct state, i.e., UNCONFIRMED, by
+    track_specialist.create_track(msg). """
+    track_specialist = get_track_specialist()
+    msg = fake_msg()
+    track_specialist.create_track(msg)
+    assert msg['veh_id'] in track_specialist.track_list
+    track = track_specialist.track_list[msg['veh_id']]
+    assert track.track_state == TrackState.UNCONFIRMED
+    assert track.n_consecutive_measurements == 1
+    assert track.n_consecutive_missed == 0
+    assert track.received_measurement == 1
+    assert track.state_estimator.get_latest_measurement() == msg
 
 
 def test_radar_to_vehicle_association():
@@ -124,6 +164,13 @@ def test_track_state_zombie():
 def test_track_deletion():
     """This tests whether a track is dropped once it misses
     more than the track deletion threshold for measurements"""
+    pytest.fail('Unimplemented test')
+
+
+def test_track_cleanup():
+    """This tests whether a track's history is dumped to a file,
+    and that the track is removed from the track list when it
+    gets dropped."""
     pytest.fail('Unimplemented test')
 
 

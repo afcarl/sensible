@@ -3,6 +3,8 @@ from __future__ import division
 from sensible.sensors.DSRC import DSRC
 from sensible.sensors.Radar import Radar
 from .track_state import TrackState
+from .track import Track
+from datetime import datetime
 import zmq
 import time
 
@@ -21,7 +23,7 @@ class TrackSpecialist:
     for new measurements.
 
     """
-    def __init__(self, sensor_network_port, topic_filters, run_for,
+    def __init__(self, sensor_network_port, topic_filters, run_for, log_file,
                  frequency=5,
                  track_confirmation_threshold=5,
                  track_zombie_threshold=5,
@@ -37,6 +39,7 @@ class TrackSpecialist:
         self._track_zombie_threshold = track_zombie_threshold
         self._track_drop_threshold = track_drop_threshold
         self._max_n_tracks = max_n_tracks
+        self._log = log_file
 
         for t_filter in topic_filters:
             if isinstance(t_filter, bytes):
@@ -49,6 +52,10 @@ class TrackSpecialist:
     @property
     def subscribers(self):
         return self._subscribers
+
+    @property
+    def track_list(self):
+        return self._track_list
 
     def run(self):
         """
@@ -123,10 +130,16 @@ class TrackSpecialist:
             self.global_nearest_neighbors(msg)
 
     def create_track(self, msg):
-        pass
+        """A new UNCONFIRMED track is created, and this message is associated
+        with it."""
+        self._track_list[msg['veh_id']] = Track()
+        self._track_list[msg['veh_id']].store(msg)
 
-    def delete_track(self, track):
-        pass
+    def delete_track(self, track_id):
+        """Dump the track history to the log file and remove it from the track list."""
+        self._log.write('[track drop] track id: {} | utctime: {}\n', track_id, datetime.utcnow())
+        self._track_list[track_id].state_estimator.dump(self._log)
+        self._track_list[track_id] = None
 
     def global_nearest_neighbors(self, radar_msg):
         pass
