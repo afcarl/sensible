@@ -2,6 +2,7 @@ from __future__ import division
 import zmq
 import pytest
 import os
+import time
 from sensible.tracking.track_specialist import TrackSpecialist
 from sensible.util.sensible_threading import StoppableThread
 from sensible.tracking.track_state import TrackState
@@ -12,7 +13,7 @@ class MockSensor(StoppableThread):
     A mock class to emulate a sensor publishing a stream of measurements
     for the track specialist
     """
-    def __init__(self, topic_filters, test_msg, port=6667, name="MockSensor"):
+    def __init__(self, topic_filters, test_msgs, port=6667, name="MockSensor"):
         super(MockSensor, self).__init__(name)
         self._port = port
         self._topic_filters = topic_filters
@@ -21,12 +22,16 @@ class MockSensor(StoppableThread):
         self._pub = context.socket(zmq.PUB)
         self._pub.bind("tcp://*:{}".format(port))
 
-        self._test_msg = test_msg
+        # Cycle through these messages
+        self._test_msgs = test_msgs
+        self._msg_idx = 0
 
     def run(self):
         while not self.stopped():
             for t_filter in self._topic_filters:
-                self._pub.send_string("{} {}".format(t_filter, self._test_msg))
+
+                self._pub.send_string("{} {}".format(t_filter, self._test_msgs[self._msg_idx]))
+                self._msg_idx = (1 + self._msg_idx) % len(self._test_msgs)
 
 
 def fake_msg():
@@ -49,21 +54,19 @@ def fake_msg():
     }
 
 
-def get_track_specialist(sensor_port=6667, run_for=60):
+def get_track_specialist(tmpdir, sensor_port=6667, bsm_port = 6668, run_for=60.0, frequency=5):
     """Return a standard TrackSpecialist object for testing."""
     topic_filters = ["DSRC", "Radar"]
-    # TODO: replace with mocked file
-    log_dir = os.path.join('..', 'logs')
-    return TrackSpecialist(sensor_port, topic_filters, run_for, log_dir)
+    p = tmpdir.mkdir("logs").join("test.csv")
+    return TrackSpecialist(sensor_port, bsm_port, topic_filters, run_for, p, frequency)
 
 
-def test_initialize_track_specialist():
+def test_initialize_track_specialist(tmpdir):
     """Test that the TrackSpecialist constructor initializes the connection to a sensor
     correctly with the proper topic filters
     """
-
-    track_specialist = get_track_specialist()
-    test_message = "test"
+    track_specialist = get_track_specialist(tmpdir)
+    test_message = ['test']
 
     mock_sensor = MockSensor(["DSRC", "Radar"], test_message)
     mock_sensor.start()
@@ -79,7 +82,7 @@ def test_initialize_track_specialist():
                 string = subscriber.recv_string(flags=zmq.NOBLOCK)
                 msg_topic, msg = string.split(" ")
                 assert msg_topic == topic
-                assert msg == test_message
+                assert msg == test_message[0]
                 count += 1
             except zmq.Again as err:
                 continue
@@ -90,16 +93,15 @@ def test_initialize_track_specialist():
         attempts += 1
 
     mock_sensor.stop()
-
     if attempts == max_attempts:
         pytest.fail('Exceeded max attempts to send/recv messages')
 
 
-def test_track_specialist_track_drop():
+def test_track_drop(tmpdir):
     """Test that the main `run` method works as expected
         1. Exits after `run_for` seconds pass.
         2.  Tracks that don't receive new measurements are dropped."""
-    track_specialist = get_track_specialist(run_for=3)
+    track_specialist = get_track_specialist(tmpdir, run_for=3)
     msg = fake_msg()
     track_specialist.create_track(msg)
     track = track_specialist.track_list[msg['veh_id']]
@@ -113,11 +115,11 @@ def test_track_specialist_track_drop():
     assert msg['veh_id'] not in track_specialist.track_list
 
 
-def test_track_creation():
+def test_track_creation(tmpdir):
     """This tests whether a new track is created with
     the correct state, i.e., UNCONFIRMED, by
     track_specialist.create_track(msg). """
-    track_specialist = get_track_specialist()
+    track_specialist = get_track_specialist(tmpdir)
     msg = fake_msg()
     track_specialist.create_track(msg)
     assert msg['veh_id'] in track_specialist.track_list
@@ -129,10 +131,10 @@ def test_track_creation():
     assert track.state_estimator.get_latest_measurement() == msg
 
 
-def test_vehicle_id_association():
+def test_vehicle_id_association(tmpdir):
     """This tests whether new measurements can be matched to
     existing tracks based on ID"""
-    track_specialist = get_track_specialist()
+    track_specialist = get_track_specialist(tmpdir)
     msg = fake_msg()
     # 1st message
     track_specialist.create_track(msg)
@@ -147,10 +149,10 @@ def test_vehicle_id_association():
     assert track.state_estimator.get_latest_measurement()['s'] == 15
 
 
-def test_vehicle_id_association_no_match():
+def test_vehicle_id_association_no_match(tmpdir):
     """This tests whether an unconfirmed track is created
     when no vehicle ID match is found"""
-    track_specialist = get_track_specialist()
+    track_specialist = get_track_specialist(tmpdir)
     msg = fake_msg()
     # Try to associate a new msg - should call create_track
     track_specialist.associate("DSRC", msg)
@@ -184,48 +186,92 @@ def test_vehicle_bsm_publisher():
     pytest.fail('Unimplemented test')
 
 
-def test_track_state_confirm():
+def test_track_state_confirm(tmpdir):
     """This tests that an UNCONFIRMED track becomes
     confirmed after M consecutive messages arrive for that
     track, where M is the threshold."""
-    track_specialist = get_track_specialist()
+    track_specialist = get_track_specialist(tmpdir)
     msg = fake_msg()
     # Try to associate a new msg - should call create_track
     track_specialist.create_track(msg)
     track = track_specialist.track_list[msg['veh_id']]
-    threshold = track_specialist.track_confirmation_threshold
 
     assert track.track_state == TrackState.UNCONFIRMED
-    track.n_consecutive_measurements = threshold
+    track.n_consecutive_measurements = track_specialist.track_confirmation_threshold
     # One more message than the threshold causes the state to change
     # to CONFIRMED
     track_specialist.associate("DSRC", msg)
     assert track.track_state == TrackState.CONFIRMED
 
 
-def test_track_state_zombie():
-    """This tests that a CONFIRMED and UNCONFIRMED track
+def test_track_state_zombie_to_unconfirmed(tmpdir):
+    """This tests that an UNCONFIRMED track
     becomes a ZOMBIE after missing N consecutive messages,
     where N is the zombie threshold."""
-    track_specialist = get_track_specialist(run_for=5)
+    # Assume the frequency is 5 Hz
+    # Need to run for 1.2 seconds because after track creation,
+    # received_msg is set to 1 for one iteration of the loop
+    track_specialist = get_track_specialist(tmpdir, run_for=1.2)
     msg = fake_msg()
     # Try to associate a new msg - should call create_track
     track_specialist.create_track(msg)
     track = track_specialist.track_list[msg['veh_id']]
-    threshold = track_specialist.track_zombie_threshold
-
     assert track.track_state == TrackState.UNCONFIRMED
-    track.n_consecutive_missed = threshold
+
+    # run for 1.2 seconds
+    track_specialist.run()
+
+    assert msg['veh_id'] in track_specialist.track_list
+    assert track.track_state == TrackState.ZOMBIE
+    assert track.n_consecutive_missed == 5
 
 
-def test_track_deletion():
-    """This tests whether a track is dropped once it misses
-    more than the track deletion threshold for measurements"""
-    pytest.fail('Unimplemented test')
+def test_track_state_zombie_to_confirmed(tmpdir):
+    """This tests that a CONFIRMED track
+    becomes a ZOMBIE after missing N consecutive messages,
+    where N is the zombie threshold."""
+    # Assume the frequency is 5 Hz
+    # Need to run for 1.2 seconds because after track creation,
+    # received_msg is set to 1 for one iteration of the loop
+    track_specialist = get_track_specialist(tmpdir, run_for=1.2)
+    msg = fake_msg()
+    # Try to associate a new msg - should call create_track
+    track_specialist.create_track(msg)
+    track = track_specialist.track_list[msg['veh_id']]
+    assert track.track_state == TrackState.UNCONFIRMED
+
+    track.n_consecutive_measurements = track_specialist.track_confirmation_threshold
+    track_specialist.associate("DSRC", msg)
+
+    assert track.track_state == TrackState.CONFIRMED
+
+    # run for 1.2 seconds
+    track_specialist.run()
+
+    assert msg['veh_id'] in track_specialist.track_list
+    assert track.track_state == TrackState.ZOMBIE
+    assert track.n_consecutive_missed == 5
 
 
-def test_track_recovery():
+def test_track_recovery(tmpdir):
     """This tests whether a track can recover from ZOMBIE
     state to UNCONFIRMED if a new message for it arrives
     before it is deleted"""
-    pytest.fail('Unimplemented test')
+    track_specialist = get_track_specialist(tmpdir, run_for=1.2)
+    msg = fake_msg()
+    # Try to associate a new msg - should call create_track
+    track_specialist.create_track(msg)
+    track = track_specialist.track_list[msg['veh_id']]
+    assert track.track_state == TrackState.UNCONFIRMED
+
+    # run for 1.2 seconds
+    track_specialist.run()
+
+    assert track.track_state == TrackState.ZOMBIE
+
+    track_specialist.associate("DSRC", msg)
+
+    assert track.track_state == TrackState.UNCONFIRMED
+    assert track.n_consecutive_measurements == 1
+    assert track.n_consecutive_missed == 0
+

@@ -4,7 +4,7 @@ from sensible.sensors.DSRC import DSRC
 from sensible.sensors.Radar import Radar
 from .track_state import TrackState
 from .track import Track
-from datetime import datetime
+import socket
 import zmq
 import time
 import os
@@ -24,7 +24,7 @@ class TrackSpecialist:
     for new measurements.
 
     """
-    def __init__(self, sensor_port, topic_filters, run_for, log_dir,
+    def __init__(self, sensor_port, bsm_port, topic_filters, run_for, logger,
                  frequency=5,
                  track_confirmation_threshold=5,
                  track_zombie_threshold=5,
@@ -42,9 +42,10 @@ class TrackSpecialist:
         self._max_n_tracks = max_n_tracks
 
         # Track logger
-        t = time.localtime()
-        timestamp = time.strftime('%b-%d-%Y_%H%M', t)
-        self._logger = open(os.path.join(log_dir, "trackLog_" + timestamp + ".csv"), 'w')
+        # t = time.localtime()
+        # timestamp = time.strftime('%b-%d-%Y_%H%M', t)
+        # logger = open(os.path.join(log_dir, "trackLog_", timestamp, ".csv"), 'w')
+        self._logger = logger
         logger_title = "TrackID,TrackState,lane,xPos,yPos,xSpeed,ySpeed\n"
         self._logger.write(logger_title)
 
@@ -55,6 +56,8 @@ class TrackSpecialist:
             self._subscribers[t_filter] = self._context.socket(zmq.SUB)
             self._subscribers[t_filter].connect("tcp://localhost:{}".format(sensor_port))
             self._subscribers[t_filter].setsockopt_string(zmq.SUBSCRIBE, t_filter)
+
+        self._bsm_port = bsm_port
 
     @property
     def subscribers(self):
@@ -74,6 +77,11 @@ class TrackSpecialist:
         are also updated accordingly.
 
         """
+        # Open a socket
+        bsm_writer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        bsm_writer.setblocking(0)
+        print("  [*] Opened UDP socket connection to send BSMs to port {}".format(self._bsm_port))
+
         t_end = time.time() + self._run_for
 
         while time.time() < t_end:
@@ -99,16 +107,22 @@ class TrackSpecialist:
                         track.n_consecutive_missed += 1
                         if (track.track_state == TrackState.UNCONFIRMED or
                                 track.track_state == TrackState.CONFIRMED) and \
-                            track.n_consecutive_missed > self.track_zombie_threshold:
+                            track.n_consecutive_missed >= self.track_zombie_threshold:
                             track.track_state = TrackState.ZOMBIE
                         elif track.track_state == TrackState.ZOMBIE and \
-                            track.n_consecutive_missed > self.track_drop_threshold:
+                            track.n_consecutive_missed >= self.track_drop_threshold:
                             track.track_state = TrackState.DEAD
                             self.delete_track(track_id)
+
+            # Send measurements from confirmed tracks to the optimization
+            self.send_bsms(bsm_writer)
 
             # sleep the track specialist so it runs at the given frequency
             diff = self._period - (time.time() - loop_start)
             time.sleep(diff)
+
+        bsm_writer.close()
+        print("  [*] Closed UDP port {}".format(self._bsm_port))
 
     def associate(self, topic, msg):
         """
@@ -127,9 +141,10 @@ class TrackSpecialist:
                 track.received_measurement = 1
                 track.state_estimator.store(msg)
                 track.n_consecutive_measurements += 1
+                track.n_consecutive_missed = 0
 
                 if track.track_state == TrackState.UNCONFIRMED and \
-                    track.n_consecutive_measurements > self.track_confirmation_threshold:
+                    track.n_consecutive_measurements >= self.track_confirmation_threshold:
                         track.track_state = TrackState.CONFIRMED
                 elif track.track_state == TrackState.ZOMBIE:
                     track.track_state = TrackState.UNCONFIRMED
@@ -151,5 +166,15 @@ class TrackSpecialist:
 
     def global_nearest_neighbors(self, radar_msg):
         pass
+
+    def send_bsms(self, socket):
+        """
+        Collect the latest filtered measurements from each confirmed track,
+        and if the tracked object has not yet been served, send a BSM
+        :return:
+        """
+        for (track_id, track) in self._track_list.items():
+            if track.track_state == TrackState.CONFIRMED and track.served:
+                socket.sendto(track.bsm(), ("localhost", self._bsm_port))
 
 

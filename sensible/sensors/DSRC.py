@@ -70,6 +70,8 @@ class DSRC(SensorThread):
         return "DSRC"
 
     def stop(self):
+        """Overrides the super class stop method, so explicitly
+        call it here."""
         self._synchronizer.stop()
         super(DSRC, self).stop()
 

@@ -49,8 +49,15 @@ class SensorThread(StoppableThread):
         self._sock.close()
 
     def push(self, msg):
-        """Push the msg through the processing pipeline.
+        """
+        Push the msg through the processing pipeline.
 
         Needs to be defined by the subclass
         """
+        raise NotImplementedError
+
+    @staticmethod
+    def topic():
+        """Force all sensors to make accessible the topic of the
+        message they are publishing."""
         raise NotImplementedError
