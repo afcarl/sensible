@@ -28,10 +28,10 @@ class StateEstimator(object):
         filtering algorithm."""
         raise NotImplementedError
 
-    def dump(self, file_handler):
+    def update_log(self, logger):
         """
         Write all track information to the file
-        :param file_handler:
+        :param logger:
         :return:
         """
         pass

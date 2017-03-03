@@ -7,6 +7,7 @@ from .track import Track
 from datetime import datetime
 import zmq
 import time
+import os
 
 try:  # python 2.7
     import cPickle as pickle
@@ -23,7 +24,7 @@ class TrackSpecialist:
     for new measurements.
 
     """
-    def __init__(self, sensor_network_port, topic_filters, run_for, log_file,
+    def __init__(self, sensor_port, topic_filters, run_for, log_dir,
                  frequency=5,
                  track_confirmation_threshold=5,
                  track_zombie_threshold=5,
@@ -35,18 +36,24 @@ class TrackSpecialist:
         self._track_list = {}
         self._period = 1 / frequency  # seconds
         self._run_for = run_for
-        self._track_confirmation_threshold = track_confirmation_threshold
-        self._track_zombie_threshold = track_zombie_threshold
-        self._track_drop_threshold = track_drop_threshold
+        self.track_confirmation_threshold = track_confirmation_threshold
+        self.track_zombie_threshold = track_zombie_threshold
+        self.track_drop_threshold = track_drop_threshold
         self._max_n_tracks = max_n_tracks
-        self._log = log_file
+
+        # Track logger
+        t = time.localtime()
+        timestamp = time.strftime('%b-%d-%Y_%H%M', t)
+        self._logger = open(os.path.join(log_dir, "trackLog_" + timestamp + ".csv"), 'w')
+        logger_title = "TrackID,TrackState,lane,xPos,yPos,xSpeed,ySpeed\n"
+        self._logger.write(logger_title)
 
         for t_filter in topic_filters:
             if isinstance(t_filter, bytes):
                 t_filter = t_filter.decode('ascii')
             self._topic_filters.append(t_filter)
             self._subscribers[t_filter] = self._context.socket(zmq.SUB)
-            self._subscribers[t_filter].connect("tcp://localhost:{}".format(sensor_network_port))
+            self._subscribers[t_filter].connect("tcp://localhost:{}".format(sensor_port))
             self._subscribers[t_filter].setsockopt_string(zmq.SUBSCRIBE, t_filter)
 
     @property
@@ -73,30 +80,31 @@ class TrackSpecialist:
             loop_start = time.time()
 
             for i in range(self._max_n_tracks):
-                for subscriber in self._subscribers:
+                for (topic, subscriber) in self._subscribers.items():
                     try:
                         string = subscriber.recv_string(flags=zmq.NOBLOCK)
-                        topic, msg = string.split(" ")
-                        self.associate(topic, pickle.loads(str(msg)))
+                        m_topic, msg = string.split(" ")
+                        self.associate(m_topic, pickle.loads(str(msg)))
                     except zmq.Again as e:
                         continue
 
             # update track state estimates, or handle no measurement
-            for track in self._track_list:
-                if track.received_msg:
-                    track.received_msg = 0
-                    track.step()
-                else:
-                    track.n_consecutive_measurements = 0
-                    track.n_consecutive_missed += 1
-                    if (track.state == TrackState.UNCONFIRMED or
-                            track.state == TrackState.CONFIRMED) and \
-                        track.n_consecutive_missed > self._track_zombie_threshold:
-                        track.state = TrackState.ZOMBIE
-                    elif track.state == TrackState.ZOMBIE and \
-                        track.n_consecutive_missed > self._track_drop_threshold:
-                        track.state = TrackState.DEAD
-                        self.delete_track(track)
+            if len(self._track_list) != 0:
+                for (track_id, track) in self._track_list.items():
+                    if track.received_measurement:
+                        track.received_measurement = 0
+                        track.step()
+                    else:
+                        track.n_consecutive_measurements = 0
+                        track.n_consecutive_missed += 1
+                        if (track.track_state == TrackState.UNCONFIRMED or
+                                track.track_state == TrackState.CONFIRMED) and \
+                            track.n_consecutive_missed > self.track_zombie_threshold:
+                            track.track_state = TrackState.ZOMBIE
+                        elif track.track_state == TrackState.ZOMBIE and \
+                            track.n_consecutive_missed > self.track_drop_threshold:
+                            track.track_state = TrackState.DEAD
+                            self.delete_track(track_id)
 
             # sleep the track specialist so it runs at the given frequency
             diff = self._period - (time.time() - loop_start)
@@ -112,17 +120,17 @@ class TrackSpecialist:
         :return:
         """
         if topic == DSRC.topic():
-            if self._track_list.has_key(msg['veh_id']):
+            if msg['veh_id'] in self._track_list:
                 track = self._track_list.get(msg['veh_id'])
-                track.received_msg = 1
+                track.received_measurement = 1
                 track.state_estimator.store(msg)
-                track.n_consecutive_msgs += 1
+                track.n_consecutive_measurements += 1
 
-                if track.state == TrackState.UNCONFIRMED and \
-                    track.n_consecutive_msgs > self._track_confirmation_threshold:
-                        track.state = TrackState.CONFIRMED
-                elif track.state == TrackState.ZOMBIE:
-                    track.state = TrackState.UNCONFIRMED
+                if track.track_state == TrackState.UNCONFIRMED and \
+                    track.n_consecutive_measurements > self.track_confirmation_threshold:
+                        track.track_state = TrackState.CONFIRMED
+                elif track.track_state == TrackState.ZOMBIE:
+                    track.track_state = TrackState.UNCONFIRMED
             else:
                 # create new unconfirmed track
                 self.create_track(msg)
@@ -136,10 +144,8 @@ class TrackSpecialist:
         self._track_list[msg['veh_id']].store(msg)
 
     def delete_track(self, track_id):
-        """Dump the track history to the log file and remove it from the track list."""
-        self._log.write('[track drop] track id: {} | utctime: {}\n', track_id, datetime.utcnow())
-        self._track_list[track_id].state_estimator.dump(self._log)
-        self._track_list[track_id] = None
+        """remove it from the track list."""
+        del self._track_list[track_id]
 
     def global_nearest_neighbors(self, radar_msg):
         pass
