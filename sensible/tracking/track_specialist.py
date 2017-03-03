@@ -115,6 +115,8 @@ class TrackSpecialist:
         Simple data association. For DSRC messages, vehicle IDs can be used.
         For radar zone detections, we can use global nearest neighbors.
 
+        New tracks are created here if no existing tracks can be associated.
+
         :param topic: The sensor topic for this message
         :param msg: The new sensor measurement
         :return:
