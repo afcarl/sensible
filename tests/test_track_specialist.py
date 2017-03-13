@@ -1,8 +1,6 @@
 from __future__ import division
 import zmq
 import pytest
-import os
-import time
 from sensible.tracking.track_specialist import TrackSpecialist
 from sensible.util.sensible_threading import StoppableThread
 from sensible.tracking.track_state import TrackState

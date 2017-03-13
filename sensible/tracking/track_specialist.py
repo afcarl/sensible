@@ -63,9 +63,18 @@ class TrackSpecialist:
     def subscribers(self):
         return self._subscribers
 
+    @subscribers.setter
+    def subscribers(self, value):
+        """Prevent external objects from modifying this attribute"""
+        pass
+
     @property
     def track_list(self):
         return self._track_list
+
+    @track_list.setter
+    def track_list(self, value):
+        pass
 
     def run(self):
         """
@@ -157,7 +166,7 @@ class TrackSpecialist:
     def create_track(self, msg):
         """A new UNCONFIRMED track is created, and this message is associated
         with it."""
-        self._track_list[msg['veh_id']] = Track()
+        self._track_list[msg['veh_id']] = Track(self._period)
         self._track_list[msg['veh_id']].store(msg)
 
     def delete_track(self, track_id):

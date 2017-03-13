@@ -7,15 +7,18 @@ class StateEstimator(object):
     """
     def __init__(self):
         self.y = []  # measurements
-        self.x = []  # track state
+
+        self.x_k = []  # predicted track state
+        self.y_k = []  # predicted measurement
+
+        self.t = []  # time stamps
         self.k = 0  # current time step
 
     def get_latest_measurement(self):
-        return self.y[self.k]
+        return self.y[self.k] if self.k > 0 else None
 
     def store(self, msg):
         self.y.append(self.parse_msg(msg))
-        self.k += 1
 
     def step(self):
         """One iteration of a discrete-time filtering algorithm.
