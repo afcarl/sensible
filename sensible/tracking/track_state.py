@@ -6,7 +6,7 @@ class TrackState:
     DEAD = 4
 
     @staticmethod
-    def as_string(state):
+    def to_string(state):
         if state == TrackState.CONFIRMED:
             return "CONFIRMED"
         elif state == TrackState.UNCONFIRMED:

@@ -1,41 +1,22 @@
 from __future__ import absolute_import
 from __future__ import division
+
 import xml.etree.cElementTree as ElementTree
 import pytest
 import zmq
-import socket
 import time
+
 import sensible.util.ops as ops
+
 from sensible.sensors.DSRC import DSRC
 from sensible.util.exceptions import ParseError
-from sensible.util.sensible_threading import StoppableThread
+
+from .radio_emulator import RadioEmulator
 
 try:  # python 2.7
     import cPickle as pickle
 except ImportError:  # python 3.5 or 3.6
     import pickle
-
-
-class RadioEmulator(StoppableThread):
-    """Utility class for emulating a DSRC radio. Used for testing."""
-    def __init__(self, port, pub_freq, name="RadioEmulator"):
-        super(RadioEmulator, self).__init__(name)
-        self._port = port
-        self._pub_freq = pub_freq
-
-        # UDP port
-        self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self._socket.setblocking(0)
-
-    def run(self):
-        with open("data/csm-nb.txt", 'r') as f:
-            csm = f.read()
-
-            while not self.stopped():
-                self._socket.sendto(csm, ("localhost", self._port))
-                time.sleep(1 / self._pub_freq)
-
-        self._socket.close()
 
 
 def test_xml_parsing():
@@ -162,7 +143,7 @@ def test_synchronization():
         t_filter = t_filter.decode('ascii')
     subscriber.setsockopt_string(zmq.SUBSCRIBE, t_filter)
 
-    radio = RadioEmulator(port=4200, pub_freq=21)
+    radio = RadioEmulator(port=4200, pub_freq=21, file_name="data/csm-nb.txt")
     radio.start()
 
     # Connect and start the DSRC thread.

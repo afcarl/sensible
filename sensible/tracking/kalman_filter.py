@@ -2,6 +2,7 @@ from __future__ import division
 from sensible.tracking.state_estimator import StateEstimator
 import utm
 import numpy as np
+import scipy.linalg
 
 
 class KalmanFilter(StateEstimator):
@@ -70,27 +71,29 @@ class KalmanFilter(StateEstimator):
     def step(self):
         m = self.get_latest_measurement()
 
+        # TODO: do updates without a measurement (only filter predictions)
         # No measurements available
         if m is None:
             print("  [Kalman Filter] No measurements available")
             return
 
-        # First measurement
-        if self.k == 0:
-            self.x_k[self.k] = m
-        else:
-            # self.k > 0
-            x_k_bar = np.matmul(self.F, self.x_k[self.k - 1]) + np.matmul(self.Q, np.random.normal(size=(4, 1)))
-            # state covariance prediction
-            self.P = np.matmul(self.F, np.matmul(self.P, self.F.T)) + self.Q
-            # measurement prediction
-            y_k_bar = x_k_bar + np.matmul(self.R, np.random.normal(size=(4, 1)))
-            # innovation
-            e_k = m - y_k_bar
+        x_k_bar = np.matmul(self.F, self.x_k[self.k - 1]) + np.matmul(self.Q, np.random.normal(size=4))
+        # state covariance prediction
+        self.P = np.matmul(self.F, np.matmul(self.P, self.F.T)) + self.Q
+        # measurement prediction
+        self.y_k.append(x_k_bar + np.matmul(self.R, np.random.normal(size=4)))
+        # innovation
+        e_k = m - self.y_k[self.k]
 
-            # Compute Cholesky Factorization
-            L = np.linalg.cholesky(self.P + self.R)
+        # K_k = P * inv(P + R)
+        u = scipy.linalg.inv(self.P + self.R)
+        K_k = np.matmul(self.P, u)
+        #l = scipy.linalg.cho_factor(self.P + self.R)
+        #u = scipy.linalg.cho_solve(l, np.eye(4))
+        #K_k = np.matmul(self.P, scipy.linalg.solve(l[0].T, u, sym_pos=True, lower=True))
+        # state update
+        self.x_k.append(x_k_bar + np.matmul(K_k, e_k))
+        # covariance update
+        self.P -= np.matmul(K_k, self.P)
 
-
-
-        self.k += 1
+        print("  [*] Kalman step {}".format(self.k))

@@ -52,7 +52,7 @@ def fake_msg():
     }
 
 
-def get_track_specialist(tmpdir, sensor_port=6667, bsm_port = 6668, run_for=60.0, frequency=5):
+def get_track_specialist(tmpdir, sensor_port=6667, bsm_port=6668, run_for=60.0, frequency=5):
     """Return a standard TrackSpecialist object for testing."""
     topic_filters = ["DSRC", "Radar"]
     p = tmpdir.mkdir("logs").join("test.csv")

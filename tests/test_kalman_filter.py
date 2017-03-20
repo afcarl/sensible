@@ -1,61 +1,46 @@
-from sensible.tracking.kalman_filter import KalmanFilter
-import numpy as np
+"""
+Test the Kalman Filter with a full trajectory by simulating a radio
+sending the messages in real time (20 Hz)
+"""
+from __future__ import absolute_import
+
+import pytest
+
+from .radio_emulator import RadioEmulator
+from sensible.tracking.track_specialist import TrackSpecialist
+from sensible.sensors.DSRC import DSRC
 
 
-def fake_msg():
-    """Return a fake DSRC message for tests"""
-    return {
-        'msg_count': 0,
-        'veh_id': '00000111',
-        'h': 14,
-        'm': 14,
-        's': 14,
-        'lat': 29.12123,
-        'lon': -82.345234,
-        'heading': 0,
-        'speed': 20,
-        'lane': 1,
-        'veh_len': 15,
-        'max_accel': 3.2,
-        'max_decel': -3.2,
-        'served': 0
-    }
+def get_track_specialist(tmpdir, sensor_port=6666, bsm_port=6667, run_for=20.0, frequency=5):
+    """Return a standard TrackSpecialist object for testing."""
+    topic_filters = ["DSRC", "Radar"]
+    p = tmpdir.mkdir("logs").join("test.csv")
+    return TrackSpecialist(sensor_port, bsm_port, topic_filters, run_for, p, frequency)
 
 
-def test_instantiate_kf():
-    """Test that the KF class can be instantiated with all
-    members having valid default values."""
-    kf = KalmanFilter(dt=0.2)
+def test_trajectory(tmpdir):
+    radio = RadioEmulator(port=4200, pub_freq=20,
+                          file_name="data/01-27-17-solarpark/GPS/Solar_UrbanNavi012717/suilog_1485534929.txt",
+                          delim="CSM Tx...", loop=False, delay=2)
 
+    remote_port = 4200
+    local_port = 6666
+    dsrc = DSRC("localhost", remote_port=remote_port, local_port=local_port)
 
-def test_parse_msg():
-    """Test that a DSRC message is correctly parsed."""
-    kf = KalmanFilter(dt=0.2)
-    msg = fake_msg()
+    # Connect and start the DSRC thread.
+    try:
+        dsrc.connect()
+    except Exception:
+        pytest.fail("Unable to connect DSRC thread.")
 
-    expected_x_hat = 369121.1
-    expected_y_hat = 3222164.79
+    track_specialist = get_track_specialist(tmpdir)
 
-    # test 45' heading from true north
-    msg['heading'] = 45.0
+    # this is an async thread
+    radio.start()
+    dsrc.start()
 
-    # speed is 20 m/s
-    msg['speed'] = 20.0
-    expected_x_hat_dot = -14.1420721227
-    expected_y_hat_dot = 14.1421991245
+    # run for 20 seconds, then exit
+    track_specialist.run()
 
-    expected = np.array([expected_x_hat, expected_x_hat_dot, expected_y_hat, expected_y_hat_dot])
-    result = kf.parse_msg(msg)
-
-    assert np.allclose(result, expected, rtol=1e-03)
-
-    # test 200' heading from true north
-    msg['heading'] = 200.0
-
-    expected_x_hat_dot = 6.8403120774
-    expected_y_hat_dot = -18.79388546
-
-    expected = np.array([expected_x_hat, expected_x_hat_dot, expected_y_hat, expected_y_hat_dot])
-    result = kf.parse_msg(msg)
-
-    assert np.allclose(result, expected, rtol=1e-03)
+    radio.stop()
+    dsrc.stop()

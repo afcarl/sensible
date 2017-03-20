@@ -7,7 +7,6 @@ from .track import Track
 import socket
 import zmq
 import time
-import os
 
 try:  # python 2.7
     import cPickle as pickle
@@ -46,7 +45,7 @@ class TrackSpecialist:
         # timestamp = time.strftime('%b-%d-%Y_%H%M', t)
         # logger = open(os.path.join(log_dir, "trackLog_", timestamp, ".csv"), 'w')
         self._logger = logger
-        logger_title = "TrackID,TrackState,lane,xPos,yPos,xSpeed,ySpeed\n"
+        logger_title = "TrackID,TrackState,timestamp,xPos,yPos,xSpeed,ySpeed\n"
         self._logger.write(logger_title)
 
         for t_filter in topic_filters:
@@ -108,7 +107,7 @@ class TrackSpecialist:
             # update track state estimates, or handle no measurement
             if len(self._track_list) != 0:
                 for (track_id, track) in self._track_list.items():
-                    if track.received_measurement:
+                    if track.received_measurement == 1:
                         track.received_measurement = 0
                         track.step()
                     else:
@@ -166,24 +165,46 @@ class TrackSpecialist:
     def create_track(self, msg):
         """A new UNCONFIRMED track is created, and this message is associated
         with it."""
-        self._track_list[msg['veh_id']] = Track(self._period)
+        self._track_list[msg['veh_id']] = Track(self._period, msg)
         self._track_list[msg['veh_id']].store(msg)
 
     def delete_track(self, track_id):
         """remove it from the track list."""
+        print("  [*] Dropping track {}".format(track_id))
         del self._track_list[track_id]
 
     def global_nearest_neighbors(self, radar_msg):
+        """
+        For each active track, check whether
+        :param radar_msg:
+        :return:
+        """
         pass
 
-    def send_bsms(self, socket):
+    def send_bsms(self, my_sock):
         """
         Collect the latest filtered measurements from each confirmed track,
         and if the tracked object has not yet been served, send a BSM
         :return:
         """
         for (track_id, track) in self._track_list.items():
-            if track.track_state == TrackState.CONFIRMED and track.served:
-                socket.sendto(track.bsm(), ("localhost", self._bsm_port))
+            if track.track_state == TrackState.CONFIRMED and not track.served:
+                try:
+                    state, t_stamp = track.state_estimator.predicted_state()
+                    #print(track.state_estimator.predicted_state())
+                    self._logger.write("{},{},{},{},{},{},{}".format(
+                        track_id, TrackState.to_string(track.track_state),
+                        t_stamp.to_string(),state[0],state[1], state[2], state[3]
+                    ))
+                    print("{},{},{},{},{},{},{}".format(
+                        track_id, TrackState.to_string(track.track_state),
+                        t_stamp.to_string(),state[0],state[1], state[2], state[3]
+                    ))
+                    #my_sock.sendto(track.bsm(), ("localhost", self._bsm_port))
+                except socket.error as e:
+                    # log the error
+                    print("  [*] Couldn't send BSM for confirmed track ["
+                          + track_id + "] due to error: " + e.message)
+
 
 

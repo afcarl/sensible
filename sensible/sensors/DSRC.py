@@ -19,7 +19,6 @@ except ImportError:  # python 3.5 or 3.6
 
 class DSRC(SensorThread):
     """Thread that listens for incoming DSRC radio messages and pre-processes them.
-
     """
 
     def __init__(self, ip_address, remote_port, local_port, msg_len=277, name="DSRC"):
@@ -52,6 +51,8 @@ class DSRC(SensorThread):
                 """
                 if len(self._queue) > 0:
                     self._publisher.send_string("{} {}".format(self._topic, pickle.dumps(self._queue.pop())))
+                    # drop the other messages
+                    self._queue.clear()
 
             def run(self):
                 while not self.stopped():
@@ -89,8 +90,8 @@ class DSRC(SensorThread):
 
     def add_to_queue(self, msg):
         """If the queue doesn't contain an identical message, add msg to the queue."""
-        for queued_msg in self._queue:
-            if msg['s'] == queued_msg['s']:
+        for queued_msg in list(self._queue):
+            if queued_msg['s'] == msg['s']:
                 # Found a duplicate
                 return
         self._queue.append(msg)

@@ -1,18 +1,26 @@
 from __future__ import absolute_import
+
+import numpy as np
+
 from .track_state import TrackState
 from .kalman_filter import KalmanFilter
 
 
 class Track:
-    """Keeps track of the state of a track, both
-    lifecycle and state estimation."""
-    def __init__(self, dt):
+    """Maintains state of a track and delegates state updates to a
+    state estimator."""
+    def __init__(self, dt, first_msg):
         self.track_state = TrackState.UNCONFIRMED
         self.n_consecutive_measurements = 0
         self.n_consecutive_missed = 0
         self.state_estimator = KalmanFilter(dt)
         self.received_measurement = 0
         self.served = 0
+        self._veh_id = first_msg['veh_id']
+        self._lane = first_msg['lane']
+        self._veh_len = first_msg['veh_len']
+        self._max_accel = first_msg['max_accel']
+        self._max_decel = first_msg['max_decel']
 
     def step(self):
         self.state_estimator.step()
@@ -27,6 +35,28 @@ class Track:
             self.served = 1
 
     def bsm(self):
-        """Return a string containing the information needed by the optimization code."""
-        # return "{},{},{},{},{}".format()
-        pass
+        """Return a string containing the information needed by the optimization code
+        at the most recent timestamp.
+
+        veh_id,h,m,s,easting,northing,speed,lane,veh_len,max_accel,max_decel,served
+        """
+        x_hat, timestamp = self.state_estimator.predicted_state()
+
+        if x_hat is None:
+            return
+
+        return "{},{},{},{},{},{},{},{},{},{}".format(
+            self._veh_id,
+            timestamp.h,
+            timestamp.m,
+            timestamp.s,
+            x_hat[0],  # meters easting
+            x_hat[2],  # meters northing
+            np.round(np.sqrt(np.power(x_hat[1], 2) + np.power(x_hat[3], 2)), 3),  # m/s
+            self._lane,
+            self._veh_len,
+            self._max_accel,
+            self._max_decel,
+            self.served
+        )
+
