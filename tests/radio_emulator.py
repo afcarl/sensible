@@ -3,7 +3,7 @@ from __future__ import division
 import socket
 import time
 
-from sensible.util.sensible_threading import StoppableThread
+from sensible.sensors.sensible_threading import StoppableThread
 
 
 class RadioEmulator(StoppableThread):

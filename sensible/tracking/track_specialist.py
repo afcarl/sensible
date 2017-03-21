@@ -26,8 +26,8 @@ class TrackSpecialist:
     def __init__(self, sensor_port, bsm_port, topic_filters, run_for, logger,
                  frequency=5,
                  track_confirmation_threshold=5,
-                 track_zombie_threshold=5,
-                 track_drop_threshold=8,
+                 track_zombie_threshold=3,
+                 track_drop_threshold=5,
                  max_n_tracks=5):
         self._context = zmq.Context()
         self._subscribers = {}
@@ -35,17 +35,14 @@ class TrackSpecialist:
         self._track_list = {}
         self._period = 1 / frequency  # seconds
         self._run_for = run_for
+        self._max_n_tracks = max_n_tracks
+
         self.track_confirmation_threshold = track_confirmation_threshold
         self.track_zombie_threshold = track_zombie_threshold
         self.track_drop_threshold = track_drop_threshold
-        self._max_n_tracks = max_n_tracks
 
-        # Track logger
-        # t = time.localtime()
-        # timestamp = time.strftime('%b-%d-%Y_%H%M', t)
-        # logger = open(os.path.join(log_dir, "trackLog_", timestamp, ".csv"), 'w')
         self._logger = logger
-        logger_title = "TrackID,TrackState,timestamp,xPos,yPos,xSpeed,ySpeed\n"
+        logger_title = "TrackID,TrackState,Filtered,timestamp,xPos,yPos,xSpeed,ySpeed\n"
         self._logger.write(logger_title)
 
         for t_filter in topic_filters:
@@ -108,28 +105,36 @@ class TrackSpecialist:
             if len(self._track_list) != 0:
                 for (track_id, track) in self._track_list.items():
                     if track.received_measurement == 1:
-                        track.received_measurement = 0
                         track.step()
+                        track.received_measurement = 0
                     else:
                         track.n_consecutive_measurements = 0
                         track.n_consecutive_missed += 1
-                        if (track.track_state == TrackState.UNCONFIRMED or
-                                track.track_state == TrackState.CONFIRMED) and \
-                            track.n_consecutive_missed >= self.track_zombie_threshold:
-                            track.track_state = TrackState.ZOMBIE
-                        elif track.track_state == TrackState.ZOMBIE and \
+
+                        if track.track_state == TrackState.ZOMBIE and \
                             track.n_consecutive_missed >= self.track_drop_threshold:
                             track.track_state = TrackState.DEAD
                             self.delete_track(track_id)
+                        else:
+                            track.state_estimator.store(None)
+                            # do a step without receiving a new measurement
+                            # by propagating the predicted state
+                            track.step()
 
-            # Send measurements from confirmed tracks to the optimization
-            self.send_bsms(bsm_writer)
+                            if (track.track_state == TrackState.UNCONFIRMED or
+                                    track.track_state == TrackState.CONFIRMED) and \
+                                    track.n_consecutive_missed >= self.track_zombie_threshold:
+                                track.track_state = TrackState.ZOMBIE
 
             # sleep the track specialist so it runs at the given frequency
             diff = self._period - (time.time() - loop_start)
             time.sleep(diff)
 
+            # Send measurements from confirmed tracks to the optimization
+            self.send_bsms(bsm_writer)
+
         bsm_writer.close()
+        self._logger.close()
         print("  [*] Closed UDP port {}".format(self._bsm_port))
 
     def associate(self, topic, msg):
@@ -147,9 +152,10 @@ class TrackSpecialist:
             if msg['veh_id'] in self._track_list:
                 track = self._track_list.get(msg['veh_id'])
                 track.received_measurement = 1
-                track.state_estimator.store(msg)
                 track.n_consecutive_measurements += 1
                 track.n_consecutive_missed = 0
+
+                track.state_estimator.store(msg)
 
                 if track.track_state == TrackState.UNCONFIRMED and \
                     track.n_consecutive_measurements >= self.track_confirmation_threshold:
@@ -187,24 +193,36 @@ class TrackSpecialist:
         and if the tracked object has not yet been served, send a BSM
         :return:
         """
-        for (track_id, track) in self._track_list.items():
-            if track.track_state == TrackState.CONFIRMED and not track.served:
-                try:
-                    state, t_stamp = track.state_estimator.predicted_state()
-                    #print(track.state_estimator.predicted_state())
-                    self._logger.write("{},{},{},{},{},{},{}".format(
-                        track_id, TrackState.to_string(track.track_state),
-                        t_stamp.to_string(),state[0],state[1], state[2], state[3]
-                    ))
-                    print("{},{},{},{},{},{},{}".format(
-                        track_id, TrackState.to_string(track.track_state),
-                        t_stamp.to_string(),state[0],state[1], state[2], state[3]
-                    ))
-                    #my_sock.sendto(track.bsm(), ("localhost", self._bsm_port))
-                except socket.error as e:
-                    # log the error
-                    print("  [*] Couldn't send BSM for confirmed track ["
-                          + track_id + "] due to error: " + e.message)
 
+        for (track_id, track) in self._track_list.items():
+            if track.track_state == TrackState.CONFIRMED or \
+            track.track_state == TrackState.ZOMBIE and not track.served:
+
+                kf_state, t_stamp = track.state_estimator.predicted_state()
+                m, _ = track.state_estimator.get_latest_measurement()
+
+                kf_log_str = "{},{},{},{},{},{},{},{}\n".format(
+                        track_id, TrackState.to_string(track.track_state),1,
+                        t_stamp,kf_state[0],kf_state[2],
+                        kf_state[1], kf_state[3]
+                    )
+                self._logger.write(kf_log_str)
+                print(kf_log_str)
+
+                if m is not None:
+                    m_log_str = "{},{},{},{},{},{},{},{}\n".format(
+                            track_id, TrackState.to_string(track.track_state),0,
+                            t_stamp,m[0],m[2],m[1],m[3]
+                        )
+                    self._logger.write(m_log_str)
+
+
+                # if track.track_state == TrackState.CONFIRMED:
+                #     try:
+                #         # my_sock.sendto(track.bsm(), ("localhost", self._bsm_port))
+                #     except socket.error as e:
+                #         # log the error
+                #         print("  [*] Couldn't send BSM for confirmed track ["
+                #               + track_id + "] due to error: " + e.message)
 
 

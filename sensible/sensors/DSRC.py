@@ -1,13 +1,13 @@
 from __future__ import absolute_import
 from __future__ import division
 
+import time
 import xml.etree.cElementTree as ElementTree
 from collections import deque
 
 import zmq
-import time
 
-from sensible.util.sensible_threading import SensorThread, StoppableThread
+from sensible.sensors.sensible_threading import SensorThread, StoppableThread
 from ..util import ops
 from ..util.exceptions import ParseError
 

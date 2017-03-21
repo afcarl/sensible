@@ -15,6 +15,7 @@ class Track:
         self.n_consecutive_missed = 0
         self.state_estimator = KalmanFilter(dt)
         self.received_measurement = 0
+        self.state_propagated = 0
         self.served = 0
         self._veh_id = first_msg['veh_id']
         self._lane = first_msg['lane']

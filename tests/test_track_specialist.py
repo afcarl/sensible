@@ -1,8 +1,10 @@
 from __future__ import division
-import zmq
+
 import pytest
+import zmq
+
+from sensible.sensors.sensible_threading import StoppableThread
 from sensible.tracking.track_specialist import TrackSpecialist
-from sensible.util.sensible_threading import StoppableThread
 from sensible.tracking.track_state import TrackState
 
 
@@ -272,4 +274,3 @@ def test_track_recovery(tmpdir):
     assert track.track_state == TrackState.UNCONFIRMED
     assert track.n_consecutive_measurements == 1
     assert track.n_consecutive_missed == 0
-

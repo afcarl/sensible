@@ -1,4 +1,4 @@
-from sensible.util.sensible_threading import SensorThread, StoppableThread
+from sensible.sensors.sensible_threading import SensorThread
 
 
 class Radar(SensorThread):

@@ -69,21 +69,17 @@ class KalmanFilter(StateEstimator):
         return np.array([x_hat, x_hat_dot, y_hat, y_hat_dot])
 
     def step(self):
-        m = self.get_latest_measurement()
 
-        # TODO: do updates without a measurement (only filter predictions)
-        # No measurements available
-        if m is None:
-            print("  [Kalman Filter] No measurements available")
-            return
+        m, _ = self.get_latest_measurement()
 
-        x_k_bar = np.matmul(self.F, self.x_k[self.k - 1]) + np.matmul(self.Q, np.random.normal(size=4))
+        x_k_bar = np.matmul(self.F, self.x_k[self.k]) + np.matmul(self.Q, np.random.normal(size=4))
         # state covariance prediction
         self.P = np.matmul(self.F, np.matmul(self.P, self.F.T)) + self.Q
         # measurement prediction
         self.y_k.append(x_k_bar + np.matmul(self.R, np.random.normal(size=4)))
         # innovation
-        e_k = m - self.y_k[self.k]
+        # if no new measurements, e_k is 0.
+        e_k = (m - self.y_k[self.k]) if m is not None else np.zeros([4])
 
         # K_k = P * inv(P + R)
         u = scipy.linalg.inv(self.P + self.R)
@@ -96,4 +92,4 @@ class KalmanFilter(StateEstimator):
         # covariance update
         self.P -= np.matmul(K_k, self.P)
 
-        print("  [*] Kalman step {}".format(self.k))
+        #print("  [*] Kalman step {}".format(self.k))

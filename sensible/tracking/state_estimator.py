@@ -30,21 +30,32 @@ class StateEstimator(object):
         Returns the latest measurement
         :return:
         """
-        return self.y[self.k] if self.k > -1 else None
+        if -1 < self.k < len(self.y):
+            t = self.t[self.k]
+            t_string = t.to_string() if t is not None else "UNAVAILABLE"
+            return self.y[self.k], t_string
+        else:
+            return None, None
 
     def predicted_state(self):
         """Return the latest Kalman Filter prediction of the state, and the timestamp."""
-        if self.k > -1:
-            return self.x_k[self.k], self.t[self.k]
+        if -1 < self.k < len(self.x_k):
+            t = self.t[self.k]
+            t_string = t.to_string() if t is not None else "UNAVAILABLE"
+            return self.x_k[self.k], t_string
         else:
             return None, None
 
     def store(self, msg):
-        self.y.append(self.parse_msg(msg))
-        self.t.append(TimeStamp(msg['h'], msg['m'], msg['s']))
         self.k += 1
-        if self.k == 0:
-            self.x_k.append(self.y[self.k])
+        if msg is None:
+            self.y.append(None)
+            self.t.append(None)
+        else:
+            self.y.append(self.parse_msg(msg))
+            self.t.append(TimeStamp(msg['h'], msg['m'], msg['s']))
+            if self.k == 0:
+                self.x_k.append(self.y[self.k])
 
     def step(self):
         """One iteration of a discrete-time filtering algorithm.
