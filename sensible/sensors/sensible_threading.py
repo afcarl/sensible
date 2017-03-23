@@ -28,8 +28,11 @@ class StoppableThread(threading.Thread):
 class SensorThread(StoppableThread):
     """Used for receiving data measurements from a sensor."""
 
-    def __init__(self, name, msg_len):
+    def __init__(self, ip_address, port, name, msg_len):
         super(SensorThread, self).__init__(name)
+        self._ip_address = ip_address
+        self._port = port
+
         self._msg_len = msg_len
 
     def run(self):
@@ -47,6 +50,11 @@ class SensorThread(StoppableThread):
                 continue
 
         self._sock.close()
+
+    def connect(self):
+        # open connection to incoming DSRC messages
+        self._sock.bind((self._ip_address, self._port))
+        self._sock.setblocking(0)
 
     def push(self, msg):
         """

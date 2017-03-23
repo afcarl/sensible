@@ -46,6 +46,11 @@ class StateEstimator(object):
         else:
             return None, None
 
+    def predicted_state_covariance(self):
+        """"Return the estimated state covariance
+        """
+        raise NotImplementedError
+
     def store(self, msg):
         self.k += 1
         if msg is None:

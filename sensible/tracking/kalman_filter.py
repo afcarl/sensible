@@ -68,6 +68,9 @@ class KalmanFilter(StateEstimator):
 
         return np.array([x_hat, x_hat_dot, y_hat, y_hat_dot])
 
+    def predicted_state_covariance(self):
+        return self.P
+
     def step(self):
 
         m, _ = self.get_latest_measurement()

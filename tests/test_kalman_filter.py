@@ -41,8 +41,8 @@ def test_trajectory():
     track_specialist = get_track_specialist()
 
     # this is an async thread
-    radio.start()
     dsrc.start()
+    radio.start()
 
     # run for 20 seconds, then exit
     track_specialist.run()

@@ -22,10 +22,8 @@ class DSRC(SensorThread):
     """
 
     def __init__(self, ip_address, remote_port, local_port, msg_len=277, name="DSRC"):
-        super(DSRC, self).__init__(name, msg_len)
+        super(DSRC, self).__init__(name, ip_address, remote_port, msg_len)
         self._queue = deque()
-        self._ip_address = ip_address
-        self._port = remote_port
         self._local_port = local_port
         self._blob_len = 58
 
@@ -77,9 +75,7 @@ class DSRC(SensorThread):
         super(DSRC, self).stop()
 
     def connect(self):
-        # open connection to incoming DSRC messages
-        self._sock.bind((self._ip_address, self._port))
-        self._sock.setblocking(0)
+        super(DSRC, self).connect()
 
         # Start publishing outgoing parsed messages
         self._synchronizer.start()

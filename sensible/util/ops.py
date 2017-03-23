@@ -1,3 +1,6 @@
+import numpy as np
+import scipy.linalg
+
 from .exceptions import ParseError
 
 
@@ -22,3 +25,8 @@ def twos_comp(val, bits):
     if (val & (1 << (bits - 1))) != 0:  # if sign bit is set e.g., 8bit: 128-255
         val -= (1 << bits)  # compute negative value
     return val  # return positive value as is
+
+
+def mahalanobis(observation, mean, covariance):
+    dx = observation - mean
+    return dx.T * scipy.linalg.inv(covariance) * dx

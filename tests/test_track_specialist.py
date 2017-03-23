@@ -128,7 +128,6 @@ def test_track_creation(tmpdir):
     assert track.n_consecutive_measurements == 1
     assert track.n_consecutive_missed == 0
     assert track.received_measurement == 1
-    assert track.state_estimator.get_latest_measurement() == msg
 
 
 def test_vehicle_id_association(tmpdir):
@@ -146,7 +145,6 @@ def test_vehicle_id_association(tmpdir):
     assert track.n_consecutive_measurements == 2
     assert track.n_consecutive_missed == 0
     assert track.received_measurement == 1
-    assert track.state_estimator.get_latest_measurement()['s'] == 15
 
 
 def test_vehicle_id_association_no_match(tmpdir):
@@ -163,7 +161,6 @@ def test_vehicle_id_association_no_match(tmpdir):
     assert track.n_consecutive_measurements == 1
     assert track.n_consecutive_missed == 0
     assert track.received_measurement == 1
-    assert track.state_estimator.get_latest_measurement() == msg
 
 
 def test_radar_to_vehicle_association():
@@ -211,19 +208,19 @@ def test_track_state_zombie_to_unconfirmed(tmpdir):
     # Assume the frequency is 5 Hz
     # Need to run for 1.2 seconds because after track creation,
     # received_msg is set to 1 for one iteration of the loop
-    track_specialist = get_track_specialist(tmpdir, run_for=1.2)
+    track_specialist = get_track_specialist(tmpdir, run_for=0.8)
     msg = fake_msg()
     # Try to associate a new msg - should call create_track
     track_specialist.create_track(msg)
     track = track_specialist.track_list[msg['veh_id']]
     assert track.track_state == TrackState.UNCONFIRMED
 
-    # run for 1.2 seconds
+    # run for 0.8 seconds
     track_specialist.run()
 
     assert msg['veh_id'] in track_specialist.track_list
     assert track.track_state == TrackState.ZOMBIE
-    assert track.n_consecutive_missed == 5
+    assert track.n_consecutive_missed == 3
 
 
 def test_track_state_zombie_to_confirmed(tmpdir):
@@ -233,38 +230,39 @@ def test_track_state_zombie_to_confirmed(tmpdir):
     # Assume the frequency is 5 Hz
     # Need to run for 1.2 seconds because after track creation,
     # received_msg is set to 1 for one iteration of the loop
-    track_specialist = get_track_specialist(tmpdir, run_for=1.2)
+    track_specialist = get_track_specialist(tmpdir, run_for=0.8)
     msg = fake_msg()
     # Try to associate a new msg - should call create_track
     track_specialist.create_track(msg)
     track = track_specialist.track_list[msg['veh_id']]
     assert track.track_state == TrackState.UNCONFIRMED
+    track.step()
 
     track.n_consecutive_measurements = track_specialist.track_confirmation_threshold
     track_specialist.associate("DSRC", msg)
 
     assert track.track_state == TrackState.CONFIRMED
 
-    # run for 1.2 seconds
+    # run for 0.8 seconds
     track_specialist.run()
 
     assert msg['veh_id'] in track_specialist.track_list
     assert track.track_state == TrackState.ZOMBIE
-    assert track.n_consecutive_missed == 5
+    assert track.n_consecutive_missed == 3
 
 
 def test_track_recovery(tmpdir):
     """This tests whether a track can recover from ZOMBIE
     state to UNCONFIRMED if a new message for it arrives
     before it is deleted"""
-    track_specialist = get_track_specialist(tmpdir, run_for=1.2)
+    track_specialist = get_track_specialist(tmpdir, run_for=0.8)
     msg = fake_msg()
     # Try to associate a new msg - should call create_track
     track_specialist.create_track(msg)
     track = track_specialist.track_list[msg['veh_id']]
     assert track.track_state == TrackState.UNCONFIRMED
 
-    # run for 1.2 seconds
+    # run for 0.8 seconds
     track_specialist.run()
 
     assert track.track_state == TrackState.ZOMBIE
