@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 import threading
 import socket
-from sensible.util.exceptions import ParseError
 
 
 class StoppableThread(threading.Thread):
@@ -11,7 +10,6 @@ class StoppableThread(threading.Thread):
     def __init__(self, name):
         super(StoppableThread, self).__init__(name=name)
         self._stopper = threading.Event()
-        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     def stop(self):
         """Stop the DSRC thread."""
@@ -28,11 +26,11 @@ class StoppableThread(threading.Thread):
 class SensorThread(StoppableThread):
     """Used for receiving data measurements from a sensor."""
 
-    def __init__(self, ip_address, port, name, msg_len):
+    def __init__(self, ip_address, port, msg_len, name):
         super(SensorThread, self).__init__(name)
         self._ip_address = ip_address
         self._port = port
-
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._msg_len = msg_len
 
     def run(self):
@@ -45,16 +43,18 @@ class SensorThread(StoppableThread):
 
             try:
                 self.push(msg)
-            except ParseError as e:
-                print(e.message)
+            except Exception as e:
                 continue
 
         self._sock.close()
 
     def connect(self):
         # open connection to incoming DSRC messages
-        self._sock.bind((self._ip_address, self._port))
-        self._sock.setblocking(0)
+        try:
+            self._sock.bind((self._ip_address, self._port))
+            self._sock.setblocking(0)
+        except socket.error as e:
+            print(e)
 
     def push(self, msg):
         """

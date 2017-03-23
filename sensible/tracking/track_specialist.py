@@ -1,13 +1,19 @@
 from __future__ import absolute_import
 from __future__ import division
-from sensible.sensors.DSRC import DSRC
-from sensible.sensors.Radar import Radar
-from sensible.util import ops
-from .track_state import TrackState
-from .track import Track
+
 import socket
 import zmq
 import time
+
+from sensible.sensors.DSRC import DSRC
+from sensible.sensors.radar import Radar
+from sensible.util import ops
+from .state_estimator import StateEstimator
+from .state_estimator import TimeStamp
+
+from .track_state import TrackState
+from .track import Track
+
 
 try:  # python 2.7
     import cPickle as pickle
@@ -25,7 +31,7 @@ class TrackSpecialist:
 
     """
 
-    def __init__(self, sensor_port, bsm_port, topic_filters, run_for, logger,
+    def __init__(self, sensors, bsm_port, run_for, logger,
                  frequency=5,
                  track_confirmation_threshold=5,
                  track_zombie_threshold=3,
@@ -47,13 +53,18 @@ class TrackSpecialist:
         logger_title = "TrackID,TrackState,Filtered,timestamp,xPos,yPos,xSpeed,ySpeed\n"
         self._logger.write(logger_title)
 
-        for t_filter in topic_filters:
-            if isinstance(t_filter, bytes):
-                t_filter = t_filter.decode('ascii')
-            self._topic_filters.append(t_filter)
-            self._subscribers[t_filter] = self._context.socket(zmq.SUB)
-            self._subscribers[t_filter].connect("tcp://localhost:{}".format(sensor_port))
-            self._subscribers[t_filter].setsockopt_string(zmq.SUBSCRIBE, t_filter)
+        topic_filters = sensors['topic_filters']
+        sensor_ports = sensors['sensor_ports']
+
+        for pair in list(zip(topic_filters, sensor_ports)):
+            topic_filter = pair[0]
+            port = pair[1]
+            if isinstance(topic_filter, bytes):
+                topic_filter = topic_filter.decode('ascii')
+            self._topic_filters.append(topic_filter)
+            self._subscribers[topic_filter] = self._context.socket(zmq.SUB)
+            self._subscribers[topic_filter].connect("tcp://localhost:{}".format(port))
+            self._subscribers[topic_filter].setsockopt_string(zmq.SUBSCRIBE, topic_filter)
 
         self._bsm_port = bsm_port
 
@@ -106,9 +117,9 @@ class TrackSpecialist:
             # update track state estimates, or handle no measurement
             if len(self._track_list) != 0:
                 for (track_id, track) in self._track_list.items():
-                    if track.received_measurement == 1:
+                    if track.received_measurement:
                         track.step()
-                        track.received_measurement = 0
+                        track.received_measurement = False
                     else:
                         track.n_consecutive_measurements = 0
                         track.n_consecutive_missed += 1
@@ -130,7 +141,8 @@ class TrackSpecialist:
 
             # sleep the track specialist so it runs at the given frequency
             diff = self._period - (time.time() - loop_start)
-            time.sleep(diff)
+            if diff > 0:
+                time.sleep(diff)
 
             # Send measurements from confirmed tracks to the optimization
             self.send_bsms(bsm_writer)
@@ -153,17 +165,22 @@ class TrackSpecialist:
         if topic == DSRC.topic():
             if msg['veh_id'] in self._track_list:
                 track = self._track_list.get(msg['veh_id'])
-                track.received_measurement = 1
-                track.n_consecutive_measurements += 1
-                track.n_consecutive_missed = 0
+                # Occasionally, the synchronizer may allow 2 messages
+                # to arrive at 1 cycle. Only accept one by enforcing
+                # the invariant "each track receives <= 1 message per cycle"
+                if not track.received_measurement:
+                    track.received_measurement = True
+                    track.n_consecutive_measurements += 1
+                    track.n_consecutive_missed = 0
 
-                track.state_estimator.store(msg)
+                    track.state_estimator.store(msg)
 
-                if track.track_state == TrackState.UNCONFIRMED and \
-                                track.n_consecutive_measurements >= self.track_confirmation_threshold:
-                    track.track_state = TrackState.CONFIRMED
-                elif track.track_state == TrackState.ZOMBIE:
-                    track.track_state = TrackState.UNCONFIRMED
+                    if track.track_state == TrackState.UNCONFIRMED and \
+                                    track.n_consecutive_measurements >= \
+                                    self.track_confirmation_threshold:
+                        track.track_state = TrackState.CONFIRMED
+                    elif track.track_state == TrackState.ZOMBIE:
+                        track.track_state = TrackState.UNCONFIRMED
             else:
                 # create new unconfirmed track
                 self.create_track(msg)
@@ -196,26 +213,59 @@ class TrackSpecialist:
         :param radar_msg:
         :return:
         """
+        radar_measurement = StateEstimator.parse_msg(radar_msg)
+
         results = []
         for (track_id, track) in self._track_list.items():
-            kf_state, _ = track.state_estimator.predicted_state()
+
+            kf_state, t_stamp = track.state_estimator.predicted_state()
             cov = track.state_estimator.predicted_state_covariance()
-            md = ops.mahalanobis(radar_msg, kf_state, cov)
+            md = ops.mahalanobis(radar_measurement, kf_state, cov)
+
+            print("  [GNN] Vehicle {} has a Mahalanobis distance of {} "
+                  "to the detection".format(track_id, md))
+
             if md <= 13.28:
                 results.append((track_id, md))
+
+            kf_log_str = "  [GNN] Kalman Filter: {},{},{},{},{},{},{}\n".format(
+                track_id, TrackState.to_string(track.track_state),
+                t_stamp, kf_state[0], kf_state[2],
+                kf_state[1], kf_state[3]
+            )
+            print(kf_log_str)
+
         if len(results) == 0:
             # radar measurement didn't fall near any tracked vehicles, so tentatively
             # associate as a conventional vehicle
-            
+            print("  [GNN] Conventional vehicle detected, sending BSM...")
         else:
             if len(results) > 1:
                 print("  [Warning] {} vehicles within gating region of radar detection!".format(len(results)))
                 # choose the closest
+                sorted_results = sorted(results, key=lambda pair: len(pair[1]))
+                id = sorted_results[0][0]
+                print("  [GNN] Associating radar detection with vehicle {}".format(id))
             else:
                 r = results[0]
                 print("  [GNN] Associating radar detection with vehicle {}".format(r[1]))
-                track = self._track_list[r[0]]
+                # track = self._track_list[r[0]]
+                # potentially fuse this with the kalman filter
 
+                radar_t_stamp = TimeStamp(radar_msg['h'], radar_msg['m'], radar_msg['s'])
+                radar_log_str = " [GNN] Radar msg: {},{},{},{},{}\n".format(
+                    radar_t_stamp.to_string(), radar_measurement[0], radar_measurement[2],
+                    radar_measurement[1], radar_measurement[3]
+                )
+                print(radar_log_str)
+
+    def send_conventional_veh_bsm(self, radar_msg):
+        """
+
+        :param radar_msg:
+        :return:
+        """
+        pass
 
     def send_bsms(self, my_sock):
         """

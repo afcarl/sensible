@@ -14,9 +14,8 @@ class Track:
         self.n_consecutive_measurements = 0
         self.n_consecutive_missed = 0
         self.state_estimator = KalmanFilter(dt)
-        self.received_measurement = 0
-        self.state_propagated = 0
-        self.served = 0
+        self.received_measurement = False
+        self.served = False
         self._veh_id = first_msg['veh_id']
         self._lane = first_msg['lane']
         self._veh_len = first_msg['veh_len']
@@ -28,12 +27,12 @@ class Track:
 
     def store(self, new_msg):
         self.state_estimator.store(new_msg)
-        self.received_measurement = 1
+        self.received_measurement = True
         self.n_consecutive_measurements += 1
         self.n_consecutive_missed = 0
 
         if not self.served and new_msg['served'] == 1:
-            self.served = 1
+            self.served = True
 
     def bsm(self):
         """Return a string containing the information needed by the optimization code

@@ -9,9 +9,8 @@ import time
 import sensible.util.ops as ops
 
 from sensible.sensors.DSRC import DSRC
-from sensible.util.exceptions import ParseError
 
-from .radio_emulator import RadioEmulator
+from .sensor_emulator import SensorEmulator
 
 try:  # python 2.7
     import cPickle as pickle
@@ -60,7 +59,7 @@ def test_csm_parsing1():
 
     with open("data/csm-nb-bad.txt") as f:
         csm = f.read()
-        with pytest.raises(ParseError):
+        with pytest.raises(Exception):
             _ = dsrc.parse(csm)
 
 
@@ -143,7 +142,7 @@ def test_synchronization():
         t_filter = t_filter.decode('ascii')
     subscriber.setsockopt_string(zmq.SUBSCRIBE, t_filter)
 
-    radio = RadioEmulator(port=4200, pub_freq=21, file_name="data/csm-nb.txt")
+    radio = SensorEmulator(port=4200, pub_freq=21, file_name="data/csm-nb.txt")
     radio.start()
 
     # Connect and start the DSRC thread.

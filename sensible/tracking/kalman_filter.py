@@ -1,6 +1,7 @@
 from __future__ import division
+
 from sensible.tracking.state_estimator import StateEstimator
-import utm
+
 import numpy as np
 import scipy.linalg
 
@@ -47,33 +48,15 @@ class KalmanFilter(StateEstimator):
         # initial state covariance
         self.P = np.eye(4)
 
-    def parse_msg(self, msg):
-        """
-        Extract the values needed to run the Kalman Filter
-        :param msg:
-        :return:
-        """
-        x_hat, y_hat, zone_num, zone_letter = utm.from_latlon(msg['lat'], msg['lon'])
-        heading = msg['heading']
-
-        if heading >= 0 or heading <= 180:
-            heading -= 90.0
-        else:
-            heading -= 180.0
-
-        # heading is degrees counter-clockwise from true north, so we
-        # need to subtract another 180
-        x_hat_dot = msg['speed'] * np.cos(np.deg2rad(heading - 180.0))
-        y_hat_dot = msg['speed'] * np.sin(np.deg2rad(heading - 180.0))
-
-        return np.array([x_hat, x_hat_dot, y_hat, y_hat_dot])
-
     def predicted_state_covariance(self):
         return self.P
 
     def step(self):
 
         m, _ = self.get_latest_measurement()
+
+        if not self.k < len(self.x_k):
+            print(" warning: error")
 
         x_k_bar = np.matmul(self.F, self.x_k[self.k]) + np.matmul(self.Q, np.random.normal(size=4))
         # state covariance prediction
@@ -87,9 +70,9 @@ class KalmanFilter(StateEstimator):
         # K_k = P * inv(P + R)
         u = scipy.linalg.inv(self.P + self.R)
         K_k = np.matmul(self.P, u)
-        #l = scipy.linalg.cho_factor(self.P + self.R)
-        #u = scipy.linalg.cho_solve(l, np.eye(4))
-        #K_k = np.matmul(self.P, scipy.linalg.solve(l[0].T, u, sym_pos=True, lower=True))
+        # l = scipy.linalg.cho_factor(self.P + self.R)
+        # u = scipy.linalg.cho_solve(l, np.eye(4))
+        # K_k = np.matmul(self.P, scipy.linalg.solve(l[0].T, u, sym_pos=True, lower=True))
         # state update
         self.x_k.append(x_k_bar + np.matmul(K_k, e_k))
         # covariance update

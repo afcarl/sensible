@@ -9,7 +9,6 @@ import zmq
 
 from sensible.sensors.sensible_threading import SensorThread, StoppableThread
 from ..util import ops
-from ..util.exceptions import ParseError
 
 try:  # python 2.7
     import cPickle as pickle
@@ -22,7 +21,7 @@ class DSRC(SensorThread):
     """
 
     def __init__(self, ip_address, remote_port, local_port, msg_len=277, name="DSRC"):
-        super(DSRC, self).__init__(name, ip_address, remote_port, msg_len)
+        super(DSRC, self).__init__(ip_address, remote_port, msg_len, name)
         self._queue = deque()
         self._local_port = local_port
         self._blob_len = 58
@@ -92,7 +91,8 @@ class DSRC(SensorThread):
                 return
         self._queue.append(msg)
 
-    def parse(self, msg):
+    @staticmethod
+    def parse(msg):
         """Convert msg data from hex to decimal and filter msgs.
 
         Messages with the Served field set to 1 or that are unreadable
@@ -105,13 +105,13 @@ class DSRC(SensorThread):
         try:
             root = ElementTree.fromstring(msg)
         except ElementTree.ParseError:
-            raise ParseError('Unable to parse msg')
+            raise Exception("Unable to parse msg")
 
         blob1 = root.find('blob1')
         data = ''.join(blob1.text.split())
 
-        if len(data) != self._blob_len:
-            raise ParseError('Incorrect number of bytes in msg data')
+        #if len(data) != self._blob_len:
+        #    raise Exception('Incorrect number of bytes in msg data')
 
         # convert hex values to decimal
 
@@ -131,7 +131,7 @@ class DSRC(SensorThread):
         served = int(data[56:58], 16)
 
         if served == 1:
-            raise ParseError('vehicle {} already has a trajectory'.format(veh_id))
+            raise Exception('vehicle {} already has a trajectory'.format(veh_id))
 
         return {
             'msg_count': msg_count,

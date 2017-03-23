@@ -1,3 +1,7 @@
+import utm
+import numpy as np
+
+
 class TimeStamp:
 
     def __init__(self, h, m, s):
@@ -68,8 +72,25 @@ class StateEstimator(object):
         """
         raise NotImplementedError
 
-    def parse_msg(self, msg):
-        """Converts a sensor msg into a measurement usable by the
-        filtering algorithm."""
-        raise NotImplementedError
+    @staticmethod
+    def parse_msg(msg):
+        """
+        Extract the values needed to run the Kalman Filter
+        :param msg:
+        :return:
+        """
+        x_hat, y_hat, zone_num, zone_letter = utm.from_latlon(msg['lat'], msg['lon'])
+        heading = msg['heading']
+
+        if heading >= 0 or heading <= 180:
+            heading -= 90.0
+        else:
+            heading -= 180.0
+
+        # heading is degrees counter-clockwise from true north, so we
+        # need to subtract another 180
+        x_hat_dot = msg['speed'] * np.cos(np.deg2rad(heading - 180.0))
+        y_hat_dot = msg['speed'] * np.sin(np.deg2rad(heading - 180.0))
+
+        return np.array([x_hat, x_hat_dot, y_hat, y_hat_dot])
 

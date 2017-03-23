@@ -1,13 +1,9 @@
 import numpy as np
 import scipy.linalg
 
-from .exceptions import ParseError
-
 
 def verify(val, min_val, max_val):
     """If val < min or val > max, raise a ParseError
-
-    Throws a ParseError
 
     :param val:
     :param min_val:
@@ -15,7 +11,8 @@ def verify(val, min_val, max_val):
     :return:
     """
     if val < min_val or val > max_val:
-        raise ParseError
+        raise ValueError("Value {} out of min bound: {} "
+                         "and max bound: {}".format(val, min_val, max_val))
     else:
         return val
 
@@ -29,4 +26,4 @@ def twos_comp(val, bits):
 
 def mahalanobis(observation, mean, covariance):
     dx = observation - mean
-    return dx.T * scipy.linalg.inv(covariance) * dx
+    return np.matmul(dx.T, np.matmul(scipy.linalg.inv(covariance), dx))

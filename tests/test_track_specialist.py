@@ -54,11 +54,13 @@ def fake_msg():
     }
 
 
-def get_track_specialist(tmpdir, sensor_port=6667, bsm_port=6668, run_for=60.0, frequency=5):
+def get_track_specialist(tmpdir, bsm_port=6669, run_for=20.0, frequency=5):
     """Return a standard TrackSpecialist object for testing."""
+    sensor_ports = [6667, 6668]
     topic_filters = ["DSRC", "Radar"]
-    p = tmpdir.mkdir("logs").join("test.csv")
-    return TrackSpecialist(sensor_port, bsm_port, topic_filters, run_for, p, frequency)
+    sensors = {'sensor_ports': sensor_ports, 'topic_filters': topic_filters}
+    p = tmpdir.mkdir("logs").join("test.txt")
+    return TrackSpecialist(sensors, bsm_port, run_for, p, frequency)
 
 
 def test_initialize_track_specialist(tmpdir):
@@ -68,29 +70,28 @@ def test_initialize_track_specialist(tmpdir):
     track_specialist = get_track_specialist(tmpdir)
     test_message = ['test']
 
-    mock_sensor = MockSensor(["DSRC", "Radar"], test_message)
+    mock_sensor = MockSensor(["DSRC"], test_message)
     mock_sensor.start()
 
     # assert that each connection is open
     attempts = 0
     max_attempts = 10000
 
+    DONE = False
     while attempts < max_attempts:
-        count = 0
         for (topic, subscriber) in track_specialist.subscribers.items():
             try:
                 string = subscriber.recv_string(flags=zmq.NOBLOCK)
                 msg_topic, msg = string.split(" ")
                 assert msg_topic == topic
                 assert msg == test_message[0]
-                count += 1
+                DONE = True
             except zmq.Again as err:
                 continue
 
-        if count == 2:
-            break
-
         attempts += 1
+        if DONE:
+            break
 
     mock_sensor.stop()
     if attempts == max_attempts:
@@ -127,7 +128,7 @@ def test_track_creation(tmpdir):
     assert track.track_state == TrackState.UNCONFIRMED
     assert track.n_consecutive_measurements == 1
     assert track.n_consecutive_missed == 0
-    assert track.received_measurement == 1
+    assert track.received_measurement
 
 
 def test_vehicle_id_association(tmpdir):
@@ -137,6 +138,7 @@ def test_vehicle_id_association(tmpdir):
     msg = fake_msg()
     # 1st message
     track_specialist.create_track(msg)
+    track_specialist.track_list[msg['veh_id']].received_measurement = False
     # 2nd message
     msg['s'] = 15
     track_specialist.associate("DSRC", msg)
@@ -144,7 +146,7 @@ def test_vehicle_id_association(tmpdir):
     assert track.track_state == TrackState.UNCONFIRMED
     assert track.n_consecutive_measurements == 2
     assert track.n_consecutive_missed == 0
-    assert track.received_measurement == 1
+    assert track.received_measurement
 
 
 def test_vehicle_id_association_no_match(tmpdir):
@@ -160,20 +162,7 @@ def test_vehicle_id_association_no_match(tmpdir):
     assert track.track_state == TrackState.UNCONFIRMED
     assert track.n_consecutive_measurements == 1
     assert track.n_consecutive_missed == 0
-    assert track.received_measurement == 1
-
-
-def test_radar_to_vehicle_association():
-    """This tests whether a new radar detection can be matched
-    to an existing DSRC-based track"""
-    pytest.fail('Unimplemented test')
-
-
-def test_radar_no_match():
-    """This tests whether a radar detection with no matching
-    vehicles correctly associates the detection to a new
-    conventional vehicle. A BSM should be generated"""
-    pytest.fail('Unimplemented test')
+    assert track.received_measurement
 
 
 def test_vehicle_bsm_publisher():
@@ -192,7 +181,7 @@ def test_track_state_confirm(tmpdir):
     # Try to associate a new msg - should call create_track
     track_specialist.create_track(msg)
     track = track_specialist.track_list[msg['veh_id']]
-
+    track.received_measurement = False
     assert track.track_state == TrackState.UNCONFIRMED
     track.n_consecutive_measurements = track_specialist.track_confirmation_threshold
     # One more message than the threshold causes the state to change
@@ -237,6 +226,7 @@ def test_track_state_zombie_to_confirmed(tmpdir):
     track = track_specialist.track_list[msg['veh_id']]
     assert track.track_state == TrackState.UNCONFIRMED
     track.step()
+    track.received_measurement = False
 
     track.n_consecutive_measurements = track_specialist.track_confirmation_threshold
     track_specialist.associate("DSRC", msg)
