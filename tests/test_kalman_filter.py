@@ -13,8 +13,8 @@ from sensible.sensors.DSRC import DSRC
 
 def get_track_specialist(bsm_port=6667, run_for=20.0, frequency=5):
     """Return a standard TrackSpecialist object for testing."""
-    sensor_ports = [6667, 6668]
-    topic_filters = ["DSRC", "Radar"]
+    sensor_ports = [6666]
+    topic_filters = ["DSRC"]
     sensors = {'sensor_ports': sensor_ports, 'topic_filters': topic_filters}
     # p = tmpdir.mkdir("logs").join("test.csv")
     # Track logger

@@ -12,6 +12,9 @@ class TimeStamp:
     def to_string(self):
         return "{}:{}:{}".format(self.h, self.m, self.s)
 
+    def to_fname_string(self):
+        return "{}-{}-{}".format(self.h, self.m, self.s)
+
 
 class StateEstimator(object):
     """
@@ -45,7 +48,7 @@ class StateEstimator(object):
         """Return the latest Kalman Filter prediction of the state, and the timestamp."""
         if -1 < self.k < len(self.x_k):
             t = self.t[self.k]
-            t_string = t.to_string() if t is not None else "UNAVAILABLE"
+            t_string = t.to_fname_string() if t is not None else "UNAVAILABLE"
             return self.x_k[self.k], t_string
         else:
             return None, None

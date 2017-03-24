@@ -38,7 +38,7 @@ class SensorThread(StoppableThread):
         while not self.stopped():
             try:
                 msg, address = self._sock.recvfrom(self._msg_len)
-            except socket.error:
+            except socket.error as err:
                 continue
 
             try:
