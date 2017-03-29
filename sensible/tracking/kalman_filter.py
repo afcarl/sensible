@@ -13,11 +13,12 @@ class KalmanFilter(StateEstimator):
     """
     def __init__(self, dt):
         super(KalmanFilter, self).__init__()
-        self.z = 3.49
+        self.z = 3.49  # z-score corresponding to 95 %
         self.dt = dt
         # should cover the min and max acceleration of any vehicle
         # that will be tracked
-        self.accel = 3  # m/s^2
+        # max accel is +- 3 m/s^2
+        self.accel = 4  # m/s^2
         # variance of the noice process that models the acceleration
         sigma_a = self.accel / self.z
 
@@ -28,16 +29,17 @@ class KalmanFilter(StateEstimator):
                                        [0, 0, (np.power(self.dt, 4) / 4), (np.power(self.dt, 3) / 2)],
                                        [0, 0, (np.power(self.dt, 3) / 2), np.power(self.dt, 2)]]))
 
+        # TODO: increase this variance to about +- 3 m
         # variance of a gaussian distribution over a position (x,y) meters corresponding to += 1.5 m
-        sigma_1 = 0.4417
+        sigma_1 = 3 / self.z
         # variance corresponding to a standard normal (+= 1 m)
         sigma_2 = 1 / self.z
 
         # measurement covariance
         self.R = np.eye(4)
         self.R[0][0] = np.power(sigma_1, 2)
-        self.R[1][1] = np.power(sigma_1, 2)
-        self.R[2][2] = np.power(sigma_2, 2)
+        self.R[2][2] = np.power(sigma_1, 2)
+        self.R[1][1] = np.power(sigma_2, 2)
         self.R[3][3] = np.power(sigma_2, 2)
 
         # Dynamics
@@ -48,8 +50,8 @@ class KalmanFilter(StateEstimator):
         # initial state covariance
         self.P = np.eye(4)
 
-    def predicted_state_covariance(self):
-        return self.P
+    def measurement_residual_covariance(self):
+        return self.P + self.R
 
     def step(self):
 

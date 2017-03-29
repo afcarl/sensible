@@ -142,7 +142,7 @@ def test_synchronization():
         t_filter = t_filter.decode('ascii')
     subscriber.setsockopt_string(zmq.SUBSCRIBE, t_filter)
 
-    radio = SensorEmulator(port=4200, pub_freq=21, file_name="data/csm-nb.txt")
+    radio = SensorEmulator(port=4200, pub_freq=21, file_names=["data/csm-nb.txt"])
     radio.start()
 
     # Connect and start the DSRC thread.

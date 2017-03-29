@@ -1,5 +1,7 @@
 import utm
 import numpy as np
+import scipy.linalg
+from sensible.util import ops
 
 
 class TimeStamp:
@@ -46,17 +48,21 @@ class StateEstimator(object):
 
     def predicted_state(self):
         """Return the latest Kalman Filter prediction of the state, and the timestamp."""
-        if -1 < self.k < len(self.x_k):
+        if -1 < self.k <= len(self.x_k):
             t = self.t[self.k]
             t_string = t.to_fname_string() if t is not None else "UNAVAILABLE"
-            return self.x_k[self.k], t_string
+            return self.x_k[self.k+1], t_string
         else:
             return None, None
 
-    def predicted_state_covariance(self):
-        """"Return the estimated state covariance
-        """
-        raise NotImplementedError
+    def predicted_measurement(self):
+        """Return the latest Kalman Filter prediction of the measurement, and the timestamp."""
+        if -1 < self.k < len(self.y_k):
+            t = self.t[self.k]
+            t_string = t.to_fname_string() if t is not None else "UNAVAILABLE"
+            return self.y_k[self.k], t_string
+        else:
+            return None, None
 
     def store(self, msg):
         self.k += 1
@@ -69,11 +75,20 @@ class StateEstimator(object):
             if self.k == 0:
                 self.x_k.append(self.y[self.k])
 
+    def measurement_residual_covariance(self):
+        raise NotImplementedError
+
     def step(self):
         """One iteration of a discrete-time filtering algorithm.
         Uses the latest message saved by calling self.store(msg).
         """
         raise NotImplementedError
+
+    def save(self):
+        yk, t_stamp = self.predicted_measurement()
+        cov = self.measurement_residual_covariance()
+        ops.dump({'time': t_stamp, 'm': yk, 'cov': cov},
+             "C:\\Users\\pemami\\Workspace\\Github\\sensible\\tests\\data\\trajectories\\kf-" + t_stamp + ".pkl")
 
     @staticmethod
     def parse_msg(msg):
@@ -97,3 +112,19 @@ class StateEstimator(object):
 
         return np.array([x_hat, x_hat_dot, y_hat, y_hat_dot])
 
+    def mahalanobis(self, observation, radar_cov=None):
+        """
+        TODO: grab the predicted measurement with the time stamp
+        that most closely matches the observation within a window
+
+        :param observation:
+        :param radar_cov:
+        :return:
+        """
+        mean, _ = self.predicted_measurement()
+        if radar_cov is not None:
+            cov = radar_cov
+        else:
+            cov = self.measurement_residual_covariance()
+        dx = observation - mean
+        return np.matmul(dx.T, np.matmul(scipy.linalg.inv(cov), dx))

@@ -45,10 +45,17 @@ class DSRC(SensorThread):
                 Here, the invariant is assumed to be that the queue only
                 contains the unique message sent within a time frame of 0.2 seconds. The dictionary
                 is pickled, so it should be un-pickled at the subscriber.
+
+                Send 1 message from each unique veh_id in the queue
                 """
                 if len(self._queue) > 0:
-                    self._publisher.send_string("{} {}".format(self._topic, pickle.dumps(self._queue.pop())))
-                    # drop the other messages
+                    sent_ids = []
+                    for queued_msg in list(self._queue):
+                        if queued_msg['veh_id'] not in sent_ids:
+                            self._publisher.send_string("{} {}".format(self._topic, pickle.dumps(queued_msg)))
+                            sent_ids.append(queued_msg['veh_id'])
+                            print(' [DSRCSYnc] Sent msg for veh: {} at second: {}'.format(queued_msg['veh_id'], queued_msg['s']))
+                    # drop all messages
                     self._queue.clear()
 
             def run(self):
@@ -86,7 +93,7 @@ class DSRC(SensorThread):
     def add_to_queue(self, msg):
         """If the queue doesn't contain an identical message, add msg to the queue."""
         for queued_msg in list(self._queue):
-            if queued_msg['s'] == msg['s']:
+            if queued_msg['veh_id'] == msg['veh_id'] and queued_msg['s'] == msg['s']:
                 # Found a duplicate
                 return
         self._queue.append(msg)

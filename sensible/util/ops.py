@@ -1,5 +1,7 @@
-import numpy as np
-import scipy.linalg
+try:  # python 2.7
+    import cPickle as pickle
+except ImportError:  # python 3.5 or 3.6
+    import pickle
 
 
 def verify(val, min_val, max_val):
@@ -24,6 +26,37 @@ def twos_comp(val, bits):
     return val  # return positive value as is
 
 
-def mahalanobis(observation, mean, covariance):
-    dx = observation - mean
-    return np.matmul(dx.T, np.matmul(scipy.linalg.inv(covariance), dx))
+def dump(content, filename):
+    """
+    pickle content to filename
+    """
+    try:
+        with open(filename, 'wb') as outfile:
+            pickle.dump(content, outfile)
+            outfile.close()
+    except IOError as e:
+        print("Fail: error to open file: {}".format(filename))
+
+
+def merge_n_lists(big_list):
+    """
+    Merge a list of lists into a single list,
+    interleaving the elements of each list in the final result.
+
+    :param big_list:
+    :return: a flattened list containing all elements of big_list interleaved evenly.
+    """
+    # no need to merge if there is only 1 list
+    if type(big_list[0]) is not list:
+        return big_list
+
+    result = []
+    lengths = []
+    for m in big_list:
+        lengths.append(len(m))
+    while sum(lengths) > 0:
+        for idx, m in enumerate(big_list):
+            if lengths[idx] > 0:
+                result.append(m[-lengths[idx]])
+                lengths[idx] -= 1
+    return result

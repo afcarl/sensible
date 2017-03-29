@@ -20,18 +20,6 @@ except ImportError:  # python 3.5 or 3.6
     import pickle
 
 
-def dump(content, filename):
-    """
-    pickle content to filename
-    """
-    try:
-        with open(filename, 'wb') as outfile:
-            pickle.dump(content, outfile)
-            outfile.close()
-    except IOError as e:
-        print("Fail: error to open file: {}".format(filename))
-
-
 class TrackSpecialist:
     """
     Manages the ZeroMQ subscribers to all sensor topics, as well as oversees
@@ -225,31 +213,32 @@ class TrackSpecialist:
         :return:
         """
         radar_measurement = StateEstimator.parse_msg(radar_msg)
+        ###########
+        # For Debug
+        ###########
         # t = TimeStamp(radar_msg['h'], radar_msg['m'], radar_msg['s'])
         #
         # gnn_dict = {'time': t.to_fname_string(), 'radar': radar_measurement}
-        # dump(gnn_dict,
+        # ops.dump(gnn_dict,
         #      "C:\\Users\\pemami\\Workspace\\Github\\sensible\\tests\\data\\trajectories\\radar-" + t.to_fname_string() + ".pkl")
 
         results = []
         for (track_id, track) in self._track_list.items():
 
-            kf_state, t_stamp = track.state_estimator.predicted_state()
-            cov = track.state_estimator.predicted_state_covariance()
-            md = ops.mahalanobis(radar_measurement, kf_state, cov)
+            md = track.state_estimator.mahalanobis(radar_measurement)
 
             print("  [GNN] Vehicle {} has a Mahalanobis distance of {} "
                   "to the detection".format(track_id, md))
 
-            if md <= 400:
+            if md <= 9.488:
                 results.append((track_id, md))
 
-            kf_log_str = "  [GNN] Kalman Filter: {},{},{},{},{},{},{}\n".format(
-                track_id, TrackState.to_string(track.track_state),
-                t_stamp, kf_state[0], kf_state[2],
-                kf_state[1], kf_state[3]
-            )
-            print(kf_log_str)
+        radar_t_stamp = TimeStamp(radar_msg['h'], radar_msg['m'], radar_msg['s'])
+        radar_log_str = " [GNN] Radar msg: {},{},{},{},{}\n".format(
+            radar_t_stamp.to_string(), radar_measurement[0], radar_measurement[2],
+            radar_measurement[1], radar_measurement[3]
+        )
+        print(radar_log_str)
 
         if len(results) == 0:
             # radar measurement didn't fall near any tracked vehicles, so tentatively
@@ -264,16 +253,9 @@ class TrackSpecialist:
                 print("  [GNN] Associating radar detection with vehicle {}".format(id))
             else:
                 r = results[0]
-                print("  [GNN] Associating radar detection with vehicle {}".format(r[1]))
+                print("  [GNN] Associating radar detection with vehicle {}".format(r[0]))
                 # track = self._track_list[r[0]]
                 # potentially fuse this with the kalman filter
-
-                radar_t_stamp = TimeStamp(radar_msg['h'], radar_msg['m'], radar_msg['s'])
-                radar_log_str = " [GNN] Radar msg: {},{},{},{},{}\n".format(
-                    radar_t_stamp.to_string(), radar_measurement[0], radar_measurement[2],
-                    radar_measurement[1], radar_measurement[3]
-                )
-                print(radar_log_str)
 
     def send_conventional_veh_bsm(self, radar_msg):
         """
@@ -295,12 +277,6 @@ class TrackSpecialist:
                                     track.track_state == TrackState.ZOMBIE and not track.served:
 
                 kf_state, t_stamp = track.state_estimator.predicted_state()
-                ###########
-                # For Debug
-                ###########
-                # cov = track.state_estimator.predicted_state_covariance()
-                # dump({'time': t_stamp, 'kf': kf_state, 'cov': cov},
-                #      "C:\\Users\\pemami\\Workspace\\Github\\sensible\\tests\\data\\trajectories\\kf-" + t_stamp + ".pkl")
 
                 kf_log_str = "{},{},{},{},{},{},{},{}\n".format(
                     track_id, TrackState.to_string(track.track_state), 1,
@@ -308,7 +284,7 @@ class TrackSpecialist:
                     kf_state[1], kf_state[3]
                 )
                 self._logger.write(kf_log_str)
-                print(kf_log_str)
+                #print(kf_log_str)
 
                 m, _ = track.state_estimator.get_latest_measurement()
 
@@ -319,6 +295,8 @@ class TrackSpecialist:
                     )
                     self._logger.write(m_log_str)
 
+                # DEBUG
+                #track.state_estimator.save()
 
                     # if track.track_state == TrackState.CONFIRMED:
                     #     try:
