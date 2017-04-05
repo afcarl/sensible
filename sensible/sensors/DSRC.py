@@ -8,7 +8,9 @@ from collections import deque
 import zmq
 
 from sensible.sensors.sensible_threading import SensorThread, StoppableThread
-from ..util import ops
+from sensible.tracking.DSRC_kalman_filter import DSRCKalmanFilter
+
+from sensible.util import ops
 
 try:  # python 2.7
     import cPickle as pickle
@@ -73,6 +75,10 @@ class DSRC(SensorThread):
     @staticmethod
     def topic():
         return "DSRC"
+
+    @staticmethod
+    def get_filter(dt):
+        return DSRCKalmanFilter(dt)
 
     def stop(self):
         """Overrides the super class stop method, so explicitly

@@ -69,3 +69,12 @@ class SensorThread(StoppableThread):
         """Force all sensors to make accessible the topic of the
         message they are publishing."""
         raise NotImplementedError
+
+    @staticmethod
+    def get_filter(dt):
+        """
+        Returns an instance of an object
+        that configures a KalmanFilter for this specific Sensor
+        :return:
+        """
+        raise NotImplementedError

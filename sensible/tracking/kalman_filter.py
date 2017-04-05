@@ -11,51 +11,27 @@ class KalmanFilter(StateEstimator):
     A linear Gaussian Kalman Filter for tracking
     vehicles following a standard constant velocity model.
     """
-    def __init__(self, dt):
+    def __init__(self, sensor_kf):
         super(KalmanFilter, self).__init__()
-        self.z = 3.49  # z-score corresponding to 95 %
-        self.dt = dt
-        # should cover the min and max acceleration of any vehicle
-        # that will be tracked
-        # max accel is +- 3 m/s^2
-        self.accel = 4  # m/s^2
-        # variance of the noice process that models the acceleration
-        sigma_a = self.accel / self.z
+        self.Q = sensor_kf.Q
+        self.P = sensor_kf.P
+        self.F = sensor_kf.F
+        self.R = sensor_kf.R
 
-        # Process noise covariance
-        self.Q = np.multiply(np.power(sigma_a, 2),
-                             np.array([[(np.power(self.dt, 4) / 4), (np.power(self.dt, 3) / 2), 0, 0],
-                                       [(np.power(self.dt, 3) / 2), np.power(self.dt, 2), 0, 0],
-                                       [0, 0, (np.power(self.dt, 4) / 4), (np.power(self.dt, 3) / 2)],
-                                       [0, 0, (np.power(self.dt, 3) / 2), np.power(self.dt, 2)]]))
+        self.sensor_kf = sensor_kf
 
-        # TODO: increase this variance to about +- 3 m
-        # variance of a gaussian distribution over a position (x,y) meters corresponding to += 1.5 m
-        sigma_1 = 3 / self.z
-        # variance corresponding to a standard normal (+= 1 m)
-        sigma_2 = 1 / self.z
-
-        # measurement covariance
-        self.R = np.eye(4)
-        self.R[0][0] = np.power(sigma_1, 2)
-        self.R[2][2] = np.power(sigma_1, 2)
-        self.R[1][1] = np.power(sigma_2, 2)
-        self.R[3][3] = np.power(sigma_2, 2)
-
-        # Dynamics
-        self.F = np.eye(4)
-        self.F[0][1] = -self.dt
-        self.F[2][3] = self.dt
-
-        # initial state covariance
-        self.P = np.eye(4)
+    def parse_msg(self, msg):
+        return self.sensor_kf.parse_msg(msg)
 
     def measurement_residual_covariance(self):
         return self.P + self.R
 
+    def process_covariance(self):
+        return self.P
+
     def step(self):
 
-        m, _ = self.get_latest_measurement()
+        m, _ = self.get_latest_message()
 
         if not self.k < len(self.x_k):
             print(" warning: error")

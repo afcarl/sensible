@@ -10,6 +10,7 @@ from sensible.sensors.radar import Radar
 from sensible.util import ops
 from .state_estimator import StateEstimator
 from .state_estimator import TimeStamp
+from .data_associator import single_hypothesis_association
 
 from .track_state import TrackState
 from .track import Track
@@ -31,6 +32,7 @@ class TrackSpecialist:
     """
 
     def __init__(self, sensors, bsm_port, run_for, logger,
+                 association=single_hypothesis_association,
                  frequency=5,
                  track_confirmation_threshold=5,
                  track_zombie_threshold=3,
@@ -47,6 +49,8 @@ class TrackSpecialist:
         self.track_confirmation_threshold = track_confirmation_threshold
         self.track_zombie_threshold = track_zombie_threshold
         self.track_drop_threshold = track_drop_threshold
+
+        self.track_association = association
 
         self._logger = logger
         logger_title = "TrackID,TrackState,Filtered,timestamp,xPos,yPos,xSpeed,ySpeed\n"
@@ -182,80 +186,20 @@ class TrackSpecialist:
                         track.track_state = TrackState.UNCONFIRMED
             else:
                 # create new unconfirmed track
-                self.create_track(msg)
+                self.create_track(msg, DSRC)
         elif topic == Radar.topic():
-            self.global_nearest_neighbors(msg)
+            self.track_association(msg)
 
-    def create_track(self, msg):
+    def create_track(self, msg, sensor):
         """A new UNCONFIRMED track is created, and this message is associated
         with it."""
-        self._track_list[msg['veh_id']] = Track(self._period, msg)
+        self._track_list[msg['veh_id']] = Track(self._period, msg, sensor)
         self._track_list[msg['veh_id']].store(msg)
 
     def delete_track(self, track_id):
         """remove it from the track list."""
         print("  [*] Dropping track {}".format(track_id))
         del self._track_list[track_id]
-
-    def global_nearest_neighbors(self, radar_msg):
-        """
-        For each active track, check whether the radar measurement
-        falls near the track based on the Mahalanobis distance.
-
-        Using Chi-squared tables for 4 degrees of freedom (one for each
-        dimension of the state vector), for different p-values
-
-        p = 0.05 -> 9.49
-        p = 0.01 -> 13.28
-        p = 0.001 -> 18.47
-
-        :param radar_msg:
-        :return:
-        """
-        radar_measurement = StateEstimator.parse_msg(radar_msg)
-        ###########
-        # For Debug
-        ###########
-        # t = TimeStamp(radar_msg['h'], radar_msg['m'], radar_msg['s'])
-        #
-        # gnn_dict = {'time': t.to_fname_string(), 'radar': radar_measurement}
-        # ops.dump(gnn_dict,
-        #      "C:\\Users\\pemami\\Workspace\\Github\\sensible\\tests\\data\\trajectories\\radar-" + t.to_fname_string() + ".pkl")
-
-        results = []
-        for (track_id, track) in self._track_list.items():
-
-            md = track.state_estimator.mahalanobis(radar_measurement)
-
-            print("  [GNN] Vehicle {} has a Mahalanobis distance of {} "
-                  "to the detection".format(track_id, md))
-
-            if md <= 9.488:
-                results.append((track_id, md))
-
-        radar_t_stamp = TimeStamp(radar_msg['h'], radar_msg['m'], radar_msg['s'])
-        radar_log_str = " [GNN] Radar msg: {},{},{},{},{}\n".format(
-            radar_t_stamp.to_string(), radar_measurement[0], radar_measurement[2],
-            radar_measurement[1], radar_measurement[3]
-        )
-        print(radar_log_str)
-
-        if len(results) == 0:
-            # radar measurement didn't fall near any tracked vehicles, so tentatively
-            # associate as a conventional vehicle
-            print("  [GNN] Conventional vehicle detected, sending BSM...")
-        else:
-            if len(results) > 1:
-                print("  [Warning] {} vehicles within gating region of radar detection!".format(len(results)))
-                # choose the closest
-                sorted_results = sorted(results, key=lambda pair: len(pair[1]))
-                id = sorted_results[0][0]
-                print("  [GNN] Associating radar detection with vehicle {}".format(id))
-            else:
-                r = results[0]
-                print("  [GNN] Associating radar detection with vehicle {}".format(r[0]))
-                # track = self._track_list[r[0]]
-                # potentially fuse this with the kalman filter
 
     def send_conventional_veh_bsm(self, radar_msg):
         """
@@ -276,7 +220,7 @@ class TrackSpecialist:
             if track.track_state == TrackState.CONFIRMED or \
                                     track.track_state == TrackState.ZOMBIE and not track.served:
 
-                kf_state, t_stamp = track.state_estimator.predicted_state()
+                kf_state, t_stamp = track.state_estimator.state()
 
                 kf_log_str = "{},{},{},{},{},{},{},{}\n".format(
                     track_id, TrackState.to_string(track.track_state), 1,
@@ -286,7 +230,7 @@ class TrackSpecialist:
                 self._logger.write(kf_log_str)
                 #print(kf_log_str)
 
-                m, _ = track.state_estimator.get_latest_measurement()
+                m, _ = track.state_estimator.get_latest_message()
 
                 if m is not None:
                     m_log_str = "{},{},{},{},{},{},{},{}\n".format(

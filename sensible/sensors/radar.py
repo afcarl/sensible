@@ -29,6 +29,10 @@ class Radar(SensorThread):
     def topic():
         return "Radar"
 
+    @staticmethod
+    def get_filter(dt):
+        return RadarKalmanFilter(dt)
+
     def push(self, msg):
         """
         Parse the incoming message and forward to the track specialist
