@@ -9,9 +9,7 @@ from sensible.sensors.radar import Radar
 from sensible.util import ops
 from sensible.tracking.data_associator import single_hypothesis_association
 from sensible.tracking.track_state import TrackState
-from sensible.tracking.track import Track
-
-from collections import deque
+from sensible.tracking.track import Track, TrackType
 
 try:  # python 2.7
     import cPickle as pickle
@@ -177,17 +175,15 @@ class TrackSpecialist:
         :return:
         """
         if topic == DSRC.topic():
-            id_str = 'DSRC_id'
             sensor = DSRC
         elif topic == Radar.topic():
-            id_str = 'Radar_id'
             sensor = Radar
         else:
             ops.show("  [Measurement Association] Unknown topic", self._verbose)
             return
 
-        if msg[id_str] in self._sensor_id_map:
-            track_id = self._sensor_id_map[msg[id_str]]
+        if msg['id'] in self._sensor_id_map:
+            track_id = self._sensor_id_map[msg['id']]
             track = self._track_list.get(track_id)
             # Occasionally, the synchronizer may allow 2 messages
             # to arrive at 1 cycle. Only accept one by enforcing
@@ -203,30 +199,36 @@ class TrackSpecialist:
                                 track.n_consecutive_measurements >= \
                                 self.track_confirmation_threshold:
                     track.track_state = TrackState.CONFIRMED
+
+                    # attempt to fuse tracks
+                    result, match_id = self.track_association(self.track_list, track)
+
+                    if result == 0x1:
+                        track.type = TrackType.CONVENTIONAL
+                    elif result == 0x2:
+                        track.type = TrackType.CONNECTED
+                        # update track_id to associate to match_id
+                    elif result == 0x4:
+                        self._track_list[match_id].type = TrackType.CONNECTED
+                        # update match_id to associate with the track.id
+
                 elif track.track_state == TrackState.ZOMBIE:
                     track.track_state = TrackState.UNCONFIRMED
         else:
             # create new unconfirmed track
-            self.create_track(msg, id_str, sensor)
+            self.create_track(msg, sensor)
 
-    def create_track(self, msg, id_str, sensor):
+    def create_track(self, msg, sensor):
         """A new UNCONFIRMED track is created, and this message is associated
         with it."""
-        self._track_list[msg[id_str]] = Track(self._period, msg, sensor)
-        self._track_list[msg[id_str]].store(msg)
+        self._sensor_id_map[msg['id']] = len(self._track_list)
+        self._track_list[self._sensor_id_map[msg['id']]] = Track(self._period, msg, sensor)
+        self._track_list[self._sensor_id_map[msg['id']]].store(msg)
 
     def delete_track(self, track_id):
         """remove it from the track list."""
         ops.show("  [*] Dropping track {}".format(track_id), self._verbose)
         del self._track_list[track_id]
-
-    def send_conventional_veh_bsm(self, radar_msg):
-        """
-
-        :param radar_msg:
-        :return:
-        """
-        pass
 
     def send_bsms(self, my_sock):
         """

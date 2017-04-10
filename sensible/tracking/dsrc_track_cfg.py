@@ -2,7 +2,7 @@ import numpy as np
 import utm
 
 
-class DSRCKalmanFilter:
+class DSRCTrackCfg:
 
     def __init__(self, dt):
         self.z = 3.49  # z-score corresponding to 95 %

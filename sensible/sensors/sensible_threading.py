@@ -66,10 +66,12 @@ class SensorThread(StoppableThread):
 
     @staticmethod
     def topic():
-        """Force all sensors to make accessible the topic of the
-        message they are publishing."""
+        """All sensors make accessible the topic of the message they are publishing."""
         raise NotImplementedError
 
+    @staticmethod
+    def id():
+        """All sensors make accessible the """
     @staticmethod
     def get_filter(dt):
         """

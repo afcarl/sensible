@@ -7,7 +7,7 @@ from collections import deque
 import zmq
 
 from sensible.sensors.sensible_threading import SensorThread, StoppableThread
-from sensible.tracking.DSRC_kalman_filter import DSRCKalmanFilter
+from sensible.tracking.dsrc_track_cfg import DSRCTrackCfg
 
 from sensible.util import ops
 
@@ -53,11 +53,12 @@ class DSRC(SensorThread):
                 if len(self._queue) > 0:
                     sent_ids = []
                     for queued_msg in list(self._queue):
-                        if queued_msg['DSRC_id'] not in sent_ids:
+                        if queued_msg['id'] not in sent_ids:
                             self._publisher.send_string("{} {}".format(self._topic, pickle.dumps(queued_msg)))
-                            sent_ids.append(queued_msg['DSRC_id'])
-                            ops.show(' [DSRCSync] Sent msg for veh: {} at second: {}'.format(queued_msg['DSRC_id'],
-                                                                                             queued_msg['s']), self._verbose)
+                            sent_ids.append(queued_msg['id'])
+                            ops.show(' [DSRCSync] Sent msg for veh: {} at second: {}'.format(queued_msg['id'],
+                                                                                             queued_msg['s']),
+                                     self._verbose)
                     # drop all messages
                     self._queue.clear()
 
@@ -79,7 +80,7 @@ class DSRC(SensorThread):
 
     @staticmethod
     def get_filter(dt):
-        return DSRCKalmanFilter(dt)
+        return DSRCTrackCfg(dt)
 
     def stop(self):
         """Overrides the super class stop method, so explicitly
@@ -100,7 +101,7 @@ class DSRC(SensorThread):
     def add_to_queue(self, msg):
         """If the queue doesn't contain an identical message, add msg to the queue."""
         for queued_msg in list(self._queue):
-            if queued_msg['DSRC_id'] == msg['DSRC_id'] and queued_msg['s'] == msg['s']:
+            if queued_msg['id'] == msg['id'] and queued_msg['s'] == msg['s']:
                 # Found a duplicate
                 return
         self._queue.append(msg)
@@ -149,7 +150,7 @@ class DSRC(SensorThread):
 
         return {
             'msg_count': msg_count,
-            'DSRC_id': veh_id,
+            'id': veh_id,
             'h': h,
             'm': m,
             's': s,
