@@ -1,5 +1,7 @@
+from sensible.util import ops
 
-def single_hypothesis_association(track_list, query_track_id):
+
+def single_hypothesis_association(track_list, query_track_id, verbose=False):
     """
     Single-hypothesis track-to-track association
 
@@ -12,6 +14,7 @@ def single_hypothesis_association(track_list, query_track_id):
 
     :param track_list: List of (id, track) pairs
     :param query_track_id: The track that is to be associated
+    :param verbose: display verbose information
     :return: the track id of the associated track
     """
     query_track = track_list[query_track_id]
@@ -31,8 +34,8 @@ def single_hypothesis_association(track_list, query_track_id):
         md = track.state_estimator.mahalanobis(query_track.state_estimator.state(),
                                                query_track.state_estimator.process_covariance())
 
-        print("  [DA] Track {} has a Mahalanobis distance of {} "
-              "to the detection".format(track_id, md))
+        ops.show("  [DA] Track {} has a Mahalanobis distance of {} "
+              "to the detection".format(track_id, md), verbose)
 
         if md <= 9.488:
             results.append((track_id, md))
@@ -47,19 +50,21 @@ def single_hypothesis_association(track_list, query_track_id):
     if len(results) == 0:
         # radar measurement didn't fall near any tracked vehicles, so tentatively
         # associate as a conventional vehicle
-        print("  [DA] Conventional vehicle detected, sending BSM...")
+
+        ops.show("  [DA] Conventional vehicle detected, sending BSM...", verbose)
+
         return query_track_id
     else:
         if len(results) > 1:
-            print("  [Warning] {} vehicles within gating region of radar detection!".format(len(results)))
+            ops.show("  [Warning] {} vehicles within gating region of radar detection!".format(len(results)), verbose)
             # choose the closest
             sorted_results = sorted(results, key=lambda pair: len(pair[1]))
             id = sorted_results[0][0]
-            print("  [DA] Associating radar detection with vehicle {}".format(id))
+            ops.show("  [DA] Associating radar detection with vehicle {}".format(id), verbose)
             return id
         else:
             r = results[0]
-            print("  [DA] Associating radar detection with vehicle {}".format(r[0]))
+            ops.show("  [DA] Associating radar detection with vehicle {}".format(r[0]), verbose)
             # track = self._track_list[r[0]]
             # potentially fuse this with the kalman filter
             return r[0]

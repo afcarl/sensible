@@ -60,3 +60,8 @@ def merge_n_lists(big_list):
                 result.append(m[-lengths[idx]])
                 lengths[idx] -= 1
     return result
+
+
+def show(string, verbose):
+    if verbose:
+        print(string)

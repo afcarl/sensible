@@ -1,9 +1,7 @@
-from __future__ import absolute_import
-
 import numpy as np
 
-from .track_state import TrackState
-from .kalman_filter import KalmanFilter
+from sensible.tracking.track_state import TrackState
+from sensible.tracking.kalman_filter import KalmanFilter
 
 
 class Track:

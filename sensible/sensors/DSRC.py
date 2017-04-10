@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from __future__ import division
 
 import time
@@ -22,11 +21,12 @@ class DSRC(SensorThread):
     """Thread that listens for incoming DSRC radio messages and pre-processes them.
     """
 
-    def __init__(self, ip_address, remote_port, local_port, msg_len=277, name="DSRC"):
+    def __init__(self, ip_address, remote_port, local_port, verbose=False, msg_len=277, name="DSRC"):
         super(DSRC, self).__init__(ip_address, remote_port, msg_len, name)
         self._queue = deque()
         self._local_port = local_port
         self._blob_len = 58
+        self._verbose = verbose
 
         class DSRCSynchronizer(StoppableThread):
             """Publish messages from a thread-safe queue"""
@@ -48,15 +48,16 @@ class DSRC(SensorThread):
                 contains the unique message sent within a time frame of 0.2 seconds. The dictionary
                 is pickled, so it should be un-pickled at the subscriber.
 
-                Send 1 message from each unique veh_id in the queue
+                Send 1 message from each unique DSRC_id in the queue
                 """
                 if len(self._queue) > 0:
                     sent_ids = []
                     for queued_msg in list(self._queue):
-                        if queued_msg['veh_id'] not in sent_ids:
+                        if queued_msg['DSRC_id'] not in sent_ids:
                             self._publisher.send_string("{} {}".format(self._topic, pickle.dumps(queued_msg)))
-                            sent_ids.append(queued_msg['veh_id'])
-                            print(' [DSRCSYnc] Sent msg for veh: {} at second: {}'.format(queued_msg['veh_id'], queued_msg['s']))
+                            sent_ids.append(queued_msg['DSRC_id'])
+                            ops.show(' [DSRCSync] Sent msg for veh: {} at second: {}'.format(queued_msg['DSRC_id'],
+                                                                                             queued_msg['s']), self._verbose)
                     # drop all messages
                     self._queue.clear()
 
@@ -99,7 +100,7 @@ class DSRC(SensorThread):
     def add_to_queue(self, msg):
         """If the queue doesn't contain an identical message, add msg to the queue."""
         for queued_msg in list(self._queue):
-            if queued_msg['veh_id'] == msg['veh_id'] and queued_msg['s'] == msg['s']:
+            if queued_msg['DSRC_id'] == msg['DSRC_id'] and queued_msg['s'] == msg['s']:
                 # Found a duplicate
                 return
         self._queue.append(msg)
@@ -148,7 +149,7 @@ class DSRC(SensorThread):
 
         return {
             'msg_count': msg_count,
-            'veh_id': veh_id,
+            'DSRC_id': veh_id,
             'h': h,
             'm': m,
             's': s,

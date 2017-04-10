@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from __future__ import division
 
 import socket
@@ -8,12 +7,11 @@ import time
 from sensible.sensors.DSRC import DSRC
 from sensible.sensors.radar import Radar
 from sensible.util import ops
-from .state_estimator import StateEstimator
-from .state_estimator import TimeStamp
-from .data_associator import single_hypothesis_association
+from sensible.tracking.data_associator import single_hypothesis_association
+from sensible.tracking.track_state import TrackState
+from sensible.tracking.track import Track
 
-from .track_state import TrackState
-from .track import Track
+from collections import deque
 
 try:  # python 2.7
     import cPickle as pickle
@@ -33,6 +31,7 @@ class TrackSpecialist:
 
     def __init__(self, sensors, bsm_port, run_for, logger,
                  association=single_hypothesis_association,
+                 verbose=False,
                  frequency=5,
                  track_confirmation_threshold=5,
                  track_zombie_threshold=3,
@@ -42,9 +41,11 @@ class TrackSpecialist:
         self._subscribers = {}
         self._topic_filters = []
         self._track_list = {}
+        self._sensor_id_map = {}  # maps individual sensor ids to track ids
         self._period = 1 / frequency  # seconds
         self._run_for = run_for
         self._max_n_tracks = max_n_tracks
+        self._verbose = verbose
 
         self.track_confirmation_threshold = track_confirmation_threshold
         self.track_zombie_threshold = track_zombie_threshold
@@ -101,21 +102,31 @@ class TrackSpecialist:
         # Open a socket
         bsm_writer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         bsm_writer.setblocking(0)
-        print("  [*] Opened UDP socket connection to send BSMs to port {}".format(self._bsm_port))
+        ops.show("  [*] Opened UDP socket connection to send BSMs to port {}".format(self._bsm_port), self._verbose)
 
         t_end = time.time() + self._run_for
 
         while time.time() < t_end:
             loop_start = time.time()
 
-            for i in range(self._max_n_tracks):
+            message_queue = []
+
+            # since there could be many vehicles being tracked via DSRC/Radar/etc,
+            # we need to attempt to read messages 2*max_n_tracks times
+            # to get them all. This is because there could be N AVs, which
+            # are tracked both by radar and DSRC, so we want to be
+            # able to read all of them
+            for i in range(2 * self._max_n_tracks):
                 for (topic, subscriber) in self._subscribers.items():
                     try:
                         string = subscriber.recv_string(flags=zmq.NOBLOCK)
                         m_topic, msg = string.split(" ")
-                        self.associate(m_topic, pickle.loads(str(msg)))
+                        message_queue.append((m_topic, pickle.loads(str(msg))))
                     except zmq.Again as e:
                         continue
+
+            for msg in message_queue:
+                self.measurement_association(msg[0], msg[1])
 
             # update track state estimates, or handle no measurement
             if len(self._track_list) != 0:
@@ -152,9 +163,9 @@ class TrackSpecialist:
 
         bsm_writer.close()
         # self._logger.close()
-        print("  [*] Closed UDP port {}".format(self._bsm_port))
+        ops.show("  [*] Closed UDP port {}".format(self._bsm_port), self._verbose)
 
-    def associate(self, topic, msg):
+    def measurement_association(self, topic, msg):
         """
         Simple data association. For DSRC messages, vehicle IDs can be used.
         For radar zone detections, we can use global nearest neighbors.
@@ -166,39 +177,47 @@ class TrackSpecialist:
         :return:
         """
         if topic == DSRC.topic():
-            if msg['veh_id'] in self._track_list:
-                track = self._track_list.get(msg['veh_id'])
-                # Occasionally, the synchronizer may allow 2 messages
-                # to arrive at 1 cycle. Only accept one by enforcing
-                # the invariant "each track receives <= 1 message per cycle"
-                if not track.received_measurement:
-                    track.received_measurement = True
-                    track.n_consecutive_measurements += 1
-                    track.n_consecutive_missed = 0
-
-                    track.state_estimator.store(msg)
-
-                    if track.track_state == TrackState.UNCONFIRMED and \
-                                    track.n_consecutive_measurements >= \
-                                    self.track_confirmation_threshold:
-                        track.track_state = TrackState.CONFIRMED
-                    elif track.track_state == TrackState.ZOMBIE:
-                        track.track_state = TrackState.UNCONFIRMED
-            else:
-                # create new unconfirmed track
-                self.create_track(msg, DSRC)
+            id_str = 'DSRC_id'
+            sensor = DSRC
         elif topic == Radar.topic():
-            self.track_association(msg)
+            id_str = 'Radar_id'
+            sensor = Radar
+        else:
+            ops.show("  [Measurement Association] Unknown topic", self._verbose)
+            return
 
-    def create_track(self, msg, sensor):
+        if msg[id_str] in self._sensor_id_map:
+            track_id = self._sensor_id_map[msg[id_str]]
+            track = self._track_list.get(track_id)
+            # Occasionally, the synchronizer may allow 2 messages
+            # to arrive at 1 cycle. Only accept one by enforcing
+            # the invariant "each track receives <= 1 message per cycle"
+            if not track.received_measurement:
+                track.received_measurement = True
+                track.n_consecutive_measurements += 1
+                track.n_consecutive_missed = 0
+
+                track.state_estimator.store(msg)
+
+                if track.track_state == TrackState.UNCONFIRMED and \
+                                track.n_consecutive_measurements >= \
+                                self.track_confirmation_threshold:
+                    track.track_state = TrackState.CONFIRMED
+                elif track.track_state == TrackState.ZOMBIE:
+                    track.track_state = TrackState.UNCONFIRMED
+        else:
+            # create new unconfirmed track
+            self.create_track(msg, id_str, sensor)
+
+    def create_track(self, msg, id_str, sensor):
         """A new UNCONFIRMED track is created, and this message is associated
         with it."""
-        self._track_list[msg['veh_id']] = Track(self._period, msg, sensor)
-        self._track_list[msg['veh_id']].store(msg)
+        self._track_list[msg[id_str]] = Track(self._period, msg, sensor)
+        self._track_list[msg[id_str]].store(msg)
 
     def delete_track(self, track_id):
         """remove it from the track list."""
-        print("  [*] Dropping track {}".format(track_id))
+        ops.show("  [*] Dropping track {}".format(track_id), self._verbose)
         del self._track_list[track_id]
 
     def send_conventional_veh_bsm(self, radar_msg):
@@ -228,7 +247,7 @@ class TrackSpecialist:
                     kf_state[1], kf_state[3]
                 )
                 self._logger.write(kf_log_str)
-                #print(kf_log_str)
+                # print(kf_log_str)
 
                 m, _ = track.state_estimator.get_latest_message()
 
@@ -239,8 +258,8 @@ class TrackSpecialist:
                     )
                     self._logger.write(m_log_str)
 
-                # DEBUG
-                #track.state_estimator.save()
+                    # DEBUG
+                    # track.state_estimator.save()
 
                     # if track.track_state == TrackState.CONFIRMED:
                     #     try:
