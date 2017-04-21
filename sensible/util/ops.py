@@ -38,6 +38,18 @@ def dump(content, filename):
         print("Fail: error to open file: {}".format(filename))
 
 
+def load_pkl(path):
+    """
+    Load pickled content from path
+    :param path:
+    :return:
+    """
+    with open(path, "rb") as f:
+        obj = pickle.load(f)
+    print("  [*] load {}\n".format(path))
+    return obj
+
+
 def merge_n_lists(big_list):
     """
     Merge a list of lists into a single list,
