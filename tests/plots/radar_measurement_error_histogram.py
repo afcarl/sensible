@@ -8,12 +8,11 @@
 ########################################################
 import utm
 import os
-#import matplotlib
-#matplotlib.use('Qt4Agg')
+import matplotlib
+matplotlib.use('Qt4Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-from numpy import nan as NaN
 
 from sensible.util import ops
 
@@ -21,23 +20,25 @@ RADAR_LAT = 29.6216931
 RADAR_LON = -82.3867591
 RADAR_POS_VAR = 1.3
 
-RADAR_DIR = "C:\\Users\Patrick\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned radar"
-GPS_DIR = "C:\\Users\Patrick\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned DSRC"
+RADAR_DIR = "C:\\Users\pemami\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned radar"
+GPS_DIR = "C:\\Users\pemami\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned DSRC"
 
-RADAR_TRACKS = ["AV_Track_ID_26_GPS_track_2.pkl", "AV_Track_ID_22_GPS_track_3.pkl", "AV_Track_ID_40_GPS_track_4.pkl",
+RADAR_TRACKS = ["AV_Track_ID_26_GPS_track_2.pkl", "AV_Track_ID_22_GPS_track_3.pkl", "AV_Track_ID_45_GPS_track_4.pkl",
                 "AV_Track_ID_23_GPS_track_5.pkl", "AV_Track_ID_40_GPS_track_6.pkl", "AV_Track_ID_50_GPS_track_7.pkl"]
 
 GPS_TRACKS = ["Test2.pkl", "Test3.pkl", "Test4.pkl", "Test5.pkl", "Test6.pkl", "Test7.pkl"]
 
 RADAR_TS = [("1900-01-01 03:32:39.0", "1900-01-01 03:32:57.0"),
-            ("1900-01-01 03:35:36.5", "1900-01-01 03:35:59.5")]
+            ("1900-01-01 03:35:36.5", "1900-01-01 03:35:59.5"),
+            ("1900-01-01 03:39:29.5", "1900-01-01 03:39:51.4")]
 
 GPS_TS = [("1900-01-01 18:25:10.0", "1900-01-01 18:25:32.0"),
-          ("1900-01-01 18:28:11.0", "1900-01-01 18:28:34.8")]
+          ("1900-01-01 18:28:11.0", "1900-01-01 18:28:34.8"),
+          ("1900-01-01 18:32:05.0", "1900-01-01 18:32:26.8")]
 
-RADAR_RANGES = [(7, 177), (5, 228)]
+RADAR_RANGES = [(7, 177), (5, 228), (1, 219)]
 
-GPS_RANGES = [(50, 220), (16, 239)]
+GPS_RANGES = [(50, 220), (16, 239), (1, 219)]
 
 
 def interpolate_fields(r_df, r_idx, values):
@@ -66,9 +67,10 @@ if __name__ == '__main__':
     gps_y = [[] for _ in range(len(GPS_TRACKS))]
     errs_ = [[] for _ in range(len(GPS_TRACKS))]
 
-    for ii in range(len(GPS_TRACKS)):
+    for ii in range(2,len(GPS_TRACKS)):
         # load radar tracks
         df = ops.load_pkl(os.path.join(RADAR_DIR, RADAR_TRACKS[ii]))
+        #df.to_csv(os.path.join(RADAR_DIR, "AV_Track_ID_45_solo_GPS_track_4.csv"))
 
         # parse the datetime
         df['Time_s'] = pd.to_datetime(df['Time_s'], format="%H:%M:%S:%f")
