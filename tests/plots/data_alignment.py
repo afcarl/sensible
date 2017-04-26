@@ -8,8 +8,8 @@
 ########################################################
 import utm
 import os
-#import matplotlib
-#matplotlib.use('Qt4Agg')
+import matplotlib
+matplotlib.use('Qt4Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -21,8 +21,8 @@ RADAR_LAT = 29.6216931
 RADAR_LON = -82.3867591
 RADAR_POS_VAR = 1.3
 
-RADAR_DIR = "C:\\Users\Patrick\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned radar"
-GPS_DIR = "C:\\Users\Patrick\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned DSRC"
+RADAR_DIR = "C:\\Users\pemami\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned radar"
+GPS_DIR = "C:\\Users\pemami\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned DSRC"
 
 RADAR_TRACKS = ["AV_Track_ID_26_GPS_track_2.pkl", "AV_Track_ID_22_GPS_track_3.pkl", "AV_Track_ID_45_GPS_track_4.pkl",
                 "AV_Track_ID_32_GPS_track_5.pkl", "AV_Track_ID_40_GPS_track_6.pkl", "AV_Track_ID_50_GPS_track_7.pkl"]
@@ -84,14 +84,12 @@ if __name__ == '__main__':
     parser.add_argument('--preprocess-radar', action='store_true')
     parser.add_argument('--preprocess-gps', action='store_true')
     parser.add_argument('--preprocess-suitcase', action='store_true')
-    parser.add_argument('--plot-histograms', action='store_true')
     parser.add_argument('--plot-utm', action='store_true')
 
     parser.set_defaults(preprocess_all=False)
     parser.set_defaults(preprocess_radar=False)
     parser.set_defaults(preprocess_gps=False)
     parser.set_defaults(preprocess_suitcase=False)
-    parser.set_defaults(plot_histograms=False)
     parser.set_defaults(plot_utm=False)
 
     args = vars(parser.parse_args())
@@ -238,86 +236,3 @@ if __name__ == '__main__':
         plt.scatter(gps_x[RUN], gps_y[RUN], c='r')
         plt.scatter(sc_gps_x[RUN], sc_gps_y[RUN], c='b')
         plt.show()
-
-    if args['plot_histograms']:
-        radar_y = ops.load_pkl('radar_y.pkl')
-        gps_y = ops.load_pkl('gps_y.pkl')
-        suitcase_y = ops.load_pkl('suitcase_gps_y.pkl')
-
-        radar_x = ops.load_pkl('radar_x.pkl')
-        gps_x = ops.load_pkl('gps_x.pkl')
-        suitcase_x = ops.load_pkl('suitcase_gps_x.pkl')
-
-        radar_speed = ops.load_pkl('radar_speed.pkl')
-        suitcase_speed = ops.load_pkl('suitcase_speed.pkl')
-        suitcase_heading = ops.load_pkl('suitcase_heading.pkl')
-
-        errs_y = []
-        errs_x = []
-        errs_hp_radar_range_all = []
-        errs_lp_radar_range_all = []
-        errs_lp_radar_speed_all = []
-
-        track_2_start = 27
-        track_7_start = 10
-        for ii in range(len(GPS_TRACKS)):
-            if ii == 1:
-                start = track_2_start
-            elif ii == 5:
-                start = track_7_start
-            else:
-                start = 0
-            idx_y = 0
-
-            # diff in range
-            for y1, y2 in zip(suitcase_y[ii], gps_y[ii]):
-                if idx_y < start:
-                    idx_y += 1
-                    continue
-
-                errs_y.append(y2 - y1)
-                idx_y += 1
-
-            idx_x = 0
-            # diff in range
-            for x1, x2 in zip(suitcase_x[ii], gps_x[ii]):
-                if idx_x < start:
-                    idx_x += 1
-                    continue
-                errs_x.append(x2 - x1)
-                idx_x += 1
-
-            # compare ranges of HP gps and radar for all tracks
-            for y1, y2 in zip(gps_y[ii], radar_y[ii]):
-                errs_hp_radar_range_all.append(y1 - y2)
-
-            idx = 0
-            for y1, y2 in zip(suitcase_y[ii], radar_y[ii]):
-                if idx < start:
-                    idx += 1
-                    continue
-                errs_lp_radar_range_all.append(y1 - y2)
-                idx += 1
-
-            for j in range(start, len(suitcase_speed[ii])):
-                errs_lp_radar_speed_all.append(-suitcase_speed[ii][j] - radar_speed[ii][j])
-
-            plt.scatter(range(len(suitcase_speed[ii][start:])), suitcase_speed[ii][start:], c='r', label='suitcase')
-            plt.scatter(range(len(radar_speed[ii][start:])), radar_speed[ii][start:], c='b', label='radar')
-            plt.show()
-
-        # fig, axarr = plt.subplots(2, sharex=False)
-        # axarr[0].hist(errs_y, bins=15)
-        # axarr[0].set_title('High-precision vs Low-precision GPS relative error in UTM northing')
-        # axarr[1].hist(errs_x, bins=15)
-        # axarr[1].set_title('High-precision vs Low-precision GPS relative error in UTM easting')
-
-        # plt.show()
-
-        # plt.hist(errs_hp_radar_range_all, bins=25)
-        # plt.show()
-
-        # plt.hist(errs_lp_radar_range_all, bins=25)
-        # plt.show()
-        # plt.hist(errs_lp_radar_speed_all, bins=20)
-        # plt.show()
