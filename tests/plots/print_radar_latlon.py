@@ -5,6 +5,7 @@ import sensible.util.ops as ops
 #matplotlib.use('Qt4Agg')
 import matplotlib.pyplot as plt
 import utm
+import pandas as pd
 
 
 RADAR_LAT = 29.6216931
@@ -18,6 +19,9 @@ RADAR_TRACKS = ["AV_Track_ID_26_GPS_track_2.pkl", "AV_Track_ID_22_GPS_track_3.pk
 
 GPS_TRACKS = ["Test2.pkl", "Test3.pkl", "Test4.pkl", "Test5.pkl", "Test6.pkl", "Test7.pkl"]
 
+SUITCASE_TRACKS = ["suilog_1492107906.pkl", "suilog_1492108094.pkl", "suilog_1492108311.pkl",
+                   "suilog_1492108557.pkl", "suilog_1492108779.pkl", "suilog_1492108956.pkl"]
+
 if __name__ == '__main__':
 
     i = int(sys.argv[1])
@@ -25,6 +29,8 @@ if __name__ == '__main__':
     radar_y = []
     gps_x = []
     gps_y = []
+    suitcase_x = []
+    suitcase_y = []
 
     # load radar tracks
     df = ops.load_pkl(os.path.join(RADAR_DIR, RADAR_TRACKS[i]))
@@ -33,6 +39,9 @@ if __name__ == '__main__':
     # load GPS
     gps = ops.load_pkl(os.path.join(GPS_DIR, GPS_TRACKS[i]))
 
+    # load suitcase
+    sc = pd.DataFrame.from_dict(ops.load_pkl(os.path.join(GPS_DIR, SUITCASE_TRACKS[i])))
+
     # coordinate transform
     y_offsets = df['x_Point1'].values
     x_offsets = -df['y_Point1'].values
@@ -40,6 +49,9 @@ if __name__ == '__main__':
     # extract GPS
     gps_lat = gps['nfmlat'].values
     gps_lon = gps['nfmlon'].values
+
+    sc_lat = sc['lat'].values
+    sc_lon = sc['lon'].values
 
     # compute UTM coordinates of the radar
     x, y, zone, letter = utm.from_latlon(RADAR_LAT, RADAR_LON)
@@ -58,9 +70,18 @@ if __name__ == '__main__':
         gx, gy, _, _ = utm.from_latlon(gps_lat[i], gps_lon[i])
         gps_x.append(gx)
         gps_y.append(gy)
-        print("{},{}".format(gps_lat[i], gps_lon[i]))
+        print("{},{},{}".format(gps_lat[i], gps_lon[i], i))
+
+    print('SC: \n')
+    # compute GPS tracks in UTM
+    for i in range(len(sc_lat)):
+        sx, sy, _, _ = utm.from_latlon(sc_lat[i], sc_lon[i])
+        suitcase_x.append(sx)
+        suitcase_y.append(sy)
+        print("{},{},{}".format(sc_lat[i], sc_lon[i], i))
 
     plt.scatter(gps_x, gps_y, c='r')
     plt.scatter(radar_x, radar_y, c='b')
+    plt.scatter(suitcase_x, suitcase_y, c='y')
     plt.show()
 
