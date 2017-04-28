@@ -87,8 +87,8 @@ class StateEstimator(object):
 
     def mahalanobis(self, s, P):
         """
-        Compute the track-to-track association mahalanobis distance
-        between `s` and the estimated state of this track
+        Compute the track-to-track or measurement-to-track mahalanobis distance
+        between track state or measurement `s` and the estimated state of this track
 
         :param s: measurement [x, xdot, y, ydot]
         :param P: covariance of s
@@ -98,8 +98,13 @@ class StateEstimator(object):
         ss = self.state()
         PP = self.process_covariance()
 
+        if np.shape(PP)[0] == 4:
+            PP = PP[2:4, 2:4]
+
         dx = s - ss
         return np.matmul(dx.T, np.matmul(scipy.linalg.inv(PP + P), dx))
+
+
 
     def measurement_residual_covariance(self):
         raise NotImplementedError

@@ -64,6 +64,8 @@ class Track:
         if x_hat is None:
             return
 
+        # TODO: update for handling Radar tracks
+
         return "{},{},{},{},{},{},{},{}".format(
             self.track_id,
             timestamp.h,

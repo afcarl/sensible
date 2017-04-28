@@ -7,7 +7,7 @@ import time
 from sensible.sensors.DSRC import DSRC
 from sensible.sensors.radar import Radar
 from sensible.util import ops
-from sensible.tracking.data_associator import single_hypothesis_association
+import sensible.tracking.data_associator as data_associator
 from sensible.tracking.track_state import TrackState
 from sensible.tracking.track import Track, TrackType
 
@@ -28,7 +28,7 @@ class TrackSpecialist:
     """
 
     def __init__(self, sensors, bsm_port, run_for, logger,
-                 association=single_hypothesis_association,
+                 association=data_associator.single_hypothesis_track_association,
                  verbose=False,
                  frequency=5,
                  track_confirmation_threshold=5,
@@ -39,6 +39,7 @@ class TrackSpecialist:
         self._subscribers = {}
         self._topic_filters = []
         self._track_list = {}
+        # TODO: Remove this, replace with a track_merge method
         self._sensor_id_map = {}  # maps individual sensor ids to track ids
         self._period = 1 / frequency  # seconds
         self._run_for = run_for
@@ -174,13 +175,11 @@ class TrackSpecialist:
         :param msg: The new sensor measurement
         :return:
         """
+        # Precondition is that topic is either DSRC or Radar
         if topic == DSRC.topic():
             sensor = DSRC
         elif topic == Radar.topic():
             sensor = Radar
-        else:
-            ops.show("  [Measurement Association] Unknown topic", self._verbose)
-            return
 
         if msg['id'] in self._sensor_id_map:
             track_id = self._sensor_id_map[msg['id']]
@@ -202,7 +201,7 @@ class TrackSpecialist:
 
                     # attempt to fuse tracks
                     result, match_id = self.track_association(self.track_list, track)
-
+                    # TODO: finish implementing these
                     if result == 0x1:
                         track.type = TrackType.CONVENTIONAL
                     elif result == 0x2:
@@ -230,6 +229,7 @@ class TrackSpecialist:
         ops.show("  [*] Dropping track {}".format(track_id), self._verbose)
         del self._track_list[track_id]
 
+    # TODO: complete and test BSMs
     def send_bsms(self, my_sock):
         """
         Collect the latest filtered measurements from each confirmed track,

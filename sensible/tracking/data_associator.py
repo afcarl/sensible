@@ -1,9 +1,10 @@
 from sensible.util import ops
 from sensible.sensors.radar import Radar
 from sensible.sensors.DSRC import DSRC
+from sensible.tracking import radar_track_cfg
 
 
-def single_hypothesis_association(track_list, query_track, verbose=False):
+def single_hypothesis_track_association(track_list, query, method="track-to-track", verbose=False):
     """
     Single-hypothesis track-to-track association
 
@@ -16,17 +17,23 @@ def single_hypothesis_association(track_list, query_track, verbose=False):
 
     Result codes
     ============
-    0x1 : query_track is a radar track and association w/ DSRC failed; change type to CONVENTIONAL and send BSM.
+    0x1 : query is a radar track and association w/ DSRC failed; change type to CONVENTIONAL.
           Associated track id is the query track id.
-    0x2 : query_track is a radar track and association w/ DSRC succeeded; change type to CONNECTED and send BSM if not served
-          update the track id of query_track to match that of the DSRC track
-    0x3 : query_track is a DSRC track and association w/ radar failed; send BSM if not yet served
+    0x2 : query is a radar track and association w/ DSRC succeeded; change type to CONNECTED/AUTOMATED
+          and send BSM if not served. Update the track id of query_track to match that of the DSRC track
+          and state of track to FUSED. **Can eliminate radar track.**
+    0x3 : query is a DSRC track and association w/ radar failed; send BSM if not yet served
           Associated track id is the query track id.
-    0x4 : query_track is a DSRC track and association w/ radar succeeded; change type of the radar track to CONNECTED
-          and update radar track id to match that of query_track
+    0x4 : query is a DSRC track and association w/ radar succeeded; change type of the radar track to CONNECTED/AUTOMATED
+          and update radar track id to match that of query_track. **Can drop radar track.**
+    0x5:  query is a radar measurement from a zone detection and association with a DSRC track failed. Send BSM for a
+          new conventional vehicle.
+    0x6:  query is a radar measurement from a zone detection and association with a DSRC track succeeded. Change track
+          state to fused. Send BSM if not yet served.
 
     :param track_list: List of (id, track) pairs
-    :param query_track: The track that is to be associated
+    :param query: The track or measurement that is to be associated
+    :param method: options are "track-to-track" and "measurement-to-track"
     :param verbose: display verbose information
     :return: tuple (result code, associated track id)
     """
@@ -42,14 +49,18 @@ def single_hypothesis_association(track_list, query_track, verbose=False):
     results = []
     for (track_id, track) in track_list.items():
 
-        # First condition ensures the query track isn't fused with itself,
-        # and the second condition ensures two radar or two DSRC tracks
-        # aren't fused together
-        if track_id == query_track.id or track.sensor == query_track.sensor:
-            continue
+        if method == "track-to-track":
+            # First condition ensures the query track isn't fused with itself,
+            # and the second condition ensures two radar or two DSRC tracks
+            # aren't fused together
+            if track_id == query.id or track.sensor == query.sensor:
+                continue
 
-        md = track.state_estimator.mahalanobis(query_track.state_estimator.state(),
-                                               query_track.state_estimator.process_covariance())
+            md = track.state_estimator.mahalanobis(query.state_estimator.state(),
+                                                   query.state_estimator.process_covariance())
+        elif method == "measurement-to-track":
+
+            md = track.state_estimator.mahalanobis(query, radar_track_cfg.RadarTrackCfg(0.1).R)
 
         ops.show("  [Track Association] Track {} has a Mahalanobis distance of {} "
                  "to the detection".format(track_id, md), verbose)
@@ -64,25 +75,37 @@ def single_hypothesis_association(track_list, query_track, verbose=False):
     # )
     # print(radar_log_str)
 
+    if method == "track-to-track":
+        sensor = query.sensor
+    elif method == "measurement-to-track":
+        sensor = Radar
+
     # Association "failed"
     if len(results) == 0:
         # measurement didn't fall near any tracked vehicles, so if a radar track tentatively
         # associate as a conventional vehicle
-        if query_track.sensor == Radar:
-            ops.show("  [Track Association] Conventional vehicle detected", verbose)
-            return 0x1, query_track.id
+        if sensor == Radar:
+            if method == "track-to-track":
+                ops.show("  [Track Association] Conventional vehicle detected", verbose)
+                return 0x1, query.id
+            elif method == "measurement-to-track":
+                ops.show("  [Measurement Association] No matching DSRC track, classifying as conventional", verbose)
+                return 0x5, None
         else:
             ops.show("  [Track Association] DSRC track but no matching radar track", verbose)
-            return 0x3, query_track.id
+            return 0x3, query.id
     else:
         if len(results) > 1:
             ops.show("  [Warning] {} vehicles within gating region of radar detection!".format(len(results)), verbose)
             # choose the closest
             sorted_results = sorted(results, key=lambda pair: len(pair[1]))
             id = sorted_results[0][0]
-            ops.show("  [Track Association] Associating with track {}".format(id), verbose)
-            if query_track.sensor == Radar:
-                return 0x2, id
+            ops.show("  [Track Association] Associating with closest track {}".format(id), verbose)
+            if sensor == Radar:
+                if method == "track-to-track":
+                    return 0x2, id
+                elif method == "measurement-to-track":
+                    return 0x6, id
             else:
                 return 0x4, id
         else:
@@ -90,7 +113,10 @@ def single_hypothesis_association(track_list, query_track, verbose=False):
             ops.show("  [Track Association] Associating with track {}".format(r[0]), verbose)
             # track = self._track_list[r[0]]
             # potentially fuse this with the kalman filter
-            if query_track.sensor == Radar:
-                return 0x2, r[0]
+            if sensor == Radar:
+                if method == "track-to-track":
+                    return 0x2, r[0]
+                elif method == "measurement-to-track":
+                    return 0x6, r[0]
             else:
                 return 0x4, r[0]
