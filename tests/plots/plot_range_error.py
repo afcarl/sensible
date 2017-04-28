@@ -3,6 +3,8 @@
 import matplotlib.pyplot as plt
 import sensible.util.ops as ops
 import utm
+import numpy as np
+
 
 N_TRACKS = 6
 RADAR_LAT = 29.6216931
@@ -216,6 +218,10 @@ if __name__ == '__main__':
     plt.grid(True)
     fig.savefig('imgs/hp-vs-radar-range-error.png', dpi=100)
     plt.close()
+
+    # compute sample mean and variance
+    sample_mu = np.mean(errs_hp_radar_range_all)
+    sample_sigma = np.var(errs_hp_radar_range_all, ddof=1)
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
