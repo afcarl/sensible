@@ -1,9 +1,15 @@
-import matplotlib
-matplotlib.use('Qt4Agg')
+#import matplotlib
+#matplotlib.use('Qt4Agg')
 import matplotlib.pyplot as plt
 import sensible.util.ops as ops
+import utm
+
 
 N_TRACKS = 6
+RADAR_LAT = 29.6216931
+RADAR_LON = -82.3867591
+# compute UTM coordinates of the radar
+x, y, zone, letter = utm.from_latlon(RADAR_LAT, RADAR_LON)
 
 if __name__ == '__main__':
     radar_y = ops.load_pkl('radar_y.pkl')
@@ -18,12 +24,13 @@ if __name__ == '__main__':
     suitcase_speed = ops.load_pkl('suitcase_speed.pkl')
     suitcase_heading = ops.load_pkl('suitcase_heading.pkl')
 
-    errs_y = []
     errs_x = []
-    errs_hp_radar_range_all = []
-    errs_lp_radar_range_all = []
-    errs_lp_radar_speed_all = []
-
+    errs_x_abs = []
+    errs_hp_radar_lat_all = []
+    errs_lp_radar_lat_all = []
+    errs_hp_radar_lat_incremental_meters = [[] for _ in range(5)]
+    errs_hp_radar_lat_incremental_feet = [[] for _ in range(5)]
+    
     track_2_start = 27
     track_7_start = 10
     for ii in range(N_TRACKS):
@@ -34,56 +41,164 @@ if __name__ == '__main__':
         else:
             start = 0
 
-        idx_y = 0
-        # Suitcase vs HP GPS northing error
-        for y1, y2 in zip(suitcase_y[ii], gps_y[ii]):
-            if idx_y < start:
-                idx_y += 1
-                continue
+        for j in range(len(radar_x[ii])):
+            radar_x[ii][j] -= x
+            gps_x[ii][j] -= x
+            suitcase_x[ii][j] -= x
 
-            errs_y.append(y2 - y1)
-            idx_y += 1
-
+        errs_x_start_idx = len(errs_x)
         idx_x = 0
         # Suitcase vs HP GPS easting error
         for x1, x2 in zip(suitcase_x[ii], gps_x[ii]):
             if idx_x < start:
                 idx_x += 1
                 continue
+
             errs_x.append(x2 - x1)
+            errs_x_abs.append(abs(x2 - x1))
             idx_x += 1
 
         # compare range of HP GPS and radar for all tracks
-        for y1, y2 in zip(gps_y[ii], radar_y[ii]):
-            errs_hp_radar_range_all.append(y1 - y2)
-
         idx = 0
-        for y1, y2 in zip(suitcase_y[ii], radar_y[ii]):
+        for x1, x2 in zip(gps_x[ii], radar_x[ii]):
+            errs_hp_radar_lat_all.append(x1 - x2)
+            idx += 1
+
+        # compare range of LP GPS and radar for all tracks
+        idx = 0
+        for x1, x2 in zip(suitcase_x[ii], radar_x[ii]):
             if idx < start:
                 idx += 1
                 continue
-            errs_lp_radar_range_all.append(y1 - y2)
+            errs_lp_radar_lat_all.append(x1 - x2)
             idx += 1
 
-        for j in range(start, len(suitcase_speed[ii])):
-            errs_lp_radar_speed_all.append(-suitcase_speed[ii][j] - radar_speed[ii][j])
+        idx = 0
+        for x1, x2 in zip(gps_x[ii], radar_x[ii]):
+            yy = radar_y[ii][idx] - y
+            
+            # 0 -> 100 m
+            if 0 <= yy < 50:
+                errs_hp_radar_lat_incremental_meters[0].append(x1 - x2)
+            elif 50 < yy <= 100:
+                errs_hp_radar_lat_incremental_meters[1].append(x1 - x2)
+            elif 100 < yy <= 150:
+                errs_hp_radar_lat_incremental_meters[2].append(x1 - x2)
+            elif 150 < yy <= 200:
+                errs_hp_radar_lat_incremental_meters[3].append(x1 - x2)
+            elif 200 < yy <= 300:
+                errs_hp_radar_lat_incremental_meters[4].append(x1 - x2)
+            idx += 1
 
-        plt.scatter(range(len(suitcase_speed[ii][start:])), suitcase_speed[ii][start:], c='r', label='suitcase')
-        plt.scatter(range(len(radar_speed[ii][start:])), radar_speed[ii][start:], c='b', label='radar')
-        plt.show()
+        idx = 0
+        for x1, x2 in zip(gps_x[ii], radar_x[ii]):
+            yy = radar_y[ii][idx] - y
 
-        # fig, axarr = plt.subplots(2, sharex=False)
-        # axarr[0].hist(errs_y, bins=15)
-        # axarr[0].set_title('High-precision vs Low-precision GPS relative error in UTM northing')
-        # axarr[1].hist(errs_x, bins=15)
-        # axarr[1].set_title('High-precision vs Low-precision GPS relative error in UTM easting')
+            # 0 -> 100 ft
+            if 0 <= yy < 30.48:
+                errs_hp_radar_lat_incremental_feet[0].append(x1 - x2)
+            elif 30.48 < yy <= 60.96:
+                errs_hp_radar_lat_incremental_feet[1].append(x1 - x2)
+            elif 60.96 < yy <= 91.44:
+                errs_hp_radar_lat_incremental_feet[2].append(x1 - x2)
+            elif 91.44 < yy <= 121.92:
+                errs_hp_radar_lat_incremental_feet[3].append(x1 - x2)
+            elif 121.92 < yy <= 152.4:
+                errs_hp_radar_lat_incremental_feet[4].append(x1 - x2)
+            idx += 1
 
-        # plt.show()
+        # PLACE PER-TRACK PLOTTING HERE
+        plt.scatter(range(len(suitcase_x[ii][start:])), suitcase_x[ii][start:], c='r', label='LP-GPS')
+        plt.scatter(range(len(gps_x[ii][start:])), gps_x[ii][start:], c='b', label='HP-GPS')
+        plt.title('High- vs low-precision GPS lat\ntrack %d' % (ii+1))
+        plt.legend()
+        plt.ylabel('meters')
+        plt.xlabel(r'$\bigtriangleup$ t = 100 ms')
+        plt.grid(True)
+        fig = plt.gcf()
+        fig.set_size_inches(8, 6)
+        fig.savefig('imgs/hp-vs-lp-gps-lat-errors-track-' + str(ii+1) + '.png', dpi=100)
+        plt.close()
 
-        # plt.hist(errs_hp_radar_range_all, bins=25)
-        # plt.show()
+        # histogram
+        fig, axarr = plt.subplots(2)
+        axarr[0].hist(errs_x[errs_x_start_idx: errs_x_start_idx + len(gps_x[ii]) - start], bins=15)
+        axarr[0].set_title('Error between low- and high-precision GPS lat for track %d' % (ii + 1))
+        axarr[0].grid(True)
+        axarr[1].scatter(range(len(gps_x[ii][start:])), errs_x[errs_x_start_idx: errs_x_start_idx + len(gps_x[ii]) - start])
+        axarr[1].set_xlabel(r'$\bigtriangleup$ t = 100 ms')
+        fig.set_size_inches(8, 8)
+        plt.grid(True)
+        fig.savefig('imgs/hp-vs-lp-gps-lat-errors-hist-track-' + str(ii+1) + '.png', dpi=100)
+        plt.close()
 
-        # plt.hist(errs_lp_radar_range_all, bins=25)
-        # plt.show()
-        # plt.hist(errs_lp_radar_speed_all, bins=20)
-        # plt.show()
+    fig, axarr = plt.subplots(2)
+    axarr[0].hist(errs_x, bins=15)
+    axarr[0].set_title('Error between low- and high-precision GPS range')
+    axarr[0].grid(True)
+    axarr[1].hist(errs_x_abs, bins=15)
+    axarr[1].set_title('Absolute error')
+    axarr[1].set_xlabel('meters')
+    fig.set_size_inches(8, 8)
+    plt.grid(True)
+    fig.savefig('imgs/hp-vs-lp-gps-lat-errors.png', dpi=100)
+    plt.close()
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.hist(errs_hp_radar_lat_all, bins=25)
+    ax.set_xlabel('meters')
+    ax.set_title('Error between high-precision GPS and radar lat')
+    fig.set_size_inches(8, 6)
+    plt.grid(True)
+    fig.savefig('imgs/hp-vs-radar-lat-error.png', dpi=100)
+    plt.close()
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.hist(errs_lp_radar_lat_all, bins=25)
+    ax.set_xlabel('meters')
+    ax.set_title('Error between low-precision GPS and radar lat')
+    fig.set_size_inches(8, 6)
+    plt.grid(True)
+    fig.savefig('imgs/lp-vs-radar-lat-error.png', dpi=100)
+    plt.close()
+
+    fig, axarr = plt.subplots(5, sharex=True)
+    titles = ["Error between high-precision GPS and radar lat\n0 - 50 m", "50 - 100 m", "100 - 150 m", "150 - 200 m",
+              "200 - 300 m"]
+    for i in range(5):
+        axarr[i].hist(errs_hp_radar_lat_incremental_meters[i], bins=15)
+        axarr[i].set_title(titles[i])
+        axarr[i].grid(True)
+    axarr[-1].set_xlabel('meters')
+    fig.set_size_inches(8, 8)
+    fig.savefig('imgs/hp-vs-radar-lat-incremental-meters.png', dpi=100)
+    plt.close()
+
+    fig, axarr = plt.subplots(5, sharex=True)
+    titles = ["Error between high-precision GPS and radar lat\n0 - 100 ft", "100 - 200 ft", "200 - 300 ft",
+              "300 - 400 ft", "400 - 500 ft"]
+    for i in range(5):
+        axarr[i].hist(errs_hp_radar_lat_incremental_feet[i], bins=15)
+        axarr[i].set_title(titles[i])
+        axarr[i].grid(True)
+    axarr[-1].set_xlabel('meters')
+    fig.set_size_inches(8, 8)
+    fig.savefig('imgs/hp-vs-radar-lat-incremental-feet.png', dpi=100)
+    plt.close()
+
+    # fig = plt.figure()
+    # ax = fig.add_subplot(111)
+    # colors = ['r', 'g', 'b', 'y', 'm', 'c']
+    # start = 0
+    # for i in range(N_TRACKS):
+    #     for j in range(len(radar_y[i])):
+    #         plt.scatter(speed[start + j], errs_hp_radar_lat_all[start + j], c=colors[i])
+    #     start += len(radar_y[i])
+    # ax.set_xlabel('m/s')
+    # ax.set_ylabel('meters')
+    # ax.set_title('Radar speed vs lat error')
+    # fig.set_size_inches(8, 6)
+    # plt.grid(True)
+    # fig.savefig('imgs/radar-speed-lat-error.png', dpi=100)
