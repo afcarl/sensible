@@ -70,9 +70,6 @@ class SensorThread(StoppableThread):
         raise NotImplementedError
 
     @staticmethod
-    def id():
-        """All sensors make accessible the """
-    @staticmethod
     def get_filter(dt):
         """
         Returns an instance of an object

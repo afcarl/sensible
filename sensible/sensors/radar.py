@@ -103,18 +103,7 @@ class Radar(SensorThread):
                 return
         self._queue.append(msg)
 
-    # def push(self, msg):
-    #     """
-    #     Parse the incoming message and forward to the track specialist
-    #
-    #     :param msg:
-    #     :return:
-    #     """
-    #     msg = DSRC.parse(msg)
-    #     #t_end = time.time() + self._spam
-    #
-    #     #while time.time() < t_end:
-    #     self._publisher.send_string("{} {}".format(self.topic(), pickle.dumps(msg)))
-
     def parse(self, msg):
+        # TODO: throw away messages that don't satisfy gating properties
+        # using ops.verify
         raise NotImplementedError

@@ -22,6 +22,8 @@ if __name__ == '__main__':
     track_7_start = 10
 
     errs_hp_radar_range_all = []
+    errs_y = []
+
     for ii in range(N_TRACKS):
 
         for j in range(len(radar_y[ii])):
@@ -37,6 +39,16 @@ if __name__ == '__main__':
         else:
             start = 0
 
+        idx_y = 0
+        # Suitcase vs HP GPS northing error
+        for y1, y2 in zip(suitcase_y[ii], gps_y[ii]):
+            if idx_y < start:
+                idx_y += 1
+                continue
+
+            errs_y.append(y2 - y1)
+            idx_y += 1
+
         # compare range of HP GPS and radar for all tracks
         errs_hp_radar_start = len(errs_hp_radar_range_all)
         for y1, y2 in zip(gps_y[ii], radar_y[ii]):
@@ -45,9 +57,13 @@ if __name__ == '__main__':
     sample_mu = np.mean(errs_hp_radar_range_all, axis=0)
     sample_var = np.var(errs_hp_radar_range_all, axis=0, ddof=1)
 
-    print('Range\n')
+    lp_sample_mu = np.mean(errs_y, axis=0)
+    lp_sample_var = np.var(errs_y, axis=0, ddof=1)
+
+    print('HP vs radar range\n')
     print('mu: ', sample_mu)
     print('var: ', sample_var)
 
-    print('Speed\n')
-
+    print('LP vs HP range\n')
+    print('mu: ', lp_sample_mu)
+    print('var: ', lp_sample_var)

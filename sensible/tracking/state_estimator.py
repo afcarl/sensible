@@ -1,21 +1,8 @@
 import numpy as np
 import scipy.linalg
 from sensible.util import ops
+from sensible.util import time_stamp as ts
 import os
-
-
-class TimeStamp:
-
-    def __init__(self, h, m, s):
-        self.h = h
-        self.m = m
-        self.s = s
-
-    def to_string(self):
-        return "{}:{}:{}".format(self.h, self.m, self.s)
-
-    def to_fname_string(self):
-        return "{}-{}-{}".format(self.h, self.m, self.s)
 
 
 class StateEstimator(object):
@@ -25,12 +12,14 @@ class StateEstimator(object):
     specific implementation.
 
     """
-    def __init__(self):
+    def __init__(self, use_cov_intersection):
         self.y = []  # messages
         self.x_k = []  # filtered track state
         self.y_k = []  # filtered measurement
+        self.x_k_fused = []  # result of the covariance intersection algorithm
         self.t = []  # time stamps
         self.k = -1  # current time step
+        self._use_cov_intersection = use_cov_intersection
 
     def get_latest_message(self):
         """
@@ -39,7 +28,7 @@ class StateEstimator(object):
         """
         if -1 < self.k < len(self.y):
             t = self.t[self.k]
-            t_string = t.to_string() if t is not None else "UNAVAILABLE"
+            t_string = t.to_string() if t is not None else ts.unavailable()
             return self.y[self.k], t_string
         else:
             return None, None
@@ -48,8 +37,11 @@ class StateEstimator(object):
         """Return the latest Kalman Filter prediction of the state, and the timestamp."""
         if -1 < self.k <= len(self.x_k):
             t = self.t[self.k]
-            t_string = t.to_fname_string() if t is not None else "UNAVAILABLE"
-            return self.x_k[self.k+1], t_string
+            t_string = t.to_fname_string() if t is not None else ts.unavailable()
+            if not self._use_cov_intersection:
+                return self.x_k[self.k+1], t_string
+            else:
+                return self.x_k_fused[self.k+1], t_string
         else:
             return None, None
 
@@ -57,21 +49,22 @@ class StateEstimator(object):
         """Return the latest Kalman Filter prediction of the measurement, and the timestamp."""
         if -1 < self.k < len(self.y_k):
             t = self.t[self.k]
-            t_string = t.to_fname_string() if t is not None else "UNAVAILABLE"
+            t_string = t.to_fname_string() if t is not None else ts.unavailable()
             return self.y_k[self.k], t_string
         else:
             return None, None
 
-    def store(self, msg):
+    def store(self, msg, time):
         self.k += 1
         if msg is None:
             self.y.append(None)
             self.t.append(None)
         else:
             self.y.append(self.parse_msg(msg))
-            self.t.append(TimeStamp(msg['h'], msg['m'], msg['s']))
+            self.t.append(time)
             if self.k == 0:
                 self.x_k.append(self.y[self.k])
+                self.x_k_fused.append(None)
 
     def save_measurement(self, destination):
         yk, t_stamp = self.measurement()
@@ -104,8 +97,6 @@ class StateEstimator(object):
         dx = s - ss
         return np.matmul(dx.T, np.matmul(scipy.linalg.inv(PP + P), dx))
 
-
-
     def measurement_residual_covariance(self):
         raise NotImplementedError
 
@@ -119,4 +110,15 @@ class StateEstimator(object):
         raise NotImplementedError
 
     def parse_msg(self, msg):
+        raise NotImplementedError
+
+    def covariance_intersection(self, b_bar, P_b_bar):
+        """
+        The mean estimate, b_bar, and covariance estimate, P_b_bar, from the
+        state estimator for sensor B.
+        To be fused with this state estimator's current mean and cov estimates.
+        :param b_bar:
+        :param Pb_bar:
+        :return:
+        """
         raise NotImplementedError

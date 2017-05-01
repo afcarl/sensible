@@ -131,7 +131,7 @@ class DSRC(SensorThread):
         # convert hex values to decimal
 
         msg_count = int(data[0:2], 16)
-        veh_id = data[2:10]
+        veh_id = int(data[2:10], 16)
         h = ops.verify(int(data[10:12], 16), 0, 23)
         m = ops.verify(int(data[12:14], 16), 0, 59)
         s = ops.verify(int(data[14:18], 16), 0, 60000)  # ms

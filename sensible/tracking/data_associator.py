@@ -19,9 +19,8 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
     ============
     0x1 : query is a radar track and association w/ DSRC failed; change type to CONVENTIONAL.
           Associated track id is the query track id.
-    0x2 : query is a radar track and association w/ DSRC succeeded; change type to CONNECTED/AUTOMATED
-          and send BSM if not served. Update the track id of query_track to match that of the DSRC track
-          and state of track to FUSED. **Can eliminate radar track.**
+    0x2 : query is a radar track and association w/ DSRC succeeded; **Can eliminate old radar track and dsrc track.**
+          Create a new CONFIRMED fused track.
     0x3 : query is a DSRC track and association w/ radar failed; send BSM if not yet served
           Associated track id is the query track id.
     0x4 : query is a DSRC track and association w/ radar succeeded; change type of the radar track to CONNECTED/AUTOMATED
@@ -62,7 +61,7 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
 
             md = track.state_estimator.mahalanobis(query, radar_track_cfg.RadarTrackCfg(0.1).R)
 
-        ops.show("  [Track Association] Track {} has a Mahalanobis distance of {} "
+        ops.show("  [Track association] Track {} has a mahalanobis distance of {} "
                  "to the detection".format(track_id, md), verbose)
 
         if md <= 9.488:
@@ -86,13 +85,13 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
         # associate as a conventional vehicle
         if sensor == Radar:
             if method == "track-to-track":
-                ops.show("  [Track Association] Conventional vehicle detected", verbose)
+                ops.show("  [Track association] Conventional vehicle detected", verbose)
                 return 0x1, query.id
             elif method == "measurement-to-track":
-                ops.show("  [Measurement Association] No matching DSRC track, classifying as conventional", verbose)
+                ops.show("  [Measurement association] No matching DSRC track, classifying as conventional", verbose)
                 return 0x5, None
         else:
-            ops.show("  [Track Association] DSRC track but no matching radar track", verbose)
+            ops.show("  [Track association] DSRC track but no matching radar track", verbose)
             return 0x3, query.id
     else:
         if len(results) > 1:
@@ -100,7 +99,7 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
             # choose the closest
             sorted_results = sorted(results, key=lambda pair: len(pair[1]))
             id = sorted_results[0][0]
-            ops.show("  [Track Association] Associating with closest track {}".format(id), verbose)
+            ops.show("  [Track association] Associating with closest track {}".format(id), verbose)
             if sensor == Radar:
                 if method == "track-to-track":
                     return 0x2, id
@@ -110,13 +109,12 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
                 return 0x4, id
         else:
             r = results[0]
-            ops.show("  [Track Association] Associating with track {}".format(r[0]), verbose)
-            # track = self._track_list[r[0]]
-            # potentially fuse this with the kalman filter
             if sensor == Radar:
                 if method == "track-to-track":
+                    ops.show("  [Track association] Associating with track {}".format(r[0]), verbose)
                     return 0x2, r[0]
                 elif method == "measurement-to-track":
+                    ops.show("  [Measurement association] Associating with track {}".format(r[0]), verbose)
                     return 0x6, r[0]
             else:
                 return 0x4, r[0]

@@ -22,18 +22,17 @@ class DSRCTrackCfg:
                                        [0, 0, (np.power(self.dt, 4) / 4), (np.power(self.dt, 3) / 2)],
                                        [0, 0, (np.power(self.dt, 3) / 2), np.power(self.dt, 2)]]))
 
-        # TODO: increase this variance to about +- 3 m
-        # variance of a gaussian distribution over a position (x,y) meters corresponding to += 1.5 m
-        sigma_1 = 3 / self.z
+        # variance of a gaussian distribution over a position (x,y) meters corresponding to += 2 m
+        sigma_1 = 4 / self.z
         # variance corresponding to a standard normal (+= 1 m)
         sigma_2 = 1 / self.z
 
         # measurement covariance
         self.R = np.eye(4)
-        self.R[0][0] = np.power(sigma_1, 2)
-        self.R[2][2] = np.power(sigma_1, 2)
-        self.R[1][1] = np.power(sigma_2, 2)
-        self.R[3][3] = np.power(sigma_2, 2)
+        self.R[0][0] = sigma_1 ** 2
+        self.R[1][1] = sigma_2 ** 2
+        self.R[2][2] = sigma_1 ** 2
+        self.R[3][3] = sigma_2 ** 2
 
         # Dynamics
         self.F = np.eye(4)

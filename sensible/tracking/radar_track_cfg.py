@@ -27,15 +27,15 @@ class RadarTrackCfg:
                              np.array([[(self.dt ** 4) / 4, (self.dt ** 3) / 2],
                                        [(self.dt ** 3) / 2, self.dt ** 2]]))
 
-        # variance of a gaussian distribution over a position (x,y) meters corresponding to += 1.5 m
-        sigma_1 = 3 / self.z  # position
+        # variance of a gaussian distribution over a position (x,y) meters corresponding to += 3.5 m
+        sigma_1 = 7 / self.z  # actually is around +- 2.8 m, but mean is ~ 1.1 m
         # variance corresponding to a standard normal
-        sigma_2 = 0.28 / self.z  # speed
+        sigma_2 = 0.5 / self.z  # 1 std dev is +- 0.25 m/s
 
         # measurement covariance
         self.R = np.eye(2)
-        self.R[0][0] = np.power(sigma_1, 2)
-        self.R[1][1] = np.power(sigma_2, 2)
+        self.R[0][0] = sigma_1 ** 2
+        self.R[1][1] = sigma_2 ** 2
 
         # Dynamics
         self.F = np.eye(4)
@@ -55,7 +55,5 @@ class RadarTrackCfg:
         # invert data to place in right coordinate frame
         y = msg['xPos'] + utm_n
         y_dot = msg['xVel']
-        #x = -msg['yPos'] + utm_e
-        #x_dot = msg['yVel']  # will be negative for vehicles approaching the intersection
 
         return np.array([y, y_dot])

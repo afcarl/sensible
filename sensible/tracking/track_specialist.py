@@ -6,6 +6,8 @@ import time
 
 from sensible.sensors.DSRC import DSRC
 from sensible.sensors.radar import Radar
+from sensible.sensors.radar_zone_detection import RadarZoneDetection
+
 from sensible.util import ops
 import sensible.tracking.data_associator as data_associator
 from sensible.tracking.track_state import TrackState
@@ -25,6 +27,10 @@ class TrackSpecialist:
     Responsible for updating track states and carrying out data association
     for new measurements.
 
+    We assume that each sensor sending track information to the TrackSpecialist
+    provides a track id that does not clash with any other currently active tracks
+    from any sensor. This is a precondition that can be maintained by having sensors
+    produce IDs in non-overlapping ranges.
     """
 
     def __init__(self, sensors, bsm_port, run_for, logger,
@@ -39,7 +45,6 @@ class TrackSpecialist:
         self._subscribers = {}
         self._topic_filters = []
         self._track_list = {}
-        # TODO: Remove this, replace with a track_merge method
         self._sensor_id_map = {}  # maps individual sensor ids to track ids
         self._period = 1 / frequency  # seconds
         self._run_for = run_for
@@ -71,6 +76,11 @@ class TrackSpecialist:
 
         self._bsm_port = bsm_port
 
+        # Open a socket for sending tracks
+        self._bsm_writer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._bsm_writer.setblocking(0)
+        ops.show("  [*] Opened UDP socket connection to send BSMs to port {}".format(self._bsm_port), self._verbose)
+
     @property
     def subscribers(self):
         return self._subscribers
@@ -98,10 +108,6 @@ class TrackSpecialist:
         are also updated accordingly.
 
         """
-        # Open a socket
-        bsm_writer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        bsm_writer.setblocking(0)
-        ops.show("  [*] Opened UDP socket connection to send BSMs to port {}".format(self._bsm_port), self._verbose)
 
         t_end = time.time() + self._run_for
 
@@ -152,22 +158,28 @@ class TrackSpecialist:
                                             track.n_consecutive_missed >= self.track_zombie_threshold:
                                 track.track_state = TrackState.ZOMBIE
 
+                # do fusion estimates
+                for (track_id, track) in self._track_list.items():
+                    if track.fused:
+                        track.fuse_estimates(self._track_list[track.fused_track_id])
+
             # sleep the track specialist so it runs at the given frequency
             diff = self._period - (time.time() - loop_start)
             if diff > 0:
                 time.sleep(diff)
 
             # Send measurements from confirmed tracks to the optimization
-            self.send_bsms(bsm_writer)
+            self.send_bsms()
 
-        bsm_writer.close()
-        # self._logger.close()
+        self._bsm_writer.close()
+        self._logger.close()
         ops.show("  [*] Closed UDP port {}".format(self._bsm_port), self._verbose)
 
     def measurement_association(self, topic, msg):
         """
-        Simple data association. For DSRC messages, vehicle IDs can be used.
-        For radar zone detections, we can use global nearest neighbors.
+        Track-to-track and measurement-to-track association.
+        For DSRC messages, vehicle IDs can be used.
+        For radar tracks and zone detections, we use global nearest neighbors.
 
         New tracks are created here if no existing tracks can be associated.
 
@@ -175,51 +187,70 @@ class TrackSpecialist:
         :param msg: The new sensor measurement
         :return:
         """
-        # Precondition is that topic is either DSRC or Radar
+        # Precondition is that topic is either DSRC, Radar, or RadarZoneDetection
+        if topic == RadarZoneDetection.topic():
+            # measurement-to-track association
+            result, match_id = self.track_association(self.track_list, msg, method="measurement-to-track")
+            if result == 0x5:
+                # send BSM for new conventional vehicle.
+                try:
+                    self._bsm_writer.sendto(RadarZoneDetection.bsm(msg), ("localhost", self._bsm_port))
+                except socket.error as e:
+                    # log the error
+                    print("  [!] Couldn't send BSM for detected conventional vehicle ["
+                          + match_id + "] due to error: " + e.message)
+            elif result == 0x6:
+                # match_id is that of the corresponding DSRC track. Add code
+                # for updating GUI
+                pass
+        else:
+            if msg['id'] in self._sensor_id_map:
+                track_id = self._sensor_id_map[msg['id']]
+                track = self._track_list.get(track_id)
+                # Occasionally, the synchronizer may allow 2 messages
+                # to arrive at 1 cycle. Only accept one by enforcing
+                # the invariant "each track receives <= 1 message per cycle"
+                if not track.received_measurement:
+
+                    track.state_estimator.store(msg)
+
+                    if track.track_state == TrackState.UNCONFIRMED and \
+                                    track.n_consecutive_measurements >= \
+                                    self.track_confirmation_threshold:
+                        track.track_state = TrackState.CONFIRMED
+
+                        # attempt to fuse tracks
+                        result, match_id = self.track_association(self.track_list, track)
+                        if result == 0x1:
+                            track.type = TrackType.CONVENTIONAL
+                        elif result == 0x2:
+                            self.merge_tracks(dsrc_track_id=match_id, radar_track_id=track)
+                        elif result == 0x3:
+                            pass  # nothing to do for this case
+                        elif result == 0x4:
+                            self.merge_tracks(dsrc_track_id=track, radar_track_id=match_id)
+
+                    elif track.track_state == TrackState.ZOMBIE:
+                        track.track_state = TrackState.UNCONFIRMED
+            else:
+                # create new unconfirmed track
+                self.create_track(msg, topic)
+
+    def create_track(self, msg, topic):
+        """
+        A new UNCONFIRMED track is created and msg is associated with it.
+
+        :param msg:
+        :param topic:
+        :return:
+        """
         if topic == DSRC.topic():
             sensor = DSRC
         elif topic == Radar.topic():
             sensor = Radar
+        elif topic == RadarZoneDetection.topic():
+            sensor = RadarZoneDetection
 
-        if msg['id'] in self._sensor_id_map:
-            track_id = self._sensor_id_map[msg['id']]
-            track = self._track_list.get(track_id)
-            # Occasionally, the synchronizer may allow 2 messages
-            # to arrive at 1 cycle. Only accept one by enforcing
-            # the invariant "each track receives <= 1 message per cycle"
-            if not track.received_measurement:
-                track.received_measurement = True
-                track.n_consecutive_measurements += 1
-                track.n_consecutive_missed = 0
-
-                track.state_estimator.store(msg)
-
-                if track.track_state == TrackState.UNCONFIRMED and \
-                                track.n_consecutive_measurements >= \
-                                self.track_confirmation_threshold:
-                    track.track_state = TrackState.CONFIRMED
-
-                    # attempt to fuse tracks
-                    result, match_id = self.track_association(self.track_list, track)
-                    # TODO: finish implementing these
-                    if result == 0x1:
-                        track.type = TrackType.CONVENTIONAL
-                    elif result == 0x2:
-                        track.type = TrackType.CONNECTED
-                        # update track_id to associate to match_id
-                    elif result == 0x4:
-                        self._track_list[match_id].type = TrackType.CONNECTED
-                        # update match_id to associate with the track.id
-
-                elif track.track_state == TrackState.ZOMBIE:
-                    track.track_state = TrackState.UNCONFIRMED
-        else:
-            # create new unconfirmed track
-            self.create_track(msg, sensor)
-
-    def create_track(self, msg, sensor):
-        """A new UNCONFIRMED track is created, and this message is associated
-        with it."""
         self._sensor_id_map[msg['id']] = len(self._track_list)
         self._track_list[self._sensor_id_map[msg['id']]] = Track(self._period, msg, sensor)
         self._track_list[self._sensor_id_map[msg['id']]].store(msg)
@@ -227,10 +258,31 @@ class TrackSpecialist:
     def delete_track(self, track_id):
         """remove it from the track list."""
         ops.show("  [*] Dropping track {}".format(track_id), self._verbose)
+        msg_id = None
+        for k, v in self._sensor_id_map.items():
+            if v == track_id:
+                msg_id = k
+        if msg_id is None:  # track_id has already been removed
+            return
+        del self._sensor_id_map[msg_id]
         del self._track_list[track_id]
 
+    def merge_tracks(self, dsrc_track_id, radar_track_id):
+        """
+        Delete these two tracks and create 1 new fused track.
+        In the sensor map, add two new entries mapping the msg_ids
+        to the same track id of the fused track.
+        :param dsrc_track_id:
+        :param radar_track_id:
+        :return:
+        """
+        ops.show("  [*] fusing DSRC track {} and radar track {}".format(dsrc_track_id, radar_track_id), self._verbose)
+        self._track_list[dsrc_track_id].fused = True
+        self._track_list[dsrc_track_id].fused_track_id = radar_track_id
+        self._track_list[radar_track_id].update_type(dsrc_track_id)
+
     # TODO: complete and test BSMs
-    def send_bsms(self, my_sock):
+    def send_bsms(self):
         """
         Collect the latest filtered measurements from each confirmed track,
         and if the tracked object has not yet been served, send a BSM
@@ -265,7 +317,7 @@ class TrackSpecialist:
 
                     # if track.track_state == TrackState.CONFIRMED:
                     #     try:
-                    #         # my_sock.sendto(track.bsm(), ("localhost", self._bsm_port))
+                    #         # self._bsm_writer.sendto(track.bsm(), ("localhost", self._bsm_port))
                     #     except socket.error as e:
                     #         # log the error
                     #         print("  [*] Couldn't send BSM for confirmed track ["

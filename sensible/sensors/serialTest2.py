@@ -6,6 +6,7 @@ ser = serial.Serial(port='COM13', baudrate=115200)
 ser.timeout = 2
 
 
+# TODO: convert to use pyzmq, and to provide the lane number (if available, from zone detection)
 def write_csv(data):
     with open('cabinetTest_4_18_trigger_test.csv', 'w+') as csvfile:
         fieldnames = ['objMessage', 'objID', 'objLength', 'yVel', 'xVel', 'yPos', 'xPos', 'objZone']
@@ -13,6 +14,7 @@ def write_csv(data):
         writing.writeheader()
         for val in data:
             writing.writerow(val)
+
 
 def positionData(data, num):
     if (len(data) < 64):
