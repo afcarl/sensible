@@ -18,6 +18,7 @@ from collections import deque
 
 
 class RadarSerial(SerialThread):
+
     def __init__(self, port, baud, local_port, radar_lat, radar_lon, mode="Tracking", lane=2, verbose=False, name="Radar"):
         super(RadarSerial, self).__init__(port, baud, name=name)
         self._verbose = verbose
@@ -25,7 +26,8 @@ class RadarSerial(SerialThread):
         self._queue = deque()
         self._lane = lane
         self.mode = mode
-        self.x, self.y, self.zone, self.letter = utm.from_latlon(radar_lat, radar_lon)
+        self.x, self.y, self.zone, self.letter = utm.from_latlon(
+            radar_lat, radar_lon)
 
         class RadarSynchronizer(StoppableThread):
             """Publish messages from a thread-safe queue"""
@@ -54,7 +56,8 @@ class RadarSerial(SerialThread):
                     sent_ids = []
                     for queued_msg in list(self._queue):
                         if queued_msg['id'] not in sent_ids:
-                            self._publisher.send_string("{} {}".format(self._topic, pickle.dumps(queued_msg)))
+                            self._publisher.send_string("{} {}".format(
+                                self._topic, pickle.dumps(queued_msg)))
                             sent_ids.append(queued_msg['id'])
                             ops.show(' [RadarSync] Sent msg for veh: {} at second: {}'.format(queued_msg['id'],
                                                                                               queued_msg['s']),
@@ -67,11 +70,12 @@ class RadarSerial(SerialThread):
                     self.send()
                     time.sleep(1 / self._publish_freq)
 
-        self._synchronizer = RadarSynchronizer(self._queue, self._local_port, self.topic(), self._verbose)
+        self._synchronizer = RadarSynchronizer(
+            self._queue, self._local_port, self.topic(), self._verbose)
 
     @staticmethod
     def topic():
-        return "Radar"
+        return "RadarSerial"
 
     @staticmethod
     def get_filter(dt):
@@ -139,7 +143,8 @@ class RadarSerial(SerialThread):
             's': s,
             'xPos': self.x - msg['yPos'],
             'yPos': self.y + msg['xPos'],
-            'speed': -ops.verify(-msg['ySpeed'], 6.25, 20.1),  # accept 14 mph to 45 mph ~
+            # accept 14 mph to 45 mph ~
+            'speed': -ops.verify(-msg['ySpeed'], 6.25, 20.1),
             'veh_len': msg['objLength'],
             'lane': self._lane,
             'max_accel': 5,
