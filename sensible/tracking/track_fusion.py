@@ -3,7 +3,6 @@ import scipy.linalg
 import numpy as np
 
 
-# TODO: test
 def covariance_intersection(means, covariances):
     """
     The mean estimates and covariance estimates from the

@@ -60,7 +60,7 @@ class TrackSpecialist:
         self.track_association = association
 
         self._logger = logger
-        logger_title = "TrackID,TrackState,Filtered,timestamp,yPos,speed\n"
+        logger_title = "TrackID,TrackState,Filtered,timestamp,yPos,speed,Sensor\n"
         self._logger.write(logger_title)
 
         topic_filters = sensors['topic_filters']
@@ -226,6 +226,7 @@ class TrackSpecialist:
         :param msg: The new sensor measurement
         :return:
         """
+        #print("timestamp: {},{},{}".format(msg['h'], msg['m'], msg['s']))
 
         if topic == RadarSerial.topic() and msg['objZone'] > -1:
             # measurement-to-track association
@@ -346,8 +347,6 @@ class TrackSpecialist:
                     sens = "Radar"
                 elif track.sensor == DSRC:
                     sens = "DSRC"
-                else:
-                    sens = "RadarZoneDetection"
 
                 self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
                                    ',' + label + ',' + kf_str[:-1] + ',' + sens + '\n')

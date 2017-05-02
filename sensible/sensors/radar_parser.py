@@ -3,8 +3,9 @@ from __future__ import division
 import serial
 import binascii
 import csv
+from datetime import datetime
 
-ser = serial.Serial(port='COM13', baudrate=115200)
+ser = serial.Serial(port='COM3', baudrate=115200)
 ser.timeout = 2
 
 
@@ -15,6 +16,7 @@ def write_csv(data):
         writing.writeheader()
         for val in data:
             writing.writerow(val)
+            #print(val)
 
 
 def addZeros(data):
@@ -57,11 +59,11 @@ def positionData(data):
 # I then interpret the car data by splitting up the data into bits according to how the documentation says the should be split
 # when the car is finished being read, I cut it off the array and wait until the next car is finished being loaded in(This is known from the length of the array)
 # Finally, at the moment I print to CSV to make sure the data is correrct
-if ser.is_open:
+if ser.isOpen():
     incoming_data = []
     cars = []
     # Though at SMS we curently only see satusID of '06008', I though tto include others incase future radars start detecting differently.
-    possible_satus_ids = ['050008', '058008', '060008', '068008']
+    possible_status_ids = ['050008', '058008', '060008', '068008']
     # Trigger positions
     # ALL measurements must be in meters.
     # ALL lane coordinates have to be with respect to the sensor, not the blue crossed origin.
@@ -71,29 +73,36 @@ if ser.is_open:
     left_line_ys = [-5.585, -2.136, 1.274, 4.734, -2.136, 1.274, 4.734, -2.136, 1.274, 4.734]
     line_width = 3.35
     trigger_offset = .75
-    timeStampHold = ''
     timeStamp = ''
     car_width = 1.5
     status_id_type = ''
     stay = True
     cars_coming = False
     while stay:
+
         if cars_coming:
             if len(incoming_data) is 33:
                 if incoming_data[22] == status_id_type:
+                    timeStampHold = ''
                     for var in incoming_data[3:11]:
                         timeStampHold += var
                     timeStampBin = bin(int((timeStampHold), 16))[2:]
                     timeStampBinZeros = addZeros(timeStampBin)
                     timeStamp = str(int(timeStampBinZeros[0:8], 2)) + str(int(timeStampBinZeros[8:16], 2)) + str(
                         int(timeStampBinZeros[16:24], 2)) + str(int(timeStampBinZeros[24:32], 2))
-                    #print('TIME: ')
-                    #print(timeStamp)
+                    # print('TIME: ')
+                    # print(timeStamp)
+                    dt = datetime.utcnow()
+                    h = dt.hour
+                    m = dt.minute
+                    s = dt.second * 1000 + round(dt.microsecond / 1000)
+                    # print("UTC TIME: {}:{}:{}".format(h, m, s))
                     binary_stuff = incoming_data[-8]
                     for var in incoming_data[-7:]:
                         binary_stuff += var
                     obtainedData = positionData(bin(int((binary_stuff), 16))[2:])
-                    obtainedData['TimeStamp'] = timeStamp
+                    #obtainedData['TimeStamp'] = timeStamp
+                    obtainedData['TimeStamp'] = str(h) + ':' + str(m) + ':' + str(s)
                     cars.append(obtainedData)
                     # car_check
                     for box in range(0, 10):
@@ -129,8 +138,8 @@ if ser.is_open:
         if len(incoming_data) > 3:
             last_three = (incoming_data[len(incoming_data) - 3] + incoming_data[len(incoming_data) - 2] + incoming_data[
                 len(incoming_data) - 1])
-            if (last_three == possible_satus_ids[0] or (last_three == possible_satus_ids[1]) or (
-                        last_three == possible_satus_ids[2]) or (last_three == possible_satus_ids[3])):
+            if (last_three == possible_status_ids[0] or (last_three == possible_status_ids[1]) or (
+                        last_three == possible_status_ids[2]) or (last_three == possible_status_ids[3])):
                 cars_coming = True
                 status_id_type = incoming_data[len(incoming_data) - 3]
                 incoming_data = incoming_data[-3:]
