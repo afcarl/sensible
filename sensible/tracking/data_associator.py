@@ -1,12 +1,11 @@
 from sensible.util import ops
 from sensible.sensors.radar import Radar
-from sensible.sensors.DSRC import DSRC
 from sensible.tracking import radar_track_cfg
 
 
 def single_hypothesis_track_association(track_list, query, method="track-to-track", verbose=False):
     """
-    Single-hypothesis track-to-track association
+    Single-hypothesis association
 
     Using Chi-squared tables for 4 degrees of freedom (one for each
     dimension of the state vector), for different p-values
@@ -14,6 +13,11 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
     p = 0.05 -> 9.49
     p = 0.01 -> 13.28
     p = 0.001 -> 18.47
+
+    For 2 DOF
+
+    p = 0.05 -> 5.99
+    p = 0.01 -> 9.21
 
     Result codes
     ============
@@ -52,19 +56,19 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
             # First condition ensures the query track isn't fused with itself,
             # and the second condition ensures two radar or two DSRC tracks
             # aren't fused together
-            if track_id == query.id or track.sensor == query.sensor:
+            if track == query or track.sensor == query.sensor or track_id in query.fused_track_ids:
                 continue
 
-            md = track.state_estimator.mahalanobis(query.state_estimator.state(),
-                                                   query.state_estimator.process_covariance())
+            s, ts = query.state_estimator.state()
+            md = track.state_estimator.mahalanobis(s, query.state_estimator.process_covariance(), ts)
         elif method == "measurement-to-track":
 
             md = track.state_estimator.mahalanobis(query, radar_track_cfg.RadarTrackCfg(0.1).R)
 
         ops.show("  [Track association] Track {} has a mahalanobis distance of {} "
-                 "to the detection".format(track_id, md), verbose)
+                 "to the query".format(track_id, md), verbose)
 
-        if md <= 9.488:
+        if md <= 20:
             results.append((track_id, md))
 
     # radar_t_stamp = TimeStamp(radar_msg['h'], radar_msg['m'], radar_msg['s'])
@@ -86,13 +90,13 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
         if sensor == Radar:
             if method == "track-to-track":
                 ops.show("  [Track association] Conventional vehicle detected", verbose)
-                return 0x1, query.id
+                return 0x1, None
             elif method == "measurement-to-track":
                 ops.show("  [Measurement association] No matching DSRC track, classifying as conventional", verbose)
                 return 0x5, None
         else:
             ops.show("  [Track association] DSRC track but no matching radar track", verbose)
-            return 0x3, query.id
+            return 0x3, None
     else:
         if len(results) > 1:
             ops.show("  [Warning] {} vehicles within gating region of radar detection!".format(len(results)), verbose)

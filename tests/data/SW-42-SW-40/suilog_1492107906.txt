@@ -1,0 +1,5075 @@
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        31 00 5F 21 2C FF FF FF FF 35 A4 E9 01 6B 49 D2 
+        01 70 80 1F FF 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        32 00 5F 21 2C FF FF FF FF 35 A4 E9 01 6B 49 D2 
+        01 70 80 1F FF 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        33 00 5F 21 2C 12 19 19 C8 11 A8 59 A2 CE E4 CA 
+        D4 53 E2 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        34 00 5F 21 2C 12 19 19 C8 11 A8 59 A2 CE E4 CA 
+        D4 53 E2 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        35 00 5F 21 2C 12 19 19 C8 11 A8 59 A2 CE E4 CA 
+        D4 53 E2 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        36 00 5F 21 2C 12 19 19 C8 11 A8 59 A2 CE E4 CA 
+        D4 53 E2 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        37 00 5F 21 2C 12 19 19 C8 11 A8 59 A2 CE E4 CA 
+        D4 53 E2 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        38 00 5F 21 2C 12 19 1A 90 11 A8 59 9D CE E4 CA 
+        78 53 40 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:07:99
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        39 00 5F 21 2C 12 19 1A 90 11 A8 59 9D CE E4 CA 
+        78 53 40 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3A 00 5F 21 2C 12 19 1A 90 11 A8 59 9D CE E4 CA 
+        78 53 40 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3B 00 5F 21 2C 12 19 1B 58 11 A8 59 93 CE E4 CA 
+        1B 52 73 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3C 00 5F 21 2C 12 19 1B 58 11 A8 59 93 CE E4 CA 
+        1B 52 73 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3D 00 5F 21 2C 12 19 1B 58 11 A8 59 93 CE E4 CA 
+        1B 52 73 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3E 00 5F 21 2C 12 19 1B 58 11 A8 59 93 CE E4 CA 
+        1B 52 73 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3F 00 5F 21 2C 12 19 1C 20 11 A8 59 81 CE E4 C9 
+        BC 50 C4 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        40 00 5F 21 2C 12 19 1C 20 11 A8 59 81 CE E4 C9 
+        BC 50 C4 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        41 00 5F 21 2C 12 19 1C 20 11 A8 59 81 CE E4 C9 
+        BC 50 C4 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        42 00 5F 21 2C 12 19 1C 20 11 A8 59 81 CE E4 C9 
+        BC 50 C4 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        43 00 5F 21 2C 12 19 1C E8 11 A8 59 6A CE E4 C9 
+        5C 4F A4 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        44 00 5F 21 2C 12 19 1C E8 11 A8 59 6A CE E4 C9 
+        5C 4F A4 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        45 00 5F 21 2C 12 19 1C E8 11 A8 59 6A CE E4 C9 
+        5C 4F A4 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        46 00 5F 21 2C 12 19 1C E8 11 A8 59 6A CE E4 C9 
+        5C 4F A4 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        47 00 5F 21 2C 12 19 1D B0 11 A8 59 4C CE E4 C8 
+        FC 4E 29 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        48 00 5F 21 2C 12 19 1D B0 11 A8 59 4C CE E4 C8 
+        FC 4E 29 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        49 00 5F 21 2C 12 19 1D B0 11 A8 59 4C CE E4 C8 
+        FC 4E 29 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4A 00 5F 21 2C 12 19 1D B0 11 A8 59 4C CE E4 C8 
+        FC 4E 29 00 04 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4B 00 5F 21 2C 12 19 1E 78 11 A8 59 25 CE E4 C8 
+        9C 4C E7 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:08:49
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4C 00 5F 21 2C 12 19 1E 78 11 A8 59 25 CE E4 C8 
+        9C 4C E7 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:08:99
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4D 00 5F 21 2C 12 19 1E 78 11 A8 59 25 CE E4 C8 
+        9C 4C E7 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4E 00 5F 21 2C 12 19 1E 78 11 A8 59 25 CE E4 C8 
+        9C 4C E7 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4F 00 5F 21 2C 12 19 1F 40 11 A8 58 F5 CE E4 C8 
+        3E 4B 38 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        50 00 5F 21 2C 12 19 1F 40 11 A8 58 F5 CE E4 C8 
+        3E 4B 38 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        51 00 5F 21 2C 12 19 1F 40 11 A8 58 F5 CE E4 C8 
+        3E 4B 38 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        52 00 5F 21 2C 12 19 1F 40 11 A8 58 F5 CE E4 C8 
+        3E 4B 38 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        53 00 5F 21 2C 12 19 20 08 11 A8 58 BC CE E4 C7 
+        E3 49 96 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        54 00 5F 21 2C 12 19 20 08 11 A8 58 BC CE E4 C7 
+        E3 49 96 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        55 00 5F 21 2C 12 19 20 08 11 A8 58 BC CE E4 C7 
+        E3 49 96 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        56 00 5F 21 2C 12 19 20 08 11 A8 58 BC CE E4 C7 
+        E3 49 96 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        57 00 5F 21 2C 12 19 20 D0 11 A8 58 7B CE E4 C7 
+        8E 47 F1 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        58 00 5F 21 2C 12 19 20 D0 11 A8 58 7B CE E4 C7 
+        8E 47 F1 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        59 00 5F 21 2C 12 19 20 D0 11 A8 58 7B CE E4 C7 
+        8E 47 F1 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5A 00 5F 21 2C 12 19 20 D0 11 A8 58 7B CE E4 C7 
+        8E 47 F1 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5B 00 5F 21 2C 12 19 21 98 11 A8 58 34 CE E4 C7 
+        3A 46 90 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5C 00 5F 21 2C 12 19 21 98 11 A8 58 34 CE E4 C7 
+        3A 46 90 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5D 00 5F 21 2C 12 19 21 98 11 A8 58 34 CE E4 C7 
+        3A 46 90 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5E 00 5F 21 2C 12 19 21 98 11 A8 58 34 CE E4 C7 
+        3A 46 90 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5F 00 5F 21 2C 12 19 21 98 11 A8 58 34 CE E4 C7 
+        3A 46 90 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:09:49
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        60 00 5F 21 2C 12 19 22 60 11 A8 57 E4 CE E4 C6 
+        F1 44 87 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:09:99
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        61 00 5F 21 2C 12 19 22 60 11 A8 57 E4 CE E4 C6 
+        F1 44 87 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        62 00 5F 21 2C 12 19 22 60 11 A8 57 E4 CE E4 C6 
+        F1 44 87 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        63 00 5F 21 2C 12 19 23 28 11 A8 57 8A CE E4 C6 
+        AB 42 F8 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        64 00 5F 21 2C 12 19 23 28 11 A8 57 8A CE E4 C6 
+        AB 42 F8 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        65 00 5F 21 2C 12 19 23 28 11 A8 57 8A CE E4 C6 
+        AB 42 F8 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        66 00 5F 21 2C 12 19 23 28 11 A8 57 8A CE E4 C6 
+        AB 42 F8 00 05 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        67 00 5F 21 2C 12 19 23 F0 11 A8 57 26 CE E4 C6 
+        6F 41 21 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        68 00 5F 21 2C 12 19 23 F0 11 A8 57 26 CE E4 C6 
+        6F 41 21 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        69 00 5F 21 2C 12 19 23 F0 11 A8 57 26 CE E4 C6 
+        6F 41 21 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6A 00 5F 21 2C 12 19 23 F0 11 A8 57 26 CE E4 C6 
+        6F 41 21 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6B 00 5F 21 2C 12 19 24 B8 11 A8 56 BB CE E4 C6 
+        3A 3F 9D 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6C 00 5F 21 2C 12 19 24 B8 11 A8 56 BB CE E4 C6 
+        3A 3F 9D 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6D 00 5F 21 2C 12 19 24 B8 11 A8 56 BB CE E4 C6 
+        3A 3F 9D 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6E 00 5F 21 2C 12 19 24 B8 11 A8 56 BB CE E4 C6 
+        3A 3F 9D 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6F 00 5F 21 2C 12 19 25 80 11 A8 56 48 CE E4 C6 
+        10 3D E6 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        70 00 5F 21 2C 12 19 25 80 11 A8 56 48 CE E4 C6 
+        10 3D E6 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        71 00 5F 21 2C 12 19 25 80 11 A8 56 48 CE E4 C6 
+        10 3D E6 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        72 00 5F 21 2C 12 19 25 80 11 A8 56 48 CE E4 C6 
+        10 3D E6 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        73 00 5F 21 2C 12 19 26 48 11 A8 55 CE CE E4 C5 
+        EF 3C 6F 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:10:49
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        74 00 5F 21 2C 12 19 26 48 11 A8 55 CE CE E4 C5 
+        EF 3C 6F 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:10:99
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        75 00 5F 21 2C 12 19 26 48 11 A8 55 CE CE E4 C5 
+        EF 3C 6F 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        76 00 5F 21 2C 12 19 26 48 11 A8 55 CE CE E4 C5 
+        EF 3C 6F 00 06 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        77 00 5F 21 2C 12 19 27 10 11 A8 55 51 CE E4 C5 
+        D8 3B 53 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        78 00 5F 21 2C 12 19 27 10 11 A8 55 51 CE E4 C5 
+        D8 3B 53 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        79 00 5F 21 2C 12 19 27 10 11 A8 55 51 CE E4 C5 
+        D8 3B 53 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7A 00 5F 21 2C 12 19 27 10 11 A8 55 51 CE E4 C5 
+        D8 3B 53 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7B 00 5F 21 2C 12 19 27 D8 11 A8 54 CC CE E4 C5 
+        C7 3A 29 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7C 00 5F 21 2C 12 19 27 D8 11 A8 54 CC CE E4 C5 
+        C7 3A 29 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7D 00 5F 21 2C 12 19 27 D8 11 A8 54 CC CE E4 C5 
+        C7 3A 29 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7E 00 5F 21 2C 12 19 27 D8 11 A8 54 CC CE E4 C5 
+        C7 3A 29 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7F 00 5F 21 2C 12 19 28 A0 11 A8 54 43 CE E4 C5 
+        BD 39 55 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        00 00 5F 21 2C 12 19 28 A0 11 A8 54 43 CE E4 C5 
+        BD 39 55 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        01 00 5F 21 2C 12 19 28 A0 11 A8 54 43 CE E4 C5 
+        BD 39 55 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        02 00 5F 21 2C 12 19 28 A0 11 A8 54 43 CE E4 C5 
+        BD 39 55 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        03 00 5F 21 2C 12 19 29 68 11 A8 53 B6 CE E4 C5 
+        B9 38 A9 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        04 00 5F 21 2C 12 19 29 68 11 A8 53 B6 CE E4 C5 
+        B9 38 A9 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        05 00 5F 21 2C 12 19 29 68 11 A8 53 B6 CE E4 C5 
+        B9 38 A9 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        06 00 5F 21 2C 12 19 29 68 11 A8 53 B6 CE E4 C5 
+        B9 38 A9 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        07 00 5F 21 2C 12 19 29 68 11 A8 53 B6 CE E4 C5 
+        B9 38 A9 00 07 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:11:49
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        08 00 5F 21 2C 12 19 2A 30 11 A8 53 25 CE E4 C5 
+        B6 38 68 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:11:99
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        09 00 5F 21 2C 12 19 2A 30 11 A8 53 25 CE E4 C5 
+        B6 38 68 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0A 00 5F 21 2C 12 19 2A 30 11 A8 53 25 CE E4 C5 
+        B6 38 68 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0B 00 5F 21 2C 12 19 2A F8 11 A8 52 8D CE E4 C5 
+        B3 38 85 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0C 00 5F 21 2C 12 19 2A F8 11 A8 52 8D CE E4 C5 
+        B3 38 85 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0D 00 5F 21 2C 12 19 2A F8 11 A8 52 8D CE E4 C5 
+        B3 38 85 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0E 00 5F 21 2C 12 19 2A F8 11 A8 52 8D CE E4 C5 
+        B3 38 85 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0F 00 5F 21 2C 12 19 2B C0 11 A8 51 F2 CE E4 C5 
+        B1 38 66 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        10 00 5F 21 2C 12 19 2B C0 11 A8 51 F2 CE E4 C5 
+        B1 38 66 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        11 00 5F 21 2C 12 19 2B C0 11 A8 51 F2 CE E4 C5 
+        B1 38 66 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        12 00 5F 21 2C 12 19 2B C0 11 A8 51 F2 CE E4 C5 
+        B1 38 66 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        13 00 5F 21 2C 12 19 2C 88 11 A8 51 50 CE E4 C5 
+        AF 38 60 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        14 00 5F 21 2C 12 19 2C 88 11 A8 51 50 CE E4 C5 
+        AF 38 60 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        15 00 5F 21 2C 12 19 2C 88 11 A8 51 50 CE E4 C5 
+        AF 38 60 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        16 00 5F 21 2C 12 19 2C 88 11 A8 51 50 CE E4 C5 
+        AF 38 60 00 08 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        17 00 5F 21 2C 12 19 2D 50 11 A8 50 AB CE E4 C5 
+        AE 38 5C 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        18 00 5F 21 2C 12 19 2D 50 11 A8 50 AB CE E4 C5 
+        AE 38 5C 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        19 00 5F 21 2C 12 19 2D 50 11 A8 50 AB CE E4 C5 
+        AE 38 5C 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1A 00 5F 21 2C 12 19 2D 50 11 A8 50 AB CE E4 C5 
+        AE 38 5C 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1B 00 5F 21 2C 12 19 2E 18 11 A8 50 00 CE E4 C5 
+        AC 38 64 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:12:49
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1C 00 5F 21 2C 12 19 2E 18 11 A8 50 00 CE E4 C5 
+        AC 38 64 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:12:99
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1D 00 5F 21 2C 12 19 2E 18 11 A8 50 00 CE E4 C5 
+        AC 38 64 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1E 00 5F 21 2C 12 19 2E 18 11 A8 50 00 CE E4 C5 
+        AC 38 64 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1F 00 5F 21 2C 12 19 2E 18 11 A8 50 00 CE E4 C5 
+        AC 38 64 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        20 00 5F 21 2C 12 19 2E E0 11 A8 4F 51 CE E4 C5 
+        AA 38 56 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        21 00 5F 21 2C 12 19 2E E0 11 A8 4F 51 CE E4 C5 
+        AA 38 56 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        22 00 5F 21 2C 12 19 2E E0 11 A8 4F 51 CE E4 C5 
+        AA 38 56 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        23 00 5F 21 2C 12 19 2F A8 11 A8 4E 9D CE E4 C5 
+        A9 38 52 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        24 00 5F 21 2C 12 19 2F A8 11 A8 4E 9D CE E4 C5 
+        A9 38 52 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        25 00 5F 21 2C 12 19 2F A8 11 A8 4E 9D CE E4 C5 
+        A9 38 52 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        26 00 5F 21 2C 12 19 2F A8 11 A8 4E 9D CE E4 C5 
+        A9 38 52 00 09 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        27 00 5F 21 2C 12 19 30 70 11 A8 4D E5 CE E4 C5 
+        A7 38 53 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        28 00 5F 21 2C 12 19 30 70 11 A8 4D E5 CE E4 C5 
+        A7 38 53 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        29 00 5F 21 2C 12 19 30 70 11 A8 4D E5 CE E4 C5 
+        A7 38 53 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2A 00 5F 21 2C 12 19 30 70 11 A8 4D E5 CE E4 C5 
+        A7 38 53 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2B 00 5F 21 2C 12 19 31 38 11 A8 4D 29 CE E4 C5 
+        A5 38 54 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2C 00 5F 21 2C 12 19 31 38 11 A8 4D 29 CE E4 C5 
+        A5 38 54 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2D 00 5F 21 2C 12 19 31 38 11 A8 4D 29 CE E4 C5 
+        A5 38 54 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2E 00 5F 21 2C 12 19 31 38 11 A8 4D 29 CE E4 C5 
+        A5 38 54 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:13:0
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2F 00 5F 21 2C 12 19 31 38 11 A8 4D 29 CE E4 C5 
+        A5 38 54 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:13:49
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        30 00 5F 21 2C 12 19 32 00 11 A8 4C 68 CE E4 C5 
+        A4 38 4A 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:13:99
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        31 00 5F 21 2C 12 19 32 00 11 A8 4C 68 CE E4 C5 
+        A4 38 4A 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        32 00 5F 21 2C 12 19 32 00 11 A8 4C 68 CE E4 C5 
+        A4 38 4A 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        33 00 5F 21 2C 12 19 32 C8 11 A8 4B A1 CE E4 C5 
+        A2 38 68 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        34 00 5F 21 2C 12 19 32 C8 11 A8 4B A1 CE E4 C5 
+        A2 38 68 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        35 00 5F 21 2C 12 19 32 C8 11 A8 4B A1 CE E4 C5 
+        A2 38 68 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        36 00 5F 21 2C 12 19 32 C8 11 A8 4B A1 CE E4 C5 
+        A2 38 68 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        37 00 5F 21 2C 12 19 33 90 11 A8 4A D8 CE E4 C5 
+        A2 38 3F 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        38 00 5F 21 2C 12 19 33 90 11 A8 4A D8 CE E4 C5 
+        A2 38 3F 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        39 00 5F 21 2C 12 19 33 90 11 A8 4A D8 CE E4 C5 
+        A2 38 3F 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3A 00 5F 21 2C 12 19 33 90 11 A8 4A D8 CE E4 C5 
+        A2 38 3F 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3B 00 5F 21 2C 12 19 34 58 11 A8 4A 09 CE E4 C5 
+        A1 38 3C 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3C 00 5F 21 2C 12 19 34 58 11 A8 4A 09 CE E4 C5 
+        A1 38 3C 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3D 00 5F 21 2C 12 19 34 58 11 A8 4A 09 CE E4 C5 
+        A1 38 3C 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3E 00 5F 21 2C 12 19 34 58 11 A8 4A 09 CE E4 C5 
+        A1 38 3C 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3F 00 5F 21 2C 12 19 35 20 11 A8 49 35 CE E4 C5 
+        A1 38 48 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        40 00 5F 21 2C 12 19 35 20 11 A8 49 35 CE E4 C5 
+        A1 38 48 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        41 00 5F 21 2C 12 19 35 20 11 A8 49 35 CE E4 C5 
+        A1 38 48 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        42 00 5F 21 2C 12 19 35 20 11 A8 49 35 CE E4 C5 
+        A1 38 48 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        43 00 5F 21 2C 12 19 35 E8 11 A8 48 5E CE E4 C5 
+        A1 38 38 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:14:49
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        44 00 5F 21 2C 12 19 35 E8 11 A8 48 5E CE E4 C5 
+        A1 38 38 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+<START>2017-04-13 18:25:14:99
+CSM Tx...
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        45 00 5F 21 2C 12 19 35 E8 11 A8 48 5E CE E4 C5 
+        A1 38 38 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        46 00 5F 21 2C 12 19 35 E8 11 A8 48 5E CE E4 C5 
+        A1 38 38 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        47 00 5F 21 2C 12 19 36 B0 11 A8 47 84 CE E4 C5 
+        A1 38 34 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        48 00 5F 21 2C 12 19 36 B0 11 A8 47 84 CE E4 C5 
+        A1 38 34 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        49 00 5F 21 2C 12 19 36 B0 11 A8 47 84 CE E4 C5 
+        A1 38 34 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4A 00 5F 21 2C 12 19 36 B0 11 A8 47 84 CE E4 C5 
+        A1 38 34 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4B 00 5F 21 2C 12 19 37 78 11 A8 46 A5 CE E4 C5 
+        A1 38 36 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4C 00 5F 21 2C 12 19 37 78 11 A8 46 A5 CE E4 C5 
+        A1 38 36 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4D 00 5F 21 2C 12 19 37 78 11 A8 46 A5 CE E4 C5 
+        A1 38 36 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4E 00 5F 21 2C 12 19 37 78 11 A8 46 A5 CE E4 C5 
+        A1 38 36 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4F 00 5F 21 2C 12 19 38 40 11 A8 45 C2 CE E4 C5 
+        A1 38 3B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        50 00 5F 21 2C 12 19 38 40 11 A8 45 C2 CE E4 C5 
+        A1 38 3B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        51 00 5F 21 2C 12 19 38 40 11 A8 45 C2 CE E4 C5 
+        A1 38 3B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        52 00 5F 21 2C 12 19 38 40 11 A8 45 C2 CE E4 C5 
+        A1 38 3B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        53 00 5F 21 2C 12 19 39 08 11 A8 44 DC CE E4 C5 
+        9F 38 3E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        54 00 5F 21 2C 12 19 39 08 11 A8 44 DC CE E4 C5 
+        9F 38 3E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        55 00 5F 21 2C 12 19 39 08 11 A8 44 DC CE E4 C5 
+        9F 38 3E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        56 00 5F 21 2C 12 19 39 08 11 A8 44 DC CE E4 C5 
+        9F 38 3E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        57 00 5F 21 2C 12 19 39 08 11 A8 44 DC CE E4 C5 
+        9F 38 3E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        58 00 5F 21 2C 12 19 39 D0 11 A8 43 F3 CE E4 C5 
+        9F 38 49 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        59 00 5F 21 2C 12 19 39 D0 11 A8 43 F3 CE E4 C5 
+        9F 38 49 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5A 00 5F 21 2C 12 19 39 D0 11 A8 43 F3 CE E4 C5 
+        9F 38 49 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5B 00 5F 21 2C 12 19 3A 98 11 A8 43 06 CE E4 C5 
+        9D 38 54 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5C 00 5F 21 2C 12 19 3A 98 11 A8 43 06 CE E4 C5 
+        9D 38 54 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5D 00 5F 21 2C 12 19 3A 98 11 A8 43 06 CE E4 C5 
+        9D 38 54 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5E 00 5F 21 2C 12 19 3A 98 11 A8 43 06 CE E4 C5 
+        9D 38 54 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5F 00 5F 21 2C 12 19 3B 60 11 A8 42 18 CE E4 C5 
+        9A 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        60 00 5F 21 2C 12 19 3B 60 11 A8 42 18 CE E4 C5 
+        9A 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        61 00 5F 21 2C 12 19 3B 60 11 A8 42 18 CE E4 C5 
+        9A 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        62 00 5F 21 2C 12 19 3B 60 11 A8 42 18 CE E4 C5 
+        9A 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        63 00 5F 21 2C 12 19 3C 28 11 A8 41 26 CE E4 C5 
+        98 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        64 00 5F 21 2C 12 19 3C 28 11 A8 41 26 CE E4 C5 
+        98 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        65 00 5F 21 2C 12 19 3C 28 11 A8 41 26 CE E4 C5 
+        98 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        66 00 5F 21 2C 12 19 3C 28 11 A8 41 26 CE E4 C5 
+        98 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        67 00 5F 21 2C 12 19 3C F0 11 A8 40 34 CE E4 C5 
+        95 38 64 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        68 00 5F 21 2C 12 19 3C F0 11 A8 40 34 CE E4 C5 
+        95 38 64 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        69 00 5F 21 2C 12 19 3C F0 11 A8 40 34 CE E4 C5 
+        95 38 64 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6A 00 5F 21 2C 12 19 3C F0 11 A8 40 34 CE E4 C5 
+        95 38 64 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6B 00 5F 21 2C 12 19 3D B8 11 A8 3F 41 CE E4 C5 
+        93 38 69 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6C 00 5F 21 2C 12 19 3D B8 11 A8 3F 41 CE E4 C5 
+        93 38 69 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6D 00 5F 21 2C 12 19 3D B8 11 A8 3F 41 CE E4 C5 
+        93 38 69 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6E 00 5F 21 2C 12 19 3D B8 11 A8 3F 41 CE E4 C5 
+        93 38 69 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6F 00 5F 21 2C 12 19 3E 80 11 A8 3E 4A CE E4 C5 
+        90 38 64 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        70 00 5F 21 2C 12 19 3E 80 11 A8 3E 4A CE E4 C5 
+        90 38 64 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        71 00 5F 21 2C 12 19 3E 80 11 A8 3E 4A CE E4 C5 
+        90 38 64 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        72 00 5F 21 2C 12 19 3E 80 11 A8 3E 4A CE E4 C5 
+        90 38 64 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        73 00 5F 21 2C 12 19 3F 48 11 A8 3D 50 CE E4 C5 
+        8E 38 5B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        74 00 5F 21 2C 12 19 3F 48 11 A8 3D 50 CE E4 C5 
+        8E 38 5B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        75 00 5F 21 2C 12 19 3F 48 11 A8 3D 50 CE E4 C5 
+        8E 38 5B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        76 00 5F 21 2C 12 19 3F 48 11 A8 3D 50 CE E4 C5 
+        8E 38 5B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        77 00 5F 21 2C 12 19 40 10 11 A8 3C 56 CE E4 C5 
+        8B 38 59 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        78 00 5F 21 2C 12 19 40 10 11 A8 3C 56 CE E4 C5 
+        8B 38 59 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        79 00 5F 21 2C 12 19 40 10 11 A8 3C 56 CE E4 C5 
+        8B 38 59 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7A 00 5F 21 2C 12 19 40 10 11 A8 3C 56 CE E4 C5 
+        8B 38 59 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7B 00 5F 21 2C 12 19 40 D8 11 A8 3B 5B CE E4 C5 
+        8B 38 4C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7C 00 5F 21 2C 12 19 40 D8 11 A8 3B 5B CE E4 C5 
+        8B 38 4C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7D 00 5F 21 2C 12 19 40 D8 11 A8 3B 5B CE E4 C5 
+        8B 38 4C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7E 00 5F 21 2C 12 19 40 D8 11 A8 3B 5B CE E4 C5 
+        8B 38 4C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7F 00 5F 21 2C 12 19 40 D8 11 A8 3B 5B CE E4 C5 
+        8B 38 4C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        00 00 5F 21 2C 12 19 41 A0 11 A8 3A 61 CE E4 C5 
+        87 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        01 00 5F 21 2C 12 19 41 A0 11 A8 3A 61 CE E4 C5 
+        87 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        02 00 5F 21 2C 12 19 41 A0 11 A8 3A 61 CE E4 C5 
+        87 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        03 00 5F 21 2C 12 19 42 68 11 A8 39 65 CE E4 C5 
+        86 38 64 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        04 00 5F 21 2C 12 19 42 68 11 A8 39 65 CE E4 C5 
+        86 38 64 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        05 00 5F 21 2C 12 19 42 68 11 A8 39 65 CE E4 C5 
+        86 38 64 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        06 00 5F 21 2C 12 19 42 68 11 A8 39 65 CE E4 C5 
+        86 38 64 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        07 00 5F 21 2C 12 19 43 30 11 A8 38 6D CE E4 C5 
+        84 38 52 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        08 00 5F 21 2C 12 19 43 30 11 A8 38 6D CE E4 C5 
+        84 38 52 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        09 00 5F 21 2C 12 19 43 30 11 A8 38 6D CE E4 C5 
+        84 38 52 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0A 00 5F 21 2C 12 19 43 30 11 A8 38 6D CE E4 C5 
+        84 38 52 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0B 00 5F 21 2C 12 19 43 F8 11 A8 37 74 CE E4 C5 
+        81 38 5F 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0C 00 5F 21 2C 12 19 43 F8 11 A8 37 74 CE E4 C5 
+        81 38 5F 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0D 00 5F 21 2C 12 19 43 F8 11 A8 37 74 CE E4 C5 
+        81 38 5F 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0E 00 5F 21 2C 12 19 43 F8 11 A8 37 74 CE E4 C5 
+        81 38 5F 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0F 00 5F 21 2C 12 19 44 C0 11 A8 36 7C CE E4 C5 
+        7F 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        10 00 5F 21 2C 12 19 44 C0 11 A8 36 7C CE E4 C5 
+        7F 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        11 00 5F 21 2C 12 19 44 C0 11 A8 36 7C CE E4 C5 
+        7F 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        12 00 5F 21 2C 12 19 44 C0 11 A8 36 7C CE E4 C5 
+        7F 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        13 00 5F 21 2C 12 19 45 88 11 A8 35 84 CE E4 C5 
+        7C 38 68 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        14 00 5F 21 2C 12 19 45 88 11 A8 35 84 CE E4 C5 
+        7C 38 68 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        15 00 5F 21 2C 12 19 45 88 11 A8 35 84 CE E4 C5 
+        7C 38 68 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        16 00 5F 21 2C 12 19 45 88 11 A8 35 84 CE E4 C5 
+        7C 38 68 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        17 00 5F 21 2C 12 19 46 50 11 A8 34 8D CE E4 C5 
+        7A 38 69 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        18 00 5F 21 2C 12 19 46 50 11 A8 34 8D CE E4 C5 
+        7A 38 69 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        19 00 5F 21 2C 12 19 46 50 11 A8 34 8D CE E4 C5 
+        7A 38 69 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1A 00 5F 21 2C 12 19 46 50 11 A8 34 8D CE E4 C5 
+        7A 38 69 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1B 00 5F 21 2C 12 19 47 18 11 A8 33 98 CE E4 C5 
+        77 38 6D 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1C 00 5F 21 2C 12 19 47 18 11 A8 33 98 CE E4 C5 
+        77 38 6D 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1D 00 5F 21 2C 12 19 47 18 11 A8 33 98 CE E4 C5 
+        77 38 6D 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1E 00 5F 21 2C 12 19 47 18 11 A8 33 98 CE E4 C5 
+        77 38 6D 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1F 00 5F 21 2C 12 19 47 E0 11 A8 32 A1 CE E4 C5 
+        73 38 63 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        20 00 5F 21 2C 12 19 47 E0 11 A8 32 A1 CE E4 C5 
+        73 38 63 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        21 00 5F 21 2C 12 19 47 E0 11 A8 32 A1 CE E4 C5 
+        73 38 63 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        22 00 5F 21 2C 12 19 47 E0 11 A8 32 A1 CE E4 C5 
+        73 38 63 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        23 00 5F 21 2C 12 19 48 A8 11 A8 31 AC CE E4 C5 
+        72 38 5A 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        24 00 5F 21 2C 12 19 48 A8 11 A8 31 AC CE E4 C5 
+        72 38 5A 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        25 00 5F 21 2C 12 19 48 A8 11 A8 31 AC CE E4 C5 
+        72 38 5A 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        26 00 5F 21 2C 12 19 48 A8 11 A8 31 AC CE E4 C5 
+        72 38 5A 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        27 00 5F 21 2C 12 19 48 A8 11 A8 31 AC CE E4 C5 
+        72 38 5A 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        28 00 5F 21 2C 12 19 49 70 11 A8 30 B9 CE E4 C5 
+        70 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        29 00 5F 21 2C 12 19 49 70 11 A8 30 B9 CE E4 C5 
+        70 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2A 00 5F 21 2C 12 19 49 70 11 A8 30 B9 CE E4 C5 
+        70 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2B 00 5F 21 2C 12 19 4A 38 11 A8 2F C6 CE E4 C5 
+        6E 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2C 00 5F 21 2C 12 19 4A 38 11 A8 2F C6 CE E4 C5 
+        6E 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2D 00 5F 21 2C 12 19 4A 38 11 A8 2F C6 CE E4 C5 
+        6E 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2E 00 5F 21 2C 12 19 4A 38 11 A8 2F C6 CE E4 C5 
+        6E 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2F 00 5F 21 2C 12 19 4B 00 11 A8 2E D1 CE E4 C5 
+        6B 38 5F 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        30 00 5F 21 2C 12 19 4B 00 11 A8 2E D1 CE E4 C5 
+        6B 38 5F 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        31 00 5F 21 2C 12 19 4B 00 11 A8 2E D1 CE E4 C5 
+        6B 38 5F 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        32 00 5F 21 2C 12 19 4B 00 11 A8 2E D1 CE E4 C5 
+        6B 38 5F 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        33 00 5F 21 2C 12 19 4B C8 11 A8 2D DD CE E4 C5 
+        69 38 5B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        34 00 5F 21 2C 12 19 4B C8 11 A8 2D DD CE E4 C5 
+        69 38 5B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        35 00 5F 21 2C 12 19 4B C8 11 A8 2D DD CE E4 C5 
+        69 38 5B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        36 00 5F 21 2C 12 19 4B C8 11 A8 2D DD CE E4 C5 
+        69 38 5B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        37 00 5F 21 2C 12 19 4C 90 11 A8 2C EA CE E4 C5 
+        68 38 5A 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        38 00 5F 21 2C 12 19 4C 90 11 A8 2C EA CE E4 C5 
+        68 38 5A 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        39 00 5F 21 2C 12 19 4C 90 11 A8 2C EA CE E4 C5 
+        68 38 5A 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3A 00 5F 21 2C 12 19 4C 90 11 A8 2C EA CE E4 C5 
+        68 38 5A 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3B 00 5F 21 2C 12 19 4D 58 11 A8 2B F5 CE E4 C5 
+        66 38 5A 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3C 00 5F 21 2C 12 19 4D 58 11 A8 2B F5 CE E4 C5 
+        66 38 5A 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3D 00 5F 21 2C 12 19 4D 58 11 A8 2B F5 CE E4 C5 
+        66 38 5A 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3E 00 5F 21 2C 12 19 4D 58 11 A8 2B F5 CE E4 C5 
+        66 38 5A 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3F 00 5F 21 2C 12 19 4E 20 11 A8 2B 00 CE E4 C5 
+        64 38 59 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        40 00 5F 21 2C 12 19 4E 20 11 A8 2B 00 CE E4 C5 
+        64 38 59 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        41 00 5F 21 2C 12 19 4E 20 11 A8 2B 00 CE E4 C5 
+        64 38 59 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        42 00 5F 21 2C 12 19 4E 20 11 A8 2B 00 CE E4 C5 
+        64 38 59 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        43 00 5F 21 2C 12 19 4E E8 11 A8 2A 0B CE E4 C5 
+        63 38 51 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        44 00 5F 21 2C 12 19 4E E8 11 A8 2A 0B CE E4 C5 
+        63 38 51 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        45 00 5F 21 2C 12 19 4E E8 11 A8 2A 0B CE E4 C5 
+        63 38 51 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        46 00 5F 21 2C 12 19 4E E8 11 A8 2A 0B CE E4 C5 
+        63 38 51 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        47 00 5F 21 2C 12 19 4F B0 11 A8 29 16 CE E4 C5 
+        61 38 50 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        48 00 5F 21 2C 12 19 4F B0 11 A8 29 16 CE E4 C5 
+        61 38 50 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        49 00 5F 21 2C 12 19 4F B0 11 A8 29 16 CE E4 C5 
+        61 38 50 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4A 00 5F 21 2C 12 19 4F B0 11 A8 29 16 CE E4 C5 
+        61 38 50 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4B 00 5F 21 2C 12 19 50 78 11 A8 28 21 CE E4 C5 
+        5F 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4C 00 5F 21 2C 12 19 50 78 11 A8 28 21 CE E4 C5 
+        5F 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4D 00 5F 21 2C 12 19 50 78 11 A8 28 21 CE E4 C5 
+        5F 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4E 00 5F 21 2C 12 19 50 78 11 A8 28 21 CE E4 C5 
+        5F 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4F 00 5F 21 2C 12 19 50 78 11 A8 28 21 CE E4 C5 
+        5F 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        50 00 5F 21 2C 12 19 51 40 11 A8 27 2F CE E4 C5 
+        5E 38 4C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        51 00 5F 21 2C 12 19 51 40 11 A8 27 2F CE E4 C5 
+        5E 38 4C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        52 00 5F 21 2C 12 19 51 40 11 A8 27 2F CE E4 C5 
+        5E 38 4C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        53 00 5F 21 2C 12 19 52 08 11 A8 26 3A CE E4 C5 
+        5A 38 5F 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        54 00 5F 21 2C 12 19 52 08 11 A8 26 3A CE E4 C5 
+        5A 38 5F 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        55 00 5F 21 2C 12 19 52 08 11 A8 26 3A CE E4 C5 
+        5A 38 5F 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        56 00 5F 21 2C 12 19 52 08 11 A8 26 3A CE E4 C5 
+        5A 38 5F 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        57 00 5F 21 2C 12 19 52 D0 11 A8 25 47 CE E4 C5 
+        59 38 61 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        58 00 5F 21 2C 12 19 52 D0 11 A8 25 47 CE E4 C5 
+        59 38 61 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        59 00 5F 21 2C 12 19 52 D0 11 A8 25 47 CE E4 C5 
+        59 38 61 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5A 00 5F 21 2C 12 19 52 D0 11 A8 25 47 CE E4 C5 
+        59 38 61 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5B 00 5F 21 2C 12 19 53 98 11 A8 24 55 CE E4 C5 
+        55 38 5E 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5C 00 5F 21 2C 12 19 53 98 11 A8 24 55 CE E4 C5 
+        55 38 5E 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5D 00 5F 21 2C 12 19 53 98 11 A8 24 55 CE E4 C5 
+        55 38 5E 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5E 00 5F 21 2C 12 19 53 98 11 A8 24 55 CE E4 C5 
+        55 38 5E 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5F 00 5F 21 2C 12 19 54 60 11 A8 23 62 CE E4 C5 
+        54 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        60 00 5F 21 2C 12 19 54 60 11 A8 23 62 CE E4 C5 
+        54 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        61 00 5F 21 2C 12 19 54 60 11 A8 23 62 CE E4 C5 
+        54 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        62 00 5F 21 2C 12 19 54 60 11 A8 23 62 CE E4 C5 
+        54 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        63 00 5F 21 2C 12 19 55 28 11 A8 22 70 CE E4 C5 
+        52 38 4B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        64 00 5F 21 2C 12 19 55 28 11 A8 22 70 CE E4 C5 
+        52 38 4B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        65 00 5F 21 2C 12 19 55 28 11 A8 22 70 CE E4 C5 
+        52 38 4B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        66 00 5F 21 2C 12 19 55 28 11 A8 22 70 CE E4 C5 
+        52 38 4B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        67 00 5F 21 2C 12 19 55 F0 11 A8 21 80 CE E4 C5 
+        50 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        68 00 5F 21 2C 12 19 55 F0 11 A8 21 80 CE E4 C5 
+        50 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        69 00 5F 21 2C 12 19 55 F0 11 A8 21 80 CE E4 C5 
+        50 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6A 00 5F 21 2C 12 19 55 F0 11 A8 21 80 CE E4 C5 
+        50 38 58 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6B 00 5F 21 2C 12 19 56 B8 11 A8 20 8F CE E4 C5 
+        4D 38 6D 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6C 00 5F 21 2C 12 19 56 B8 11 A8 20 8F CE E4 C5 
+        4D 38 6D 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6D 00 5F 21 2C 12 19 56 B8 11 A8 20 8F CE E4 C5 
+        4D 38 6D 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6E 00 5F 21 2C 12 19 56 B8 11 A8 20 8F CE E4 C5 
+        4D 38 6D 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6F 00 5F 21 2C 12 19 57 80 11 A8 1F A0 CE E4 C5 
+        4A 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        70 00 5F 21 2C 12 19 57 80 11 A8 1F A0 CE E4 C5 
+        4A 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        71 00 5F 21 2C 12 19 57 80 11 A8 1F A0 CE E4 C5 
+        4A 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        72 00 5F 21 2C 12 19 57 80 11 A8 1F A0 CE E4 C5 
+        4A 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        73 00 5F 21 2C 12 19 58 48 11 A8 1E B0 CE E4 C5 
+        46 38 68 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        74 00 5F 21 2C 12 19 58 48 11 A8 1E B0 CE E4 C5 
+        46 38 68 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        75 00 5F 21 2C 12 19 58 48 11 A8 1E B0 CE E4 C5 
+        46 38 68 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        76 00 5F 21 2C 12 19 58 48 11 A8 1E B0 CE E4 C5 
+        46 38 68 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        77 00 5F 21 2C 12 19 58 48 11 A8 1E B0 CE E4 C5 
+        46 38 68 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        78 00 5F 21 2C 12 19 59 10 11 A8 1D C4 CE E4 C5 
+        45 38 6B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        79 00 5F 21 2C 12 19 59 10 11 A8 1D C4 CE E4 C5 
+        45 38 6B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7A 00 5F 21 2C 12 19 59 10 11 A8 1D C4 CE E4 C5 
+        45 38 6B 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7B 00 5F 21 2C 12 19 59 D8 11 A8 1C D5 CE E4 C5 
+        41 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7C 00 5F 21 2C 12 19 59 D8 11 A8 1C D5 CE E4 C5 
+        41 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7D 00 5F 21 2C 12 19 59 D8 11 A8 1C D5 CE E4 C5 
+        41 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7E 00 5F 21 2C 12 19 59 D8 11 A8 1C D5 CE E4 C5 
+        41 38 65 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7F 00 5F 21 2C 12 19 5A A0 11 A8 1B EA CE E4 C5 
+        40 38 68 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        00 00 5F 21 2C 12 19 5A A0 11 A8 1B EA CE E4 C5 
+        40 38 68 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        01 00 5F 21 2C 12 19 5A A0 11 A8 1B EA CE E4 C5 
+        40 38 68 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        02 00 5F 21 2C 12 19 5A A0 11 A8 1B EA CE E4 C5 
+        40 38 68 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        03 00 5F 21 2C 12 19 5B 68 11 A8 1A FE CE E4 C5 
+        3C 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        04 00 5F 21 2C 12 19 5B 68 11 A8 1A FE CE E4 C5 
+        3C 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        05 00 5F 21 2C 12 19 5B 68 11 A8 1A FE CE E4 C5 
+        3C 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        06 00 5F 21 2C 12 19 5B 68 11 A8 1A FE CE E4 C5 
+        3C 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        07 00 5F 21 2C 12 19 5C 30 11 A8 1A 13 CE E4 C5 
+        3B 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        08 00 5F 21 2C 12 19 5C 30 11 A8 1A 13 CE E4 C5 
+        3B 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        09 00 5F 21 2C 12 19 5C 30 11 A8 1A 13 CE E4 C5 
+        3B 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0A 00 5F 21 2C 12 19 5C 30 11 A8 1A 13 CE E4 C5 
+        3B 38 5C 00 0D 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0B 00 5F 21 2C 12 19 5C F8 11 A8 19 29 CE E4 C5 
+        39 38 62 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0C 00 5F 21 2C 12 19 5C F8 11 A8 19 29 CE E4 C5 
+        39 38 62 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0D 00 5F 21 2C 12 19 5C F8 11 A8 19 29 CE E4 C5 
+        39 38 62 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0E 00 5F 21 2C 12 19 5C F8 11 A8 19 29 CE E4 C5 
+        39 38 62 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0F 00 5F 21 2C 12 19 5C F8 11 A8 19 29 CE E4 C5 
+        39 38 62 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        10 00 5F 21 2C 12 19 5D C0 11 A8 18 3E CE E4 C5 
+        37 38 4C 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        11 00 5F 21 2C 12 19 5D C0 11 A8 18 3E CE E4 C5 
+        37 38 4C 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        12 00 5F 21 2C 12 19 5D C0 11 A8 18 3E CE E4 C5 
+        37 38 4C 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        13 00 5F 21 2C 12 19 5E 88 11 A8 17 57 CE E4 C5 
+        36 38 4F 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        14 00 5F 21 2C 12 19 5E 88 11 A8 17 57 CE E4 C5 
+        36 38 4F 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        15 00 5F 21 2C 12 19 5E 88 11 A8 17 57 CE E4 C5 
+        36 38 4F 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        16 00 5F 21 2C 12 19 5E 88 11 A8 17 57 CE E4 C5 
+        36 38 4F 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        17 00 5F 21 2C 12 19 5F 50 11 A8 16 6D CE E4 C5 
+        36 38 46 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        18 00 5F 21 2C 12 19 5F 50 11 A8 16 6D CE E4 C5 
+        36 38 46 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        19 00 5F 21 2C 12 19 5F 50 11 A8 16 6D CE E4 C5 
+        36 38 46 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1A 00 5F 21 2C 12 19 5F 50 11 A8 16 6D CE E4 C5 
+        36 38 46 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1B 00 5F 21 2C 12 19 60 18 11 A8 15 87 CE E4 C5 
+        34 38 48 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1C 00 5F 21 2C 12 19 60 18 11 A8 15 87 CE E4 C5 
+        34 38 48 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1D 00 5F 21 2C 12 19 60 18 11 A8 15 87 CE E4 C5 
+        34 38 48 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1E 00 5F 21 2C 12 19 60 18 11 A8 15 87 CE E4 C5 
+        34 38 48 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1F 00 5F 21 2C 12 19 60 18 11 A8 15 87 CE E4 C5 
+        34 38 48 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        20 00 5F 21 2C 12 19 60 E0 11 A8 14 A0 CE E4 C5 
+        34 38 42 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        21 00 5F 21 2C 12 19 60 E0 11 A8 14 A0 CE E4 C5 
+        34 38 42 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        22 00 5F 21 2C 12 19 60 E0 11 A8 14 A0 CE E4 C5 
+        34 38 42 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        23 00 5F 21 2C 12 19 61 A8 11 A8 13 BA CE E4 C5 
+        34 38 3B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        24 00 5F 21 2C 12 19 61 A8 11 A8 13 BA CE E4 C5 
+        34 38 3B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        25 00 5F 21 2C 12 19 61 A8 11 A8 13 BA CE E4 C5 
+        34 38 3B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        26 00 5F 21 2C 12 19 61 A8 11 A8 13 BA CE E4 C5 
+        34 38 3B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        27 00 5F 21 2C 12 19 62 70 11 A8 12 D5 CE E4 C5 
+        34 38 3F 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        28 00 5F 21 2C 12 19 62 70 11 A8 12 D5 CE E4 C5 
+        34 38 3F 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        29 00 5F 21 2C 12 19 62 70 11 A8 12 D5 CE E4 C5 
+        34 38 3F 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2A 00 5F 21 2C 12 19 62 70 11 A8 12 D5 CE E4 C5 
+        34 38 3F 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2B 00 5F 21 2C 12 19 63 38 11 A8 11 F1 CE E4 C5 
+        32 38 40 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2C 00 5F 21 2C 12 19 63 38 11 A8 11 F1 CE E4 C5 
+        32 38 40 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2D 00 5F 21 2C 12 19 63 38 11 A8 11 F1 CE E4 C5 
+        32 38 40 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2E 00 5F 21 2C 12 19 63 38 11 A8 11 F1 CE E4 C5 
+        32 38 40 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2F 00 5F 21 2C 12 19 64 00 11 A8 11 0B CE E4 C5 
+        31 38 4D 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        30 00 5F 21 2C 12 19 64 00 11 A8 11 0B CE E4 C5 
+        31 38 4D 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        31 00 5F 21 2C 12 19 64 00 11 A8 11 0B CE E4 C5 
+        31 38 4D 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        32 00 5F 21 2C 12 19 64 00 11 A8 11 0B CE E4 C5 
+        31 38 4D 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        33 00 5F 21 2C 12 19 64 C8 11 A8 10 28 CE E4 C5 
+        2F 38 45 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        34 00 5F 21 2C 12 19 64 C8 11 A8 10 28 CE E4 C5 
+        2F 38 45 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        35 00 5F 21 2C 12 19 64 C8 11 A8 10 28 CE E4 C5 
+        2F 38 45 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        36 00 5F 21 2C 12 19 64 C8 11 A8 10 28 CE E4 C5 
+        2F 38 45 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        37 00 5F 21 2C 12 19 65 90 11 A8 0F 44 CE E4 C5 
+        2E 38 5C 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        38 00 5F 21 2C 12 19 65 90 11 A8 0F 44 CE E4 C5 
+        2E 38 5C 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        39 00 5F 21 2C 12 19 65 90 11 A8 0F 44 CE E4 C5 
+        2E 38 5C 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3A 00 5F 21 2C 12 19 65 90 11 A8 0F 44 CE E4 C5 
+        2E 38 5C 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3B 00 5F 21 2C 12 19 66 58 11 A8 0E 5C CE E4 C5 
+        2C 38 58 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3C 00 5F 21 2C 12 19 66 58 11 A8 0E 5C CE E4 C5 
+        2C 38 58 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3D 00 5F 21 2C 12 19 66 58 11 A8 0E 5C CE E4 C5 
+        2C 38 58 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3E 00 5F 21 2C 12 19 66 58 11 A8 0E 5C CE E4 C5 
+        2C 38 58 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3F 00 5F 21 2C 12 19 67 20 11 A8 0D 76 CE E4 C5 
+        2C 38 4E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        40 00 5F 21 2C 12 19 67 20 11 A8 0D 76 CE E4 C5 
+        2C 38 4E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        41 00 5F 21 2C 12 19 67 20 11 A8 0D 76 CE E4 C5 
+        2C 38 4E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        42 00 5F 21 2C 12 19 67 20 11 A8 0D 76 CE E4 C5 
+        2C 38 4E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        43 00 5F 21 2C 12 19 67 E8 11 A8 0C 8F CE E4 C5 
+        2A 38 52 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        44 00 5F 21 2C 12 19 67 E8 11 A8 0C 8F CE E4 C5 
+        2A 38 52 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        45 00 5F 21 2C 12 19 67 E8 11 A8 0C 8F CE E4 C5 
+        2A 38 52 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        46 00 5F 21 2C 12 19 67 E8 11 A8 0C 8F CE E4 C5 
+        2A 38 52 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        47 00 5F 21 2C 12 19 67 E8 11 A8 0C 8F CE E4 C5 
+        2A 38 52 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        48 00 5F 21 2C 12 19 68 B0 11 A8 0B A9 CE E4 C5 
+        27 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        49 00 5F 21 2C 12 19 68 B0 11 A8 0B A9 CE E4 C5 
+        27 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4A 00 5F 21 2C 12 19 68 B0 11 A8 0B A9 CE E4 C5 
+        27 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4B 00 5F 21 2C 12 19 69 78 11 A8 0A C1 CE E4 C5 
+        25 38 5B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4C 00 5F 21 2C 12 19 69 78 11 A8 0A C1 CE E4 C5 
+        25 38 5B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4D 00 5F 21 2C 12 19 69 78 11 A8 0A C1 CE E4 C5 
+        25 38 5B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4E 00 5F 21 2C 12 19 69 78 11 A8 0A C1 CE E4 C5 
+        25 38 5B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4F 00 5F 21 2C 12 19 6A 40 11 A8 09 D8 CE E4 C5 
+        23 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        50 00 5F 21 2C 12 19 6A 40 11 A8 09 D8 CE E4 C5 
+        23 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        51 00 5F 21 2C 12 19 6A 40 11 A8 09 D8 CE E4 C5 
+        23 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        52 00 5F 21 2C 12 19 6A 40 11 A8 09 D8 CE E4 C5 
+        23 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        53 00 5F 21 2C 12 19 6B 08 11 A8 08 F0 CE E4 C5 
+        22 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        54 00 5F 21 2C 12 19 6B 08 11 A8 08 F0 CE E4 C5 
+        22 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        55 00 5F 21 2C 12 19 6B 08 11 A8 08 F0 CE E4 C5 
+        22 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        56 00 5F 21 2C 12 19 6B 08 11 A8 08 F0 CE E4 C5 
+        22 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        57 00 5F 21 2C 12 19 6B D0 11 A8 08 07 CE E4 C5 
+        1E 38 66 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        58 00 5F 21 2C 12 19 6B D0 11 A8 08 07 CE E4 C5 
+        1E 38 66 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        59 00 5F 21 2C 12 19 6B D0 11 A8 08 07 CE E4 C5 
+        1E 38 66 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5A 00 5F 21 2C 12 19 6B D0 11 A8 08 07 CE E4 C5 
+        1E 38 66 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5B 00 5F 21 2C 12 19 6C 98 11 A8 07 1F CE E4 C5 
+        1B 38 64 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5C 00 5F 21 2C 12 19 6C 98 11 A8 07 1F CE E4 C5 
+        1B 38 64 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5D 00 5F 21 2C 12 19 6C 98 11 A8 07 1F CE E4 C5 
+        1B 38 64 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5E 00 5F 21 2C 12 19 6C 98 11 A8 07 1F CE E4 C5 
+        1B 38 64 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5F 00 5F 21 2C 12 19 6D 60 11 A8 06 34 CE E4 C5 
+        18 38 73 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        60 00 5F 21 2C 12 19 6D 60 11 A8 06 34 CE E4 C5 
+        18 38 73 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        61 00 5F 21 2C 12 19 6D 60 11 A8 06 34 CE E4 C5 
+        18 38 73 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        62 00 5F 21 2C 12 19 6D 60 11 A8 06 34 CE E4 C5 
+        18 38 73 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        63 00 5F 21 2C 12 19 6E 28 11 A8 05 4B CE E4 C5 
+        16 38 65 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        64 00 5F 21 2C 12 19 6E 28 11 A8 05 4B CE E4 C5 
+        16 38 65 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        65 00 5F 21 2C 12 19 6E 28 11 A8 05 4B CE E4 C5 
+        16 38 65 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        66 00 5F 21 2C 12 19 6E 28 11 A8 05 4B CE E4 C5 
+        16 38 65 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        67 00 5F 21 2C 12 19 6E F0 11 A8 04 60 CE E4 C5 
+        13 38 65 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        68 00 5F 21 2C 12 19 6E F0 11 A8 04 60 CE E4 C5 
+        13 38 65 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        69 00 5F 21 2C 12 19 6E F0 11 A8 04 60 CE E4 C5 
+        13 38 65 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6A 00 5F 21 2C 12 19 6E F0 11 A8 04 60 CE E4 C5 
+        13 38 65 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6B 00 5F 21 2C 12 19 6F B8 11 A8 03 76 CE E4 C5 
+        0F 38 6E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6C 00 5F 21 2C 12 19 6F B8 11 A8 03 76 CE E4 C5 
+        0F 38 6E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6D 00 5F 21 2C 12 19 6F B8 11 A8 03 76 CE E4 C5 
+        0F 38 6E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6E 00 5F 21 2C 12 19 6F B8 11 A8 03 76 CE E4 C5 
+        0F 38 6E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        6F 00 5F 21 2C 12 19 6F B8 11 A8 03 76 CE E4 C5 
+        0F 38 6E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        70 00 5F 21 2C 12 19 70 80 11 A8 02 8D CE E4 C5 
+        0F 38 56 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        71 00 5F 21 2C 12 19 70 80 11 A8 02 8D CE E4 C5 
+        0F 38 56 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        72 00 5F 21 2C 12 19 70 80 11 A8 02 8D CE E4 C5 
+        0F 38 56 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        73 00 5F 21 2C 12 19 71 48 11 A8 01 A4 CE E4 C5 
+        0C 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        74 00 5F 21 2C 12 19 71 48 11 A8 01 A4 CE E4 C5 
+        0C 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        75 00 5F 21 2C 12 19 71 48 11 A8 01 A4 CE E4 C5 
+        0C 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        76 00 5F 21 2C 12 19 71 48 11 A8 01 A4 CE E4 C5 
+        0C 38 60 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        77 00 5F 21 2C 12 19 72 10 11 A8 00 BA CE E4 C5 
+        09 38 6E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        78 00 5F 21 2C 12 19 72 10 11 A8 00 BA CE E4 C5 
+        09 38 6E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        79 00 5F 21 2C 12 19 72 10 11 A8 00 BA CE E4 C5 
+        09 38 6E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7A 00 5F 21 2C 12 19 72 10 11 A8 00 BA CE E4 C5 
+        09 38 6E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7B 00 5F 21 2C 12 19 72 D8 11 A7 FF D1 CE E4 C5 
+        07 38 69 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7C 00 5F 21 2C 12 19 72 D8 11 A7 FF D1 CE E4 C5 
+        07 38 69 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7D 00 5F 21 2C 12 19 72 D8 11 A7 FF D1 CE E4 C5 
+        07 38 69 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7E 00 5F 21 2C 12 19 72 D8 11 A7 FF D1 CE E4 C5 
+        07 38 69 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        7F 00 5F 21 2C 12 19 73 A0 11 A7 FE E9 CE E4 C5 
+        04 38 61 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        00 00 5F 21 2C 12 19 73 A0 11 A7 FE E9 CE E4 C5 
+        04 38 61 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        01 00 5F 21 2C 12 19 73 A0 11 A7 FE E9 CE E4 C5 
+        04 38 61 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        02 00 5F 21 2C 12 19 73 A0 11 A7 FE E9 CE E4 C5 
+        04 38 61 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        03 00 5F 21 2C 12 19 74 68 11 A7 FE 03 CE E4 C5 
+        00 38 7E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        04 00 5F 21 2C 12 19 74 68 11 A7 FE 03 CE E4 C5 
+        00 38 7E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        05 00 5F 21 2C 12 19 74 68 11 A7 FE 03 CE E4 C5 
+        00 38 7E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        06 00 5F 21 2C 12 19 74 68 11 A7 FE 03 CE E4 C5 
+        00 38 7E 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        07 00 5F 21 2C 12 19 75 30 11 A7 FD 1C CE E4 C4 
+        FF 38 5F 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        08 00 5F 21 2C 12 19 75 30 11 A7 FD 1C CE E4 C4 
+        FF 38 5F 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        09 00 5F 21 2C 12 19 75 30 11 A7 FD 1C CE E4 C4 
+        FF 38 5F 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0A 00 5F 21 2C 12 19 75 30 11 A7 FD 1C CE E4 C4 
+        FF 38 5F 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0B 00 5F 21 2C 12 19 75 F8 11 A7 FC 37 CE E4 C4 
+        FD 38 48 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0C 00 5F 21 2C 12 19 75 F8 11 A7 FC 37 CE E4 C4 
+        FD 38 48 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0D 00 5F 21 2C 12 19 75 F8 11 A7 FC 37 CE E4 C4 
+        FD 38 48 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0E 00 5F 21 2C 12 19 75 F8 11 A7 FC 37 CE E4 C4 
+        FD 38 48 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        0F 00 5F 21 2C 12 19 76 C0 11 A7 FB 51 CE E4 C4 
+        FA 38 73 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        10 00 5F 21 2C 12 19 76 C0 11 A7 FB 51 CE E4 C4 
+        FA 38 73 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        11 00 5F 21 2C 12 19 76 C0 11 A7 FB 51 CE E4 C4 
+        FA 38 73 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        12 00 5F 21 2C 12 19 76 C0 11 A7 FB 51 CE E4 C4 
+        FA 38 73 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        13 00 5F 21 2C 12 19 77 88 11 A7 FA 6D CE E4 C4 
+        F8 38 64 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        14 00 5F 21 2C 12 19 77 88 11 A7 FA 6D CE E4 C4 
+        F8 38 64 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        15 00 5F 21 2C 12 19 77 88 11 A7 FA 6D CE E4 C4 
+        F8 38 64 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        16 00 5F 21 2C 12 19 77 88 11 A7 FA 6D CE E4 C4 
+        F8 38 64 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        17 00 5F 21 2C 12 19 77 88 11 A7 FA 6D CE E4 C4 
+        F8 38 64 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        18 00 5F 21 2C 12 19 78 50 11 A7 F9 8A CE E4 C4 
+        F7 38 5B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        19 00 5F 21 2C 12 19 78 50 11 A7 F9 8A CE E4 C4 
+        F7 38 5B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1A 00 5F 21 2C 12 19 78 50 11 A7 F9 8A CE E4 C4 
+        F7 38 5B 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1B 00 5F 21 2C 12 19 79 18 11 A7 F8 A8 CE E4 C4 
+        F3 38 68 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1C 00 5F 21 2C 12 19 79 18 11 A7 F8 A8 CE E4 C4 
+        F3 38 68 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1D 00 5F 21 2C 12 19 79 18 11 A7 F8 A8 CE E4 C4 
+        F3 38 68 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1E 00 5F 21 2C 12 19 79 18 11 A7 F8 A8 CE E4 C4 
+        F3 38 68 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1F 00 5F 21 2C 12 19 79 E0 11 A7 F7 C7 CE E4 C4 
+        F1 38 53 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        20 00 5F 21 2C 12 19 79 E0 11 A7 F7 C7 CE E4 C4 
+        F1 38 53 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        21 00 5F 21 2C 12 19 79 E0 11 A7 F7 C7 CE E4 C4 
+        F1 38 53 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        22 00 5F 21 2C 12 19 79 E0 11 A7 F7 C7 CE E4 C4 
+        F1 38 53 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        23 00 5F 21 2C 12 19 7A A8 11 A7 F6 E9 CE E4 C4 
+        F0 38 4D 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        24 00 5F 21 2C 12 19 7A A8 11 A7 F6 E9 CE E4 C4 
+        F0 38 4D 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        25 00 5F 21 2C 12 19 7A A8 11 A7 F6 E9 CE E4 C4 
+        F0 38 4D 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        26 00 5F 21 2C 12 19 7A A8 11 A7 F6 E9 CE E4 C4 
+        F0 38 4D 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        27 00 5F 21 2C 12 19 7B 70 11 A7 F6 0D CE E4 C4 
+        EE 38 5C 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        28 00 5F 21 2C 12 19 7B 70 11 A7 F6 0D CE E4 C4 
+        EE 38 5C 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        29 00 5F 21 2C 12 19 7B 70 11 A7 F6 0D CE E4 C4 
+        EE 38 5C 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2A 00 5F 21 2C 12 19 7B 70 11 A7 F6 0D CE E4 C4 
+        EE 38 5C 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2B 00 5F 21 2C 12 19 7C 38 11 A7 F5 34 CE E4 C4 
+        F1 38 02 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2C 00 5F 21 2C 12 19 7C 38 11 A7 F5 34 CE E4 C4 
+        F1 38 02 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2D 00 5F 21 2C 12 19 7C 38 11 A7 F5 34 CE E4 C4 
+        F1 38 02 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2E 00 5F 21 2C 12 19 7C 38 11 A7 F5 34 CE E4 C4 
+        F1 38 02 00 0C 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        2F 00 5F 21 2C 12 19 7D 00 11 A7 F4 5F CE E4 C4 
+        F5 37 F6 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        30 00 5F 21 2C 12 19 7D 00 11 A7 F4 5F CE E4 C4 
+        F5 37 F6 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        31 00 5F 21 2C 12 19 7D 00 11 A7 F4 5F CE E4 C4 
+        F5 37 F6 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        32 00 5F 21 2C 12 19 7D 00 11 A7 F4 5F CE E4 C4 
+        F5 37 F6 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        33 00 5F 21 2C 12 19 7D C8 11 A7 F3 8B CE E4 C4 
+        FD 37 B3 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        34 00 5F 21 2C 12 19 7D C8 11 A7 F3 8B CE E4 C4 
+        FD 37 B3 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        35 00 5F 21 2C 12 19 7D C8 11 A7 F3 8B CE E4 C4 
+        FD 37 B3 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        36 00 5F 21 2C 12 19 7D C8 11 A7 F3 8B CE E4 C4 
+        FD 37 B3 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        37 00 5F 21 2C 12 19 7E 90 11 A7 F2 BB CE E4 C5 
+        05 37 98 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        38 00 5F 21 2C 12 19 7E 90 11 A7 F2 BB CE E4 C5 
+        05 37 98 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        39 00 5F 21 2C 12 19 7E 90 11 A7 F2 BB CE E4 C5 
+        05 37 98 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3A 00 5F 21 2C 12 19 7E 90 11 A7 F2 BB CE E4 C5 
+        05 37 98 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3B 00 5F 21 2C 12 19 7F 58 11 A7 F1 EC CE E4 C5 
+        0F 37 63 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3C 00 5F 21 2C 12 19 7F 58 11 A7 F1 EC CE E4 C5 
+        0F 37 63 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3D 00 5F 21 2C 12 19 7F 58 11 A7 F1 EC CE E4 C5 
+        0F 37 63 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3E 00 5F 21 2C 12 19 7F 58 11 A7 F1 EC CE E4 C5 
+        0F 37 63 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        3F 00 5F 21 2C 12 19 7F 58 11 A7 F1 EC CE E4 C5 
+        0F 37 63 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        40 00 5F 21 2C 12 19 80 20 11 A7 F1 21 CE E4 C5 
+        1B 37 53 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        41 00 5F 21 2C 12 19 80 20 11 A7 F1 21 CE E4 C5 
+        1B 37 53 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        42 00 5F 21 2C 12 19 80 20 11 A7 F1 21 CE E4 C5 
+        1B 37 53 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        43 00 5F 21 2C 12 19 80 E8 11 A7 F0 54 CE E4 C5 
+        28 37 45 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        44 00 5F 21 2C 12 19 80 E8 11 A7 F0 54 CE E4 C5 
+        28 37 45 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        45 00 5F 21 2C 12 19 80 E8 11 A7 F0 54 CE E4 C5 
+        28 37 45 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        46 00 5F 21 2C 12 19 80 E8 11 A7 F0 54 CE E4 C5 
+        28 37 45 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        47 00 5F 21 2C 12 19 81 B0 11 A7 EF 89 CE E4 C5 
+        36 37 34 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        48 00 5F 21 2C 12 19 81 B0 11 A7 EF 89 CE E4 C5 
+        36 37 34 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        49 00 5F 21 2C 12 19 81 B0 11 A7 EF 89 CE E4 C5 
+        36 37 34 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4A 00 5F 21 2C 12 19 81 B0 11 A7 EF 89 CE E4 C5 
+        36 37 34 00 0B 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4B 00 5F 21 2C 12 19 82 78 11 A7 EE C6 CE E4 C5 
+        46 36 DD 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4C 00 5F 21 2C 12 19 82 78 11 A7 EE C6 CE E4 C5 
+        46 36 DD 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4D 00 5F 21 2C 12 19 82 78 11 A7 EE C6 CE E4 C5 
+        46 36 DD 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4E 00 5F 21 2C 12 19 82 78 11 A7 EE C6 CE E4 C5 
+        46 36 DD 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        4F 00 5F 21 2C 12 19 83 40 11 A7 EE 04 CE E4 C5 
+        57 36 F0 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        50 00 5F 21 2C 12 19 83 40 11 A7 EE 04 CE E4 C5 
+        57 36 F0 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        51 00 5F 21 2C 12 19 83 40 11 A7 EE 04 CE E4 C5 
+        57 36 F0 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        52 00 5F 21 2C 12 19 83 40 11 A7 EE 04 CE E4 C5 
+        57 36 F0 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        53 00 5F 21 2C 12 19 84 08 11 A7 ED 41 CE E4 C5 
+        66 37 06 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        54 00 5F 21 2C 12 19 84 08 11 A7 ED 41 CE E4 C5 
+        66 37 06 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        55 00 5F 21 2C 12 19 84 08 11 A7 ED 41 CE E4 C5 
+        66 37 06 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        56 00 5F 21 2C 12 19 84 08 11 A7 ED 41 CE E4 C5 
+        66 37 06 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        57 00 5F 21 2C 12 19 84 D0 11 A7 EC 80 CE E4 C5 
+        73 37 1C 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        58 00 5F 21 2C 12 19 84 D0 11 A7 EC 80 CE E4 C5 
+        73 37 1C 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        59 00 5F 21 2C 12 19 84 D0 11 A7 EC 80 CE E4 C5 
+        73 37 1C 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5A 00 5F 21 2C 12 19 84 D0 11 A7 EC 80 CE E4 C5 
+        73 37 1C 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5B 00 5F 21 2C 12 19 85 98 11 A7 EB C4 CE E4 C5 
+        82 37 1F 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5C 00 5F 21 2C 12 19 85 98 11 A7 EB C4 CE E4 C5 
+        82 37 1F 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5D 00 5F 21 2C 12 19 85 98 11 A7 EB C4 CE E4 C5 
+        82 37 1F 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5E 00 5F 21 2C 12 19 85 98 11 A7 EB C4 CE E4 C5 
+        82 37 1F 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        5F 00 5F 21 2C 12 19 86 60 11 A7 EB 0B CE E4 C5 
+        8E 37 28 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        60 00 5F 21 2C 12 19 86 60 11 A7 EB 0B CE E4 C5 
+        8E 37 28 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        61 00 5F 21 2C 12 19 86 60 11 A7 EB 0B CE E4 C5 
+        8E 37 28 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        62 00 5F 21 2C 12 19 86 60 11 A7 EB 0B CE E4 C5 
+        8E 37 28 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        63 00 5F 21 2C 12 19 87 28 11 A7 EA 50 CE E4 C5 
+        9A 37 3F 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>
+CSM Tx...
+
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        64 00 5F 21 2C 12 19 87 28 11 A7 EA 50 CE E4 C5 
+        9A 37 3F 00 0A 00 01 F4 00 64 01 2C 00
+    </blob1>
+</ConnectedSafetyMessage>

@@ -9,6 +9,7 @@ import time
 import sensible.util.ops as ops
 
 from sensible.sensors.DSRC import DSRC
+from sensible.tracking.vehicle_type import VehicleType
 
 from .sensor_emulator import SensorEmulator
 
@@ -30,27 +31,37 @@ def test_xml_parsing():
         assert len(data) == 58
 
 
-def test_csm_parsing0():
-    """Test that a csm can be parsed correctly."""
+# def test_csm_parsing0():
+#     """Test that a csm can be parsed correctly."""
+#     dsrc = DSRC("", remote_port=4200, local_port=6666)
+#
+#     with open("data/csm-nb.txt") as f:
+#         csm = f.read()
+#         result = dsrc.parse(csm)
+#
+#         assert result['msg_count'] == 126
+#         assert result['id'] == 779882017
+#         assert result['lane'] == 8
+#         assert result['max_accel'] == 3.0
+#         assert result['max_decel'] == -3.0
+#         assert result['h'] == 0
+#         assert result['m'] == 0
+#         assert result['s'] == 0
+#         assert result['speed'] == 8
+#         assert result['lat'] == 29.644256
+#         assert result['lon'] == -82.346891
+#         assert result['heading'] == 0.0
+#         assert result['served'] == 0
+#
+#         assert DSRC.get_default_vehicle_type(id=result['id']) == VehicleType.AUTOMATED
+
+
+def test_csm_parsing2():
     dsrc = DSRC("", remote_port=4200, local_port=6666)
 
-    with open("data/csm-nb.txt") as f:
+    with open("data/4-28-csmtest.txt") as f:
         csm = f.read()
         result = dsrc.parse(csm)
-
-        assert result['msg_count'] == 126
-        assert result['veh_id'] == '2E7C0E21'
-        assert result['lane'] == 8
-        assert result['max_accel'] == 3.0
-        assert result['max_decel'] == -3.0
-        assert result['h'] == 0
-        assert result['m'] == 0
-        assert result['s'] == 0
-        assert result['speed'] == 8
-        assert result['lat'] == 29.644256
-        assert result['lon'] == -82.346891
-        assert result['heading'] == 0.0
-        assert result['served'] == 0
 
 
 def test_csm_parsing1():
@@ -85,7 +96,7 @@ def test_push_msg0():
 
     test0 = {
         'msg_count': 0,
-        'veh_id': 123,
+        'id': 123,
         'h': 8,
         'm': 16,
         's': 32000.00,
@@ -102,7 +113,7 @@ def test_push_msg0():
 
     test1 = {
         'msg_count': 0,
-        'veh_id': 123,
+        'id': 123,
         'h': 8,
         'm': 16,
         's': 32000.00,

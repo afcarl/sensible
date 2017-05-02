@@ -9,7 +9,8 @@ from sensible.sensors.sensible_threading import StoppableThread
 
 class SensorEmulator(StoppableThread):
     """Utility class for emulating a DSRC radio. Used for testing."""
-    def __init__(self, port, pub_freq, file_names, delim=None, loop=True, delay=0, name="RadioEmulator"):
+    def __init__(self, port, pub_freq, file_names, delim=None, loop=True,
+                 delay=0, use_pickle=False, start=0, name="RadioEmulator"):
         """
         Constructor for SensorEmulator
 
@@ -34,6 +35,8 @@ class SensorEmulator(StoppableThread):
         self._delim = delim
         self._loop = loop
         self._delay = delay
+        self._use_pickle = use_pickle
+        self._start = start
 
         if self._loop:
             assert len(self._fname) == 1, "Provide only 1 file for Looping mode"
@@ -51,14 +54,18 @@ class SensorEmulator(StoppableThread):
         """
         time.sleep(self._delay)
 
-        msgs = []
-        for f in self._fname:
-            csm_file = open(f, 'r')
-            if self._delim is not None:
-                msgs.append(csm_file.read().split(self._delim))
-            else:
-                msgs.append(csm_file.read())
-            csm_file.close()
+        if self._use_pickle:
+            msgs = ops.load_pkl(self._fname[0])
+        else:
+            msgs = []
+            for f in self._fname:
+
+                csm_file = open(f, 'r')
+                if self._delim is not None:
+                    msgs.append(csm_file.read().split(self._delim))
+                else:
+                    msgs.append(csm_file.read())
+                csm_file.close()
 
         if self._loop:
             msg = msgs[0]
@@ -71,12 +78,13 @@ class SensorEmulator(StoppableThread):
 
             flattened_msgs = ops.merge_n_lists(msgs)
 
-            for i in flattened_msgs:
+            for i in range(self._start, len(flattened_msgs)):
+                msg = flattened_msgs[i]
                 if self.stopped():
                     break
-                if i == "":
+                if msg == "":
                     continue
-                self._socket.sendto(i, ("localhost", self._port))
+                self._socket.sendto(msg, ("localhost", self._port))
                 time.sleep(1 / self._pub_freq)
             self._socket.close()
 

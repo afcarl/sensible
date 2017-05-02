@@ -6,6 +6,7 @@ import zmq
 from sensible.sensors.sensible_threading import StoppableThread
 from sensible.tracking.track_specialist import TrackSpecialist
 from sensible.tracking.track_state import TrackState
+from sensible.sensors.DSRC import DSRC
 
 
 class MockSensor(StoppableThread):
@@ -38,7 +39,7 @@ def fake_msg():
     """Return a fake DSRC message for tests"""
     return {
         'msg_count': 0,
-        'veh_id': '00000111',
+        'id': 123,
         'h': 14,
         'm': 14,
         's': 14,
@@ -60,7 +61,7 @@ def get_track_specialist(tmpdir, bsm_port=6669, run_for=20.0, frequency=5):
     topic_filters = ["DSRC", "Radar"]
     sensors = {'sensor_ports': sensor_ports, 'topic_filters': topic_filters}
     p = tmpdir.mkdir("logs").join("test.txt")
-    return TrackSpecialist(sensors, bsm_port, run_for, p, frequency)
+    return TrackSpecialist(sensors, bsm_port, run_for, p, frequency=frequency)
 
 
 def test_initialize_track_specialist(tmpdir):
@@ -104,8 +105,9 @@ def test_track_drop(tmpdir):
         2.  Tracks that don't receive new measurements are dropped."""
     track_specialist = get_track_specialist(tmpdir, run_for=3)
     msg = fake_msg()
-    track_specialist.create_track(msg)
-    track = track_specialist.track_list[msg['veh_id']]
+    track_specialist.create_track(msg, DSRC.topic())
+    track_id = track_specialist.sensor_id_map[msg['id']]
+    track = track_specialist.track_list[track_id]
     assert track.n_consecutive_measurements == 1
     assert track.n_consecutive_missed == 0
 
@@ -113,7 +115,8 @@ def test_track_drop(tmpdir):
     track_specialist.run()
 
     assert track.track_state == TrackState.DEAD
-    assert msg['veh_id'] not in track_specialist.track_list
+    assert msg['id'] not in track_specialist.sensor_id_map
+    assert track_id not in track_specialist.track_list
 
 
 def test_track_creation(tmpdir):
@@ -122,9 +125,10 @@ def test_track_creation(tmpdir):
     track_specialist.create_track(msg). """
     track_specialist = get_track_specialist(tmpdir)
     msg = fake_msg()
-    track_specialist.create_track(msg)
-    assert msg['veh_id'] in track_specialist.track_list
-    track = track_specialist.track_list[msg['veh_id']]
+    track_specialist.create_track(msg, DSRC.topic())
+    assert msg['id'] in track_specialist.sensor_id_map
+    track_id = track_specialist.sensor_id_map[msg['id']]
+    track = track_specialist.track_list[track_id]
     assert track.track_state == TrackState.UNCONFIRMED
     assert track.n_consecutive_measurements == 1
     assert track.n_consecutive_missed == 0
@@ -137,12 +141,13 @@ def test_vehicle_id_association(tmpdir):
     track_specialist = get_track_specialist(tmpdir)
     msg = fake_msg()
     # 1st message
-    track_specialist.create_track(msg)
-    track_specialist.track_list[msg['veh_id']].received_measurement = False
+    track_specialist.create_track(msg, DSRC.topic())
+    track_id = track_specialist.sensor_id_map[msg['id']]
+    track_specialist.track_list[track_id].received_measurement = False
     # 2nd message
     msg['s'] = 15
-    track_specialist.associate("DSRC", msg)
-    track = track_specialist.track_list[msg['veh_id']]
+    track_specialist.measurement_association("DSRC", msg)
+    track = track_specialist.track_list[track_id]
     assert track.track_state == TrackState.UNCONFIRMED
     assert track.n_consecutive_measurements == 2
     assert track.n_consecutive_missed == 0
@@ -155,10 +160,9 @@ def test_vehicle_id_association_no_match(tmpdir):
     track_specialist = get_track_specialist(tmpdir)
     msg = fake_msg()
     # Try to associate a new msg - should call create_track
-    track_specialist.associate("DSRC", msg)
-
-    assert msg['veh_id'] in track_specialist.track_list
-    track = track_specialist.track_list[msg['veh_id']]
+    track_specialist.measurement_association("DSRC", msg)
+    track_id = track_specialist.sensor_id_map[msg['id']]
+    track = track_specialist.track_list[track_id]
     assert track.track_state == TrackState.UNCONFIRMED
     assert track.n_consecutive_measurements == 1
     assert track.n_consecutive_missed == 0
@@ -179,14 +183,15 @@ def test_track_state_confirm(tmpdir):
     track_specialist = get_track_specialist(tmpdir)
     msg = fake_msg()
     # Try to associate a new msg - should call create_track
-    track_specialist.create_track(msg)
-    track = track_specialist.track_list[msg['veh_id']]
+    track_specialist.create_track(msg, DSRC.topic())
+    track_id = track_specialist.sensor_id_map[msg['id']]
+    track = track_specialist.track_list[track_id]
     track.received_measurement = False
     assert track.track_state == TrackState.UNCONFIRMED
     track.n_consecutive_measurements = track_specialist.track_confirmation_threshold
     # One more message than the threshold causes the state to change
     # to CONFIRMED
-    track_specialist.associate("DSRC", msg)
+    track_specialist.measurement_association("DSRC", msg)
     assert track.track_state == TrackState.CONFIRMED
 
 
@@ -200,19 +205,20 @@ def test_track_state_zombie_to_unconfirmed(tmpdir):
     track_specialist = get_track_specialist(tmpdir, run_for=0.8)
     msg = fake_msg()
     # Try to associate a new msg - should call create_track
-    track_specialist.create_track(msg)
-    track = track_specialist.track_list[msg['veh_id']]
+    track_specialist.create_track(msg, DSRC.topic())
+    track_id = track_specialist.sensor_id_map[msg['id']]
+    track = track_specialist.track_list[track_id]
     assert track.track_state == TrackState.UNCONFIRMED
 
     # run for 0.8 seconds
     track_specialist.run()
 
-    assert msg['veh_id'] in track_specialist.track_list
+    assert track_id in track_specialist.track_list
     assert track.track_state == TrackState.ZOMBIE
     assert track.n_consecutive_missed == 3
 
 
-def test_track_state_zombie_to_confirmed(tmpdir):
+def test_track_state_confirmed_to_zombie(tmpdir):
     """This tests that a CONFIRMED track
     becomes a ZOMBIE after missing N consecutive messages,
     where N is the zombie threshold."""
@@ -221,22 +227,23 @@ def test_track_state_zombie_to_confirmed(tmpdir):
     # received_msg is set to 1 for one iteration of the loop
     track_specialist = get_track_specialist(tmpdir, run_for=0.8)
     msg = fake_msg()
-    # Try to associate a new msg - should call create_track
-    track_specialist.create_track(msg)
-    track = track_specialist.track_list[msg['veh_id']]
+    track_specialist.create_track(msg, DSRC.topic())
+    track_id = track_specialist.sensor_id_map[msg['id']]
+    track = track_specialist.track_list[track_id]
     assert track.track_state == TrackState.UNCONFIRMED
     track.step()
+    track.fuse_empty()
     track.received_measurement = False
 
     track.n_consecutive_measurements = track_specialist.track_confirmation_threshold
-    track_specialist.associate("DSRC", msg)
+    track_specialist.measurement_association("DSRC", msg)
 
     assert track.track_state == TrackState.CONFIRMED
 
     # run for 0.8 seconds
     track_specialist.run()
 
-    assert msg['veh_id'] in track_specialist.track_list
+    assert track_id in track_specialist.track_list
     assert track.track_state == TrackState.ZOMBIE
     assert track.n_consecutive_missed == 3
 
@@ -247,17 +254,15 @@ def test_track_recovery(tmpdir):
     before it is deleted"""
     track_specialist = get_track_specialist(tmpdir, run_for=0.8)
     msg = fake_msg()
-    # Try to associate a new msg - should call create_track
-    track_specialist.create_track(msg)
-    track = track_specialist.track_list[msg['veh_id']]
+    track_specialist.create_track(msg, DSRC.topic())
+    track_id = track_specialist.sensor_id_map[msg['id']]
+    track = track_specialist.track_list[track_id]
     assert track.track_state == TrackState.UNCONFIRMED
-
-    # run for 0.8 seconds
     track_specialist.run()
 
     assert track.track_state == TrackState.ZOMBIE
 
-    track_specialist.associate("DSRC", msg)
+    track_specialist.measurement_association("DSRC", msg)
 
     assert track.track_state == TrackState.UNCONFIRMED
     assert track.n_consecutive_measurements == 1

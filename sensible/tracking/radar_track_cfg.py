@@ -13,6 +13,7 @@ class RadarTrackCfg:
     def __init__(self, dt):
         self.z = 3.49  # z-score corresponding to 95 %
         self.dt = dt
+        self.state_dim = 2
 
         # should cover the min and max acceleration of any vehicle
         # that will be tracked
@@ -28,32 +29,27 @@ class RadarTrackCfg:
                                        [(self.dt ** 3) / 2, self.dt ** 2]]))
 
         # variance of a gaussian distribution over a position (x,y) meters corresponding to += 3.5 m
-        sigma_1 = 7 / self.z  # actually is around +- 2.8 m, but mean is ~ 1.1 m
+        sigma_1 = 5 / self.z  # actually is around +- 2.8 m, but mean is ~ 1.1 m
         # variance corresponding to a standard normal
         sigma_2 = 0.5 / self.z  # 1 std dev is +- 0.25 m/s
 
         # measurement covariance
-        self.R = np.eye(2)
+        self.R = np.eye(self.state_dim)
         self.R[0][0] = sigma_1 ** 2
         self.R[1][1] = sigma_2 ** 2
 
         # Dynamics
-        self.F = np.eye(4)
-        self.F[0][1] = -self.dt
+        self.F = np.eye(self.state_dim)
+        self.F[0][1] = self.dt
 
         # initial state covariance
-        self.P = np.eye(2)
+        self.P = np.eye(self.state_dim)
 
     @staticmethod
     def parse_msg(msg):
         """
         Extract the values needed to run a Kalman Filter
         :param msg:
-        :return: measurement [x, xdot, y, ydot]
+        :return: measurement [y, ydot]
         """
-        # TODO: test
-        # invert data to place in right coordinate frame
-        y = msg['xPos'] + utm_n
-        y_dot = msg['xVel']
-
-        return np.array([y, y_dot])
+        return np.array([msg['yPos'], msg['speed']])

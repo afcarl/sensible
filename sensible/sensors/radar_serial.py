@@ -1,35 +1,30 @@
-import zmq
-import time
+from sensible.sensors.sensible_threading import SerialThread, StoppableThread
+import sensible.util.ops as ops
+from sensible.tracking.vehicle_type import VehicleType
+from sensible.tracking.radar_track_cfg import RadarTrackCfg
 from datetime import datetime
 
+import time
 import utm
-
-from collections import deque
-
-from sensible.sensors.sensible_threading import StoppableThread
-from sensible.sensors.sensible_threading import SensorThread
-from sensible.tracking.radar_track_cfg import RadarTrackCfg
-from sensible.tracking.vehicle_type import VehicleType
-from sensible.util import ops
 
 try:  # python 2.7
     import cPickle as pickle
 except ImportError:  # python 3.5 or 3.6
     import pickle
 
+import zmq
 
-class Radar(SensorThread):
-    """
-    Thread that listens for incoming Radar messages and pre-processes them.
-    Radar messages are "asynchronous"
-    """
-    def __init__(self, ip_address, remote_port, local_port,
-                 lane, radar_lat, radar_lon, verbose=False, name="Radar"):
-        super(Radar, self).__init__(ip_address, remote_port, msg_len=88, name=name)
-        self._queue = deque()
-        self._local_port = local_port
+from collections import deque
+
+
+class RadarSerial(SerialThread):
+    def __init__(self, port, baud, local_port, radar_lat, radar_lon, mode="Tracking", lane=2, verbose=False, name="Radar"):
+        super(RadarSerial, self).__init__(port, baud, name=name)
         self._verbose = verbose
+        self._local_port = local_port
+        self._queue = deque()
         self._lane = lane
+        self.mode = mode
         self.x, self.y, self.zone, self.letter = utm.from_latlon(radar_lat, radar_lon)
 
         class RadarSynchronizer(StoppableThread):
@@ -62,7 +57,7 @@ class Radar(SensorThread):
                             self._publisher.send_string("{} {}".format(self._topic, pickle.dumps(queued_msg)))
                             sent_ids.append(queued_msg['id'])
                             ops.show(' [RadarSync] Sent msg for veh: {} at second: {}'.format(queued_msg['id'],
-                                                                                             queued_msg['s']),
+                                                                                              queued_msg['s']),
                                      self._verbose)
                     # drop all messages
                     self._queue.clear()
@@ -102,57 +97,55 @@ class Radar(SensorThread):
         )
 
     @staticmethod
+    def zone_bsm(msg, track_id):
+
+        return "{},{},{},{},{},{},{},{},{},{},{},{}".format(
+            track_id,
+            msg['h'],
+            msg['m'],
+            msg['s'],
+            '0',  # meters easting
+            msg['yPos'],  # meters northing
+            msg['speed'],  # m/s
+            msg['lane'],
+            msg['veh_len'],
+            msg['max_accel'],
+            msg['max_decel'],
+            VehicleType.CONVENTIONAL
+        )
+
+    @staticmethod
     def get_default_vehicle_type(**kwargs):
         return VehicleType.UNKNOWN
 
     def parse(self, msg):
-        # DEBUG
+        # TODO: add lane number to msg
+        zone = msg['objZone']
+        if self.mode == "Zone" and zone == -1:
+            raise ValueError("Expected a zone number > 0")
+        if self.mode == "Tracking" and zone >= 0:
+            raise ValueError("Expected a zone number of -1")
+
+        #timestamp = msg['TimeStamp']
         dt = datetime.utcnow()
-
-        msg = msg.split(',')
-
-        t = msg[3].split(':')
-        #h = t[0]
-        #m = t[1]
-        #s = t[2] + t[3]
         h = dt.hour
         m = dt.minute
         s = dt.second * 1000 + round(dt.microsecond / 1000)
-        x_pos = self.x - float(msg[13])  # apply coordinate frame rotation
-        y_pos = self.y + float(msg[12])
-        speed = -ops.verify(-float(msg[15]), 6.25, 20.1)  # accept 14 mph to 45 mph
-        veh_len = msg[17]
-        veh_id = msg[18]
 
         return {
-            'id': veh_id,
+            'id': msg['objID'],
             'h': h,
             'm': m,
             's': s,
-            'xPos': x_pos,
-            'yPos': y_pos,
-            'speed': speed,
+            'xPos': self.x - msg['yPos'],
+            'yPos': self.y + msg['xPos'],
+            'speed': -ops.verify(-msg['ySpeed'], 6.25, 20.1),  # accept 14 mph to 45 mph ~
+            'veh_len': msg['objLength'],
             'lane': self._lane,
-            'veh_len': veh_len,
             'max_accel': 5,
-            'max_decel': -5
+            'max_decel': -5,
+            'zone': msg['objZone']
         }
-
-    def stop(self):
-        """Overrides the super class stop method, so explicitly
-        call it here."""
-        self._synchronizer.stop()
-        super(Radar, self).stop()
-
-    def connect(self):
-        super(Radar, self).connect()
-
-        # Start publishing outgoing parsed messages
-        self._synchronizer.start()
-
-    def push(self, msg):
-        """Process incoming data. Overrides StoppableThread's push method."""
-        self.add_to_queue(self.parse(msg))
 
     def add_to_queue(self, msg):
         """If the queue doesn't contain an identical message, add msg to the queue."""
@@ -162,3 +155,6 @@ class Radar(SensorThread):
                 return
         self._queue.append(msg)
 
+    def push(self, msg):
+        """Process incoming data. Overrides StoppableThread's push method."""
+        self.add_to_queue(self.parse(msg))

@@ -7,6 +7,8 @@ class DSRCTrackCfg:
     def __init__(self, dt):
         self.z = 3.49  # z-score corresponding to 95 %
         self.dt = dt
+        self.state_dim = 4
+
         # should cover the min and max acceleration of any vehicle
         # that will be tracked
         # max accel is +- 3 m/s^2
@@ -28,19 +30,19 @@ class DSRCTrackCfg:
         sigma_2 = 1 / self.z
 
         # measurement covariance
-        self.R = np.eye(4)
+        self.R = np.eye(self.state_dim)
         self.R[0][0] = sigma_1 ** 2
         self.R[1][1] = sigma_2 ** 2
         self.R[2][2] = sigma_1 ** 2
         self.R[3][3] = sigma_2 ** 2
 
         # Dynamics
-        self.F = np.eye(4)
+        self.F = np.eye(self.state_dim)
         self.F[0][1] = -self.dt
         self.F[2][3] = self.dt
 
         # initial state covariance
-        self.P = np.eye(4)
+        self.P = np.eye(self.state_dim)
 
     @staticmethod
     def parse_msg(msg):
