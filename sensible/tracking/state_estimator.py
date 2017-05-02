@@ -12,6 +12,7 @@ class StateEstimator(object):
     specific implementation.
 
     """
+
     def __init__(self, fused_track):
         self.y = []  # messages
         self.x_k = []  # filtered track state
@@ -109,7 +110,8 @@ class StateEstimator(object):
         # TODO: Add cross-cov terms
         ss, ts2 = self.state()
         if ts1 is not None:
-            print('Track A time: {}, Track B time: {}'.format(ts1.to_string(), ts2.to_string()))
+            print('Track A time: {}, Track B time: {}'.format(
+                ts1.to_string(), ts2.to_string()))
         PP = self.process_covariance()
 
         if np.shape(PP)[0] == 4:
@@ -124,7 +126,7 @@ class StateEstimator(object):
         if np.shape(s)[0] == 4:
             s = s[2:4]
 
-        print('Track A state: {}, Track B state: {}'.format(s, ss))
+        #print('Track A state: {}, Track B state: {}'.format(s, ss))
         dx = s - ss
         return np.matmul(dx.T, np.matmul(scipy.linalg.inv(PP + P), dx))
 

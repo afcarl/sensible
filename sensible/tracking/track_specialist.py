@@ -5,6 +5,7 @@ import zmq
 import time
 
 from sensible.sensors.DSRC import DSRC
+from sensible.sensors.radar import Radar
 from sensible.sensors.radar_serial import RadarSerial
 
 from sensible.util import ops
@@ -73,15 +74,18 @@ class TrackSpecialist:
                 topic_filter = topic_filter.decode('ascii')
             self._topic_filters.append(topic_filter)
             self._subscribers[topic_filter] = self._context.socket(zmq.SUB)
-            self._subscribers[topic_filter].connect("tcp://localhost:{}".format(port))
-            self._subscribers[topic_filter].setsockopt_string(zmq.SUBSCRIBE, topic_filter)
+            self._subscribers[topic_filter].connect(
+                "tcp://localhost:{}".format(port))
+            self._subscribers[topic_filter].setsockopt_string(
+                zmq.SUBSCRIBE, topic_filter)
 
         self._bsm_port = bsm_port
 
         # Open a socket for sending tracks
         self._bsm_writer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._bsm_writer.setblocking(0)
-        ops.show("  [*] Opened UDP socket connection to send BSMs to port {}".format(self._bsm_port), self._verbose)
+        ops.show("  [*] Opened UDP socket connection to send BSMs to port {}".format(
+            self._bsm_port), self._verbose)
 
     @property
     def subscribers(self):
@@ -154,33 +158,40 @@ class TrackSpecialist:
                         track.n_consecutive_missed += 1
 
                         if track.track_state == TrackState.ZOMBIE and \
-                                        track.n_consecutive_missed >= self.track_drop_threshold:
+                                track.n_consecutive_missed >= self.track_drop_threshold:
                             track.track_state = TrackState.DEAD
-                            # if the track is a fused track, tell the other track to stop fusing estimates with it
+                            # if the track is a fused track, tell the other
+                            # track to stop fusing estimates with it
                             if len(track.fused_track_ids) > 0:
                                 for fused_track_id in track.fused_track_ids:
-                                    # check if the track already got deleted during this iteration
+                                    # check if the track already got deleted
+                                    # during this iteration
                                     if fused_track_id in self._track_list:
-                                        # remove the track being deleted from the other track's fusion list
-                                        del self._track_list[fused_track_id].fused_track_ids[track_id]
+                                        # remove the track being deleted from
+                                        # the other track's fusion list
+                                        del self._track_list[
+                                            fused_track_id].fused_track_ids[track_id]
                                         # if the other track is no longer fusing estimates with any other track,
                                         # reset it's fusion state
                                         if len(self._track_list[fused_track_id].fused_track_ids) == 0:
-                                            self._track_list[fused_track_id].state_estimator.fused_track = False
+                                            self._track_list[
+                                                fused_track_id].state_estimator.fused_track = False
                             self.delete_track(track_id)
 
                         else:
                             # generate a new time stamp anyways
-                            prev_ts = track.state_estimator.t[track.state_estimator.k - 1]
-                            prev_ts.s = str(float(prev_ts.s) + track.state_estimator.sensor_kf.dt)
+                            prev_ts = track.state_estimator.t[
+                                track.state_estimator.k - 1]
+                            prev_ts.s = str(float(prev_ts.s) +
+                                            track.state_estimator.sensor_kf.dt)
                             track.state_estimator.store(msg=None, time=prev_ts)
                             # do a step without receiving a new measurement
                             # by propagating the predicted state
                             track.step()
 
                             if (track.track_state == TrackState.UNCONFIRMED or
-                                        track.track_state == TrackState.CONFIRMED) and \
-                                            track.n_consecutive_missed >= self.track_zombie_threshold:
+                                    track.track_state == TrackState.CONFIRMED) and \
+                                    track.n_consecutive_missed >= self.track_zombie_threshold:
                                 track.track_state = TrackState.ZOMBIE
 
                 # fuse estimates
@@ -212,7 +223,8 @@ class TrackSpecialist:
             self._logger.close()
         except Exception:
             print("  [!] Unable to close log file")
-        ops.show("  [*] Closed UDP port {}".format(self._bsm_port), self._verbose)
+        ops.show(
+            "  [*] Closed UDP port {}".format(self._bsm_port), self._verbose)
 
     def measurement_association(self, topic, msg):
         """
@@ -235,7 +247,8 @@ class TrackSpecialist:
             if result == 0x5:
                 # send BSM for new conventional vehicle.
                 try:
-                    self._bsm_writer.sendto(RadarSerial.zone_bsm(msg, self._sensor_id_idx), ("localhost", self._bsm_port))
+                    self._bsm_writer.sendto(RadarSerial.zone_bsm(
+                        msg, self._sensor_id_idx), ("localhost", self._bsm_port))
                     self._sensor_id_idx += 1
                 except socket.error as e:
                     # log the error
@@ -257,20 +270,23 @@ class TrackSpecialist:
                     track.store(msg, self._track_list)
 
                     if track.track_state == TrackState.UNCONFIRMED and \
-                                    track.n_consecutive_measurements >= \
-                                    self.track_confirmation_threshold:
+                            track.n_consecutive_measurements >= \
+                            self.track_confirmation_threshold:
                         track.track_state = TrackState.CONFIRMED
 
                         # attempt to fuse tracks
-                        result, match_id = self.track_association(self.track_list, track, verbose=self._verbose)
+                        result, match_id = self.track_association(
+                            self.track_list, track, verbose=self._verbose)
                         if result == 0x1:
                             track.type = VehicleType.CONVENTIONAL
                         elif result == 0x2:
-                            self.merge_tracks(dsrc_track_id=match_id, radar_track_id=track_id)
+                            self.merge_tracks(
+                                dsrc_track_id=match_id, radar_track_id=track_id)
                         elif result == 0x3:
                             pass  # nothing to do for this case
                         elif result == 0x4:
-                            self.merge_tracks(dsrc_track_id=track_id, radar_track_id=match_id)
+                            self.merge_tracks(
+                                dsrc_track_id=track_id, radar_track_id=match_id)
 
                     elif track.track_state == TrackState.ZOMBIE:
                         track.track_state = TrackState.UNCONFIRMED
@@ -292,14 +308,19 @@ class TrackSpecialist:
         if topic == DSRC.topic():
             sensor = DSRC
             fusion_method = tf.covariance_intersection
+        elif topic == Radar.topic():
+            sensor = Radar
         elif topic == RadarSerial.topic():
             sensor = RadarSerial
 
         self._sensor_id_map[msg['id']] = self._sensor_id_idx
         self._sensor_id_idx += 1
-        self._track_list[self._sensor_id_map[msg['id']]] = Track(self._period, msg, sensor, fusion_method)
-        self._track_list[self._sensor_id_map[msg['id']]].store(msg, self._track_list)
-        ops.show("  [*] Creating track {}".format(self._sensor_id_map[msg['id']]), self._verbose)
+        self._track_list[self._sensor_id_map[msg['id']]] = Track(
+            self._period, msg, sensor, fusion_method)
+        self._track_list[self._sensor_id_map[
+            msg['id']]].store(msg, self._track_list)
+        ops.show(
+            "  [*] Creating track {}".format(self._sensor_id_map[msg['id']]), self._verbose)
 
     def delete_track(self, track_id):
         """remove it from the track list."""
@@ -319,11 +340,13 @@ class TrackSpecialist:
         :param radar_track_id:
         :return:
         """
-        ops.show("  [*] fusing DSRC track {} and radar track {}".format(dsrc_track_id, radar_track_id), self._verbose)
+        ops.show("  [*] fusing DSRC track {} and radar track {}".format(
+            dsrc_track_id, radar_track_id), self._verbose)
         self._track_list[dsrc_track_id].state_estimator.fused_track = True
         self._track_list[dsrc_track_id].fused_track_ids.append(radar_track_id)
         # set the type of the radar track to be connected or automated
-        self._track_list[radar_track_id].type = DSRC.get_default_vehicle_type(id=dsrc_track_id)
+        self._track_list[radar_track_id].type = DSRC.get_default_vehicle_type(
+            id=dsrc_track_id)
         self._track_list[radar_track_id].fused_track_ids.append(dsrc_track_id)
 
     def send_bsms(self):
@@ -343,7 +366,7 @@ class TrackSpecialist:
                 else:
                     label = '1'
 
-                if track.sensor == RadarSerial:
+                if track.sensor == RadarSerial or track.sensor == Radar:
                     sens = "Radar"
                 elif track.sensor == DSRC:
                     sens = "DSRC"
@@ -359,7 +382,8 @@ class TrackSpecialist:
                         continue
                     else:
                         try:
-                            self._bsm_writer.sendto(track.sensor.bsm(track_id, track), ("localhost", self._bsm_port))
+                            self._bsm_writer.sendto(track.sensor.bsm(
+                                track_id, track), ("localhost", self._bsm_port))
                         except socket.error as e:
                             # log the error
                             print("  [*] Couldn't send BSM for track ["
