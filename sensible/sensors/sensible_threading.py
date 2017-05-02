@@ -113,7 +113,7 @@ class SerialThread(StoppableThread):
 
     def __init__(self, port, baud, name):
         super(SerialThread, self).__init__(name)
-        self.ser = serial.Serial(port=port, baud=baud, timeout=0)
+        self.ser = serial.Serial(port=port, baudrate=baud, timeout=0)
 
     @staticmethod
     def addZeros(data):
