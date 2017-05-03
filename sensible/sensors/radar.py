@@ -23,14 +23,17 @@ class Radar(SensorThread):
     Thread that listens for incoming Radar messages and pre-processes them.
     Radar messages are "asynchronous"
     """
+
     def __init__(self, ip_address, remote_port, local_port,
                  lane, radar_lat, radar_lon, verbose=False, name="Radar"):
-        super(Radar, self).__init__(ip_address, remote_port, msg_len=88, name=name)
+        super(Radar, self).__init__(ip_address,
+                                    remote_port, msg_len=88, name=name)
         self._queue = deque()
         self._local_port = local_port
         self._verbose = verbose
         self._lane = lane
-        self.x, self.y, self.zone, self.letter = utm.from_latlon(radar_lat, radar_lon)
+        self.x, self.y, self.zone, self.letter = utm.from_latlon(
+            radar_lat, radar_lon)
 
         class RadarSynchronizer(StoppableThread):
             """Publish messages from a thread-safe queue"""
@@ -59,10 +62,11 @@ class Radar(SensorThread):
                     sent_ids = []
                     for queued_msg in list(self._queue):
                         if queued_msg['id'] not in sent_ids:
-                            self._publisher.send_string("{} {}".format(self._topic, pickle.dumps(queued_msg)))
+                            self._publisher.send_string("{} {}".format(
+                                self._topic, pickle.dumps(queued_msg)))
                             sent_ids.append(queued_msg['id'])
                             ops.show(' [RadarSync] Sent msg for veh: {} at second: {}'.format(queued_msg['id'],
-                                                                                             queued_msg['s']),
+                                                                                              queued_msg['s']),
                                      self._verbose)
                     # drop all messages
                     self._queue.clear()
@@ -72,7 +76,8 @@ class Radar(SensorThread):
                     self.send()
                     time.sleep(1 / self._publish_freq)
 
-        self._synchronizer = RadarSynchronizer(self._queue, self._local_port, self.topic(), self._verbose)
+        self._synchronizer = RadarSynchronizer(
+            self._queue, self._local_port, self.topic(), self._verbose)
 
     @staticmethod
     def topic():
@@ -81,6 +86,24 @@ class Radar(SensorThread):
     @staticmethod
     def get_filter(dt):
         return RadarTrackCfg(dt)
+
+    @staticmethod
+    def zone_bsm(msg, track_id):
+
+        return "{},{},{},{},{},{},{},{},{},{},{},{}".format(
+            track_id,
+            msg['h'],
+            msg['m'],
+            msg['s'],
+            '0',  # meters easting
+            msg['yPos'],  # meters northing
+            msg['speed'],  # m/s
+            msg['lane'],
+            msg['veh_len'],
+            msg['max_accel'],
+            msg['max_decel'],
+            VehicleType.CONVENTIONAL
+        )
 
     @staticmethod
     def bsm(track_id, track):
@@ -120,7 +143,8 @@ class Radar(SensorThread):
         s = dt.second * 1000 + round(dt.microsecond / 1000)
         x_pos = self.x - float(msg[13])  # apply coordinate frame rotation
         y_pos = self.y + float(msg[12])
-        speed = -ops.verify(-float(msg[15]), 6.25, 20.1)  # accept 14 mph to 45 mph
+        # accept 14 mph to 45 mph
+        speed = -ops.verify(-float(msg[15]), 6.25, 20.1)
         veh_len = msg[17]
         veh_id = msg[18]
 
@@ -135,7 +159,8 @@ class Radar(SensorThread):
             'lane': self._lane,
             'veh_len': veh_len,
             'max_accel': 5,
-            'max_decel': -5
+            'max_decel': -5,
+            'objZone': -1
         }
 
     def stop(self):
@@ -161,4 +186,3 @@ class Radar(SensorThread):
                 # Found a duplicate
                 return
         self._queue.append(msg)
-
