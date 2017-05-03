@@ -25,14 +25,13 @@ class DSRC(SensorThread):
     """Thread that listens for incoming DSRC radio messages and pre-processes them.
     """
 
-    def __init__(self, ip_address, remote_port, local_port, parse_timestamp=False,
-                 verbose=False, msg_len=300, name="DSRC"):
+    def __init__(self, ip_address, remote_port, local_port,
+                 verbose=True, msg_len=300, name="DSRC"):
         super(DSRC, self).__init__(ip_address, remote_port, msg_len, name)
         self._queue = deque()
         self._local_port = local_port
         self._blob_len = 66
         self._verbose = verbose
-        self._parse_timestamp = parse_timestamp
 
         class DSRCSynchronizer(StoppableThread):
             """Publish messages from a thread-safe queue"""
@@ -100,7 +99,7 @@ class DSRC(SensorThread):
         :param msg:
         :return: parsed_msg
         """
-        msg = msg.split("\n", 2)[2]
+        msg = msg.split("\n", 1)[1]
 
         try:
             root = ElementTree.fromstring(msg)
@@ -110,33 +109,23 @@ class DSRC(SensorThread):
         blob1 = root.find('blob1')
         data = ''.join(blob1.text.split())
 
-        # if len(data) != self._blob_len:
-        #    raise Exception('Incorrect number of bytes in msg data')
-
         # convert hex values to decimal
-
         msg_count = int(data[0:2], 16)
         veh_id = int(data[2:10], 16)
-        # DEBUG
-        #dt = datetime.utcnow()
         h = ops.verify(int(data[10:12], 16), 0, 23)
         m = ops.verify(int(data[12:14], 16), 0, 59)
         s = ops.verify(int(data[14:18], 16), 0, 60000)  # ms
-        #h = dt.hour
-        #m = dt.minute
-        #s = dt.second * 1000 + round(dt.microsecond / 1000)
         lat = ops.verify(ops.twos_comp(int(data[18:26], 16), 32), -900000000, 900000000) * 1e-7
         lon = ops.verify(ops.twos_comp(int(data[26:34], 16), 32), -1799999999, 1800000000) * 1e-7
         heading = ops.verify(int(data[34:38], 16), 0, 28799) * 0.0125
-        speed = ops.verify(int(data[38:42], 16), 0, 8190)  # m/s
-        lane = int(data[42:44], 16)
-        veh_len = ops.verify(int(data[44:48], 16), 0, 16383) * 0.01  # m
-        max_accel = ops.verify(int(data[48:52], 16), 0, 2000) * 0.01  # m/s^2
-        max_decel = ops.verify(int(data[52:56], 16), 0, 2000) * -0.01  # m/s^2
-        served = int(data[56:58], 16)
-
-        # if served == 1:
-        #     raise Exception('vehicle {} already has a trajectory'.format(veh_id))
+	rms_lat = int(data[38:42], 16)
+	rms_lon = int(data[42:46], 16)
+	speed = ops.verify(int(data[46:50], 16), 0, 8190) * 0.02
+        lane = int(data[50:52], 16)
+        veh_len = ops.verify(int(data[52:56], 16), 0, 16383) * 0.01  # m
+        max_accel = ops.verify(int(data[56:60], 16), 0, 2000) * 0.01  # m/s^2
+        max_decel = ops.verify(int(data[60:64], 16), 0, 2000) * -0.01  # m/s^2
+	served = int(data[64:66], 16)
 
         return {
             'msg_count': msg_count,
