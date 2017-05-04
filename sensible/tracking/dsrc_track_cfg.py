@@ -24,7 +24,8 @@ class DSRCTrackCfg:
                                        [0, 0, (np.power(self.dt, 4) / 4), (np.power(self.dt, 3) / 2)],
                                        [0, 0, (np.power(self.dt, 3) / 2), np.power(self.dt, 2)]]))
 
-        # variance of a gaussian distribution over a position (x,y) meters corresponding to += 2 m
+        # variance of a gaussian distribution over a position (x,y) meters corresponding to += 1 m
+        # TODO: try 2 ?
         sigma_1 = 4 / self.z
         # variance corresponding to a standard normal (+= 1 m)
         sigma_2 = 1 / self.z

@@ -1,19 +1,19 @@
 from __future__ import division
 
 import socket
-import zmq
 import time
 
+import zmq
+
+import sensible.tracking.data_associator as data_associator
+import sensible.tracking.track_fusion as tf
+from radar_parsing.radar_serial import RadarSerial
 from sensible.sensors.DSRC import DSRC
 from sensible.sensors.radar import Radar
-from sensible.sensors.radar_serial import RadarSerial
-
-from sensible.util import ops
-import sensible.tracking.data_associator as data_associator
-from sensible.tracking.track_state import TrackState
 from sensible.tracking.track import Track
+from sensible.tracking.track_state import TrackState
 from sensible.tracking.vehicle_type import VehicleType
-import sensible.tracking.track_fusion as tf
+from sensible.util import ops
 
 try:  # python 2.7
     import cPickle as pickle

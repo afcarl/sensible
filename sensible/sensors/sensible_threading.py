@@ -3,7 +3,6 @@ import threading
 import socket
 import serial
 import binascii
-import time
 
 
 class StoppableThread(threading.Thread):
@@ -26,14 +25,22 @@ class StoppableThread(threading.Thread):
         return self._stopper.is_set()
 
 
-class SensorThread(StoppableThread):
+class SocketThread(StoppableThread):
     """Used for receiving data measurements from a sensor."""
 
-    def __init__(self, ip_address, port, msg_len, name):
-        super(SensorThread, self).__init__(name)
+    def __init__(self, sensor, ip_address, port, msg_len, name):
+        super(SocketThread, self).__init__(name)
+        self._sensor = sensor
         self._ip_address = ip_address
         self._port = port
         self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # open connection to incoming DSRC messages
+        try:
+            self._sock.bind((self._ip_address, self._port))
+            self._sock.setblocking(0)
+        except socket.error as e:
+            print(e)
+
         self._msg_len = msg_len
 
     def run(self):
@@ -51,70 +58,21 @@ class SensorThread(StoppableThread):
 
         self._sock.close()
 
-    def connect(self):
-        # open connection to incoming DSRC messages
-        try:
-            self._sock.bind((self._ip_address, self._port))
-            self._sock.setblocking(0)
-        except socket.error as e:
-            print(e)
-
     def push(self, msg):
         """
         Push the msg through the processing pipeline.
 
         Needs to be defined by the subclass
         """
-        raise NotImplementedError
-
-    @staticmethod
-    def topic():
-        """All sensors make accessible the topic of the message they are publishing."""
-        raise NotImplementedError
-
-    @staticmethod
-    def get_filter(dt):
-        """
-        Returns an instance of an object
-        that configures a KalmanFilter for this specific Sensor
-        :return:
-        """
-        raise NotImplementedError
-
-    @staticmethod
-    def bsm(track_id, track):
-        """Return a string containing the relevant information to generate a BSM.
-
-        Should contain the following CSVs:
-        1. ID
-        2. H
-        3. M
-        4. S
-        5. xPos (UTM easting)
-        6. yPos (UTM northing)
-        7. speed
-        8. lane
-        9. vehicle length
-        10. max accel
-        11. max decel
-        12. served
-        """
-        raise NotImplementedError
-
-    @staticmethod
-    def get_default_vehicle_type(**kwargs):
-        """
-        Return the default vehicle type given the arguments.
-        :return:
-        """
-        raise NotImplementedError
+        self._sensor.push(msg)
 
 
 class SerialThread(StoppableThread):
 
-    def __init__(self, port, baud, name):
+    def __init__(self, sensor, port, baud, name):
         super(SerialThread, self).__init__(name)
-        self.ser = serial.Serial(port=port, baudrate=baud, timeout=0)
+        self._ser = serial.Serial(port=port, baudrate=baud, timeout=0)
+        self._sensor = sensor
 
     @staticmethod
     def addZeros(data):
@@ -229,7 +187,7 @@ class SerialThread(StoppableThread):
                         except ValueError as e:
                             continue
                         cars_coming = False
-            data = self.ser.read(1)
+            data = self._ser.read(1)
             incoming_data.append(binascii.hexlify(data).decode(encoding='UTF-8'))
             if len(incoming_data) > 3:
                 last_three = (
@@ -247,46 +205,4 @@ class SerialThread(StoppableThread):
 
         Needs to be defined by the subclass
         """
-        raise NotImplementedError
-
-    @staticmethod
-    def topic():
-        """All sensors make accessible the topic of the message they are publishing."""
-        raise NotImplementedError
-
-    @staticmethod
-    def get_filter(dt):
-        """
-        Returns an instance of an object
-        that configures a KalmanFilter for this specific Sensor
-        :return:
-        """
-        raise NotImplementedError
-
-    @staticmethod
-    def bsm(track_id, track):
-        """Return a string containing the relevant information to generate a BSM.
-
-        Should contain the following CSVs:
-        1. ID
-        2. H
-        3. M
-        4. S
-        5. xPos (UTM easting)
-        6. yPos (UTM northing)
-        7. speed
-        8. lane
-        9. vehicle length
-        10. max accel
-        11. max decel
-        12. served
-        """
-        raise NotImplementedError
-
-    @staticmethod
-    def get_default_vehicle_type(**kwargs):
-        """
-        Return the default vehicle type given the arguments.
-        :return:
-        """
-        raise NotImplementedError
+        self._sensor.push(msg)

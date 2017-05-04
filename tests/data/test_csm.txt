@@ -1,0 +1,9 @@
+2017:05:02 16:19:19:983
+<ConnectedSafetyMessage>
+    <msgID><connectedSafetyMessage/></msgID>
+    <blob1>
+        1F 00 5F 21 80 10 13 4C 90 11 A7 E8 86 CE E4 BD 
+        D4 00 00 00 05 02 5A 00 01 00 01 F4 00 64 01 2C 
+        00
+    </blob1>
+</ConnectedSafetyMessage>

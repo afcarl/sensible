@@ -95,6 +95,9 @@ class StateEstimator(object):
         if m is not None:
             for i in range(np.shape(m)[0]):
                 msg_log_str += str(m[i]) + ','
+        else:
+            for i in range(np.shape(self.y_k[0])[0]):
+                msg_log_str += 'NaN,'
 
         return kf_log_str, msg_log_str
 
@@ -109,9 +112,7 @@ class StateEstimator(object):
         """
         # TODO: Add cross-cov terms
         ss, ts2 = self.state()
-        if ts1 is not None:
-            print('Track A time: {}, Track B time: {}'.format(
-                ts1.to_string(), ts2.to_string()))
+
         PP = self.process_covariance()
 
         if np.shape(PP)[0] == 4:
@@ -128,7 +129,7 @@ class StateEstimator(object):
 
         #print('Track A state: {}, Track B state: {}'.format(s, ss))
         dx = s - ss
-        return np.matmul(dx.T, np.matmul(scipy.linalg.inv(PP + P), dx))
+        return np.matmul(dx.T, np.matmul(scipy.linalg.inv(PP + P), dx)), ts1.to_string(), ts2.to_string()
 
     def measurement_residual_covariance(self):
         raise NotImplementedError

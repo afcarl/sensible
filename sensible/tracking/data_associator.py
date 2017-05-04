@@ -1,6 +1,6 @@
-from sensible.util import ops
-from sensible.sensors.radar import Radar
+from radar_parsing.radar_serial import RadarSerial
 from sensible.tracking import radar_track_cfg
+from sensible.util import ops
 
 
 def single_hypothesis_track_association(track_list, query, method="track-to-track", verbose=False):
@@ -60,13 +60,13 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
                 continue
 
             s, ts = query.state_estimator.state()
-            md = track.state_estimator.mahalanobis(s, query.state_estimator.process_covariance(), ts)
+            md, ts1, ts2 = track.state_estimator.mahalanobis(s, query.state_estimator.process_covariance(), ts)
         elif method == "measurement-to-track":
 
-            md = track.state_estimator.mahalanobis(query, radar_track_cfg.RadarTrackCfg(0.1).R)
+            md, ts1, ts2 = track.state_estimator.mahalanobis(query, radar_track_cfg.RadarTrackCfg(0.1).R)
 
         ops.show("  [Track association] Track {} has a mahalanobis distance of {} "
-                 "to the query".format(track_id, md), verbose)
+                 "to the query with time-alignment of {} and {}, respectively".format(track_id, md, ts1, ts2), verbose)
 
         if md <= 20:
             results.append((track_id, md))
@@ -79,15 +79,15 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
     # print(radar_log_str)
 
     if method == "track-to-track":
-        sensor = query.sensor
+        sensor = query.sensor.topic()
     elif method == "measurement-to-track":
-        sensor = Radar
+        sensor = RadarSerial.topic()
 
     # Association "failed"
     if len(results) == 0:
         # measurement didn't fall near any tracked vehicles, so if a radar track tentatively
         # associate as a conventional vehicle
-        if sensor == Radar:
+        if sensor == RadarSerial.topic():
             if method == "track-to-track":
                 ops.show("  [Track association] Conventional vehicle detected", verbose)
                 return 0x1, None
@@ -104,7 +104,7 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
             sorted_results = sorted(results, key=lambda pair: len(pair[1]))
             id = sorted_results[0][0]
             ops.show("  [Track association] Associating with closest track {}".format(id), verbose)
-            if sensor == Radar:
+            if sensor.topic() == RadarSerial.topic():
                 if method == "track-to-track":
                     return 0x2, id
                 elif method == "measurement-to-track":
@@ -113,7 +113,7 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
                 return 0x4, id
         else:
             r = results[0]
-            if sensor == Radar:
+            if sensor.topic() == RadarSerial.topic():
                 if method == "track-to-track":
                     ops.show("  [Track association] Associating with track {}".format(r[0]), verbose)
                     return 0x2, r[0]

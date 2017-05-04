@@ -11,7 +11,7 @@ import os
 from collections import deque
 
 
-class RadarSerial(SerialThread):
+class RadarSerial(Thread):
     def __init__(self, port, baud, radar_lat, radar_lon, mode="Tracking", lane=2, verbose=False, name="Radar"):
         super(RadarSerial, self).__init__(port, baud, name=name)
         self._verbose = verbose
@@ -19,16 +19,14 @@ class RadarSerial(SerialThread):
         self._lane = lane
         self.mode = mode
         self.x, self.y, self.zone, self.letter = utm.from_latlon(radar_lat, radar_lon)
-        self.msg_count = 0
 
-        t = time.localtime()
-        timestamp = time.strftime('%m-%d-%Y_%H%M', t)
-        self.logger = open(os.path.join('logs', "msgLog_" + timestamp + ".csv"), 'wb')
-        #self._synchronizer = RadarSynchronizer(self._queue, self._local_port, self.topic(), self._verbose)
+        # t = time.localtime()
+        # timestamp = time.strftime('%m-%d-%Y_%H%M', t)
+        # self.logger = open(os.path.join('logs', "msgLog_" + timestamp + ".csv"), 'wb')
 
     @staticmethod
     def topic():
-        return "RadarSerial"
+        return "Radar"
 
     @staticmethod
     def get_filter(dt):
@@ -84,10 +82,10 @@ class RadarSerial(SerialThread):
             raise ValueError("Expected a zone number of -1")
 
         #timestamp = msg['TimeStamp']
-        dt = datetime.utcnow()
-        h = dt.hour
-        m = dt.minute
-        s = dt.second * 1000 + round(dt.microsecond / 1000)
+        # dt = datetime.utcnow()
+        # h = dt.hour
+        # m = dt.minute
+        # s = dt.second * 1000 + round(dt.microsecond / 1000)
 
         speed = -msg['xVel']
         if speed < 4 or speed > 21:
@@ -117,7 +115,6 @@ class RadarSerial(SerialThread):
         self.queue.append(msg)
 
     def push(self, msg):
-        self.msg_count += 1
         """Process incoming data. Overrides StoppableThread's push method."""
         for val in msg:
             res = self.parse(val)
