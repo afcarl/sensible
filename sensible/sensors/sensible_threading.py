@@ -109,7 +109,6 @@ class SerialThread(StoppableThread):
         return InterprettedArray
 
     def run(self):
-        """Main method for Stoppable thread"""
         incoming_data = []
         cars = []
         # Though at SMS we curently only see satusID of '06008', I though tto include others incase future radars start detecting differently.
@@ -123,25 +122,25 @@ class SerialThread(StoppableThread):
         left_line_ys = [-5.585, -2.136, 1.274, 4.734, -2.136, 1.274, 4.734, -2.136, 1.274, 4.734]
         line_width = 3.35
         trigger_offset = .75
-        timeStamp = ''
+        #timeStamp = ''
         car_width = 1.5
         status_id_type = ''
-        #stay = True
+
         cars_coming = False
         while not self.stopped():
             if cars_coming:
                 if len(incoming_data) is 33:
                     if incoming_data[22] == status_id_type:
-                        timeStampHold = ''
-                        for var in incoming_data[3:11]:
-                            timeStampHold += var
-                        if timeStampHold == '':
-                            continue
-                        timeStampBin = bin(int((timeStampHold), 16))[2:]
-                        timeStampBinZeros = SerialThread.addZeros(timeStampBin)
-                        timeStamp = str(int(timeStampBinZeros[0:8], 2)) + str(
-                            int(timeStampBinZeros[8:16], 2)) + str(
-                            int(timeStampBinZeros[16:24], 2)) + str(int(timeStampBinZeros[24:32], 2))
+                        # timeStampHold = ''
+                        # for var in incoming_data[3:11]:
+                        #     timeStampHold += var
+                        # if timeStampHold == '':
+                        #     continue
+                        # timeStampBin = bin(int((timeStampHold), 16))[2:]
+                        # timeStampBinZeros = SerialThread.addZeros(timeStampBin)
+                        # timeStamp = str(int(timeStampBinZeros[0:8], 2)) + str(
+                        #     int(timeStampBinZeros[8:16], 2)) + str(
+                        #     int(timeStampBinZeros[16:24], 2)) + str(int(timeStampBinZeros[24:32], 2))
                         # print('TIME: ')
                         # print(timeStamp)
                         binary_stuff = incoming_data[-8]
@@ -151,52 +150,54 @@ class SerialThread(StoppableThread):
                         if binary_stuff == '':
                             continue
                         obtainedData = SerialThread.positionData(bin(int((binary_stuff), 16))[2:])
-                        obtainedData['TimeStamp'] = timeStamp
+                        #obtainedData['TimeStamp'] = timeStamp
                         cars.append(obtainedData)
                         # car_check
-                        for box in range(0, 10):
-                            if (((front_line_xs[box] + line_lengths[box]) >= float(obtainedData['xPos']) >=
-                                     front_line_xs[
-                                         box] or (front_line_xs[box] + line_lengths[box]) >= (
-                                        float(obtainedData['xPos']) + float(obtainedData['objLength'])) >=
-                                front_line_xs[
-                                    box] or (
-                                        front_line_xs[box] + line_lengths[box]) <= (
-                                        float(obtainedData['xPos']) + float(obtainedData['objLength'])) and float(
-                                obtainedData['xPos']) <= front_line_xs[box]) and (
-                                                    (left_line_ys[box] + line_width - trigger_offset) >= float(
-                                                    obtainedData['yPos']) - (car_width / 2) >= (
-                                                        left_line_ys[box] + trigger_offset) or (
-                                                        left_line_ys[box] + line_width - trigger_offset) >= (
-                                                    float(obtainedData['yPos']) + (car_width / 2)) >= (
-                                                    left_line_ys[box] + trigger_offset) or (
-                                                    left_line_ys[box] + line_width - trigger_offset) <= (
-                                                float(obtainedData['yPos']) + (car_width / 2)) and (
-                                                float(obtainedData['yPos']) - (car_width / 2)) <= (
-                                                left_line_ys[box] + trigger_offset))):
-                                tracked_car = dict(obtainedData)
-                                tracked_car['objMessage'] = 'Trigger'
-                                tracked_car['objZone'] = box
-                                cars.append(tracked_car)
+                        # for box in range(0, 10):
+                        #     if (((front_line_xs[box] + line_lengths[box]) >= float(obtainedData['xPos']) >=
+                        #              front_line_xs[
+                        #                  box] or (front_line_xs[box] + line_lengths[box]) >= (
+                        #                 float(obtainedData['xPos']) + float(obtainedData['objLength'])) >=
+                        #         front_line_xs[
+                        #             box] or (
+                        #                 front_line_xs[box] + line_lengths[box]) <= (
+                        #                 float(obtainedData['xPos']) + float(obtainedData['objLength'])) and float(
+                        #         obtainedData['xPos']) <= front_line_xs[box]) and (
+                        #                             (left_line_ys[box] + line_width - trigger_offset) >= float(
+                        #                             obtainedData['yPos']) - (car_width / 2) >= (
+                        #                                 left_line_ys[box] + trigger_offset) or (
+                        #                                 left_line_ys[box] + line_width - trigger_offset) >= (
+                        #                             float(obtainedData['yPos']) + (car_width / 2)) >= (
+                        #                             left_line_ys[box] + trigger_offset) or (
+                        #                             left_line_ys[box] + line_width - trigger_offset) <= (
+                        #                         float(obtainedData['yPos']) + (car_width / 2)) and (
+                        #                         float(obtainedData['yPos']) - (car_width / 2)) <= (
+                        #                         left_line_ys[box] + trigger_offset))):
+                        #         tracked_car = dict(obtainedData)
+                        #         tracked_car['objMessage'] = 'Trigger'
+                        #         tracked_car['objZone'] = box
+                        #         cars.append(tracked_car)
 
                         incoming_data = incoming_data[:-11]
                     else:
+                        # it's reset here
                         incoming_data = []
                         try:
                             self.push(cars)
                         except ValueError as e:
                             continue
+                        cars = []
                         cars_coming = False
             data = self._ser.read(1)
             incoming_data.append(binascii.hexlify(data).decode(encoding='UTF-8'))
             if len(incoming_data) > 3:
-                last_three = (
-                incoming_data[len(incoming_data) - 3] + incoming_data[len(incoming_data) - 2] + incoming_data[
-                    len(incoming_data) - 1])
+                last_three = (incoming_data[-3] + incoming_data[-2] + incoming_data[-1])
                 if (last_three == possible_satus_ids[0] or (last_three == possible_satus_ids[1]) or (
                             last_three == possible_satus_ids[2]) or (last_three == possible_satus_ids[3])):
                     cars_coming = True
-                    status_id_type = incoming_data[len(incoming_data) - 3]
+                    status_id_type = incoming_data[-3]
+                    # incoming_data is reset here
+                    # is this supposed to be incoming_data[:-3]?
                     incoming_data = incoming_data[-3:]
 
     def push(self, msg):

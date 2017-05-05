@@ -1,13 +1,9 @@
-import time
-from datetime import datetime
-
 import utm
 
 from collections import deque
 
 from sensible.tracking.radar_track_cfg import RadarTrackCfg
 from sensible.tracking.vehicle_type import VehicleType
-from sensible.util import ops
 
 try:  # python 2.7
     import cPickle as pickle
@@ -28,8 +24,6 @@ class Radar:
         self._lane = lane
         self.x, self.y, self.zone, self.letter = utm.from_latlon(
             radar_lat, radar_lon)
-
-        self.count = 0
 
     @property
     def queue(self):
@@ -92,24 +86,17 @@ class Radar:
         if self._mode == "Tracking" and zone >= 0:
             raise ValueError("Expected a zone number of -1")
 
-        #timestamp = msg['TimeStamp']
-        # dt = datetime.utcnow()
-        # h = dt.hour
-        # m = dt.minute
-        # s = dt.second * 1000 + round(dt.microsecond / 1000)
-
-        speed = -msg['xVel']
-        if speed < 4 or speed > 21:
+        if msg['xVel'] > -4 or msg['xVel'] < -21:
             return None
         else:
             return {
-                'id': msg['objID'],
+                'id': int(msg['objID']),
                 'h': msg['TimeStamp']['h'],
                 'm': msg['TimeStamp']['m'],
                 's': msg['TimeStamp']['s'],
                 'xPos': self.x - msg['yPos'],
                 'yPos': self.y + msg['xPos'],
-                'speed': speed,  # accept 14 mph to 45 mph ~
+                'speed': msg['xVel'],  # accept 14 mph to 45 mph ~
                 'veh_len': msg['objLength'],
                 'lane': self._lane,
                 'max_accel': 5,
@@ -119,11 +106,9 @@ class Radar:
 
     def push(self, msgs):
         """Process incoming data. Overrides StoppableThread's push method."""
-        self.count += len(msgs)
         for msg in msgs:
             res = self.parse(msg)
             if res is not None:
-                #self.logger.write()
                 self.add_to_queue(res)
 
     def add_to_queue(self, msg):

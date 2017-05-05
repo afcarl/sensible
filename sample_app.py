@@ -31,7 +31,7 @@ if __name__ == '__main__':
     ts = sensible.track_specialist.TrackSpecialist(sensors, bsm_port, run_for, p, frequency=freq, verbose=True)
 
     # radar_sender = SensorEmulator(port=radar_recv_port, pub_freq=20,
-    #                               file_names=["tests/data/SW-42-SW-40/AV_Track_ID_26_solo_GPS_track_2.csv"],
+    #                               file_names=["tests/data/SW-42-SW-40/AV_Track_ID_26_GPS_track_2.csv"],
     #                               delim='\n', loop=False, delay=1, start=7, name="Radar")
 
     # dsrc_sender = SensorEmulator(port=dsrc_recv_port, pub_freq=20,

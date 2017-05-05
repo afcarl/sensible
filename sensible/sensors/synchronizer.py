@@ -56,6 +56,7 @@ class Synchronizer(StoppableThread):
             self._queue.clear()
 
     def run(self):
+        period = 1 / self._publish_freq
         while not self.stopped():
             self.send()
-            time.sleep(1 / self._publish_freq)
+            time.sleep(period)

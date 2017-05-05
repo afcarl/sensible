@@ -4,7 +4,6 @@ import socket
 import time
 import pandas as pd
 
-from sensible.util import ops
 from sensible.sensors.sensible_threading import StoppableThread
 
 
@@ -32,14 +31,21 @@ class RadarEmulator(StoppableThread):
         df = df.set_index('Time_s')
         res = df.index.get_duplicates()
 
+        period = 1. / self._pub_freq
+        run_start = time.time()
+        count = 0
+
         for i in range(len(res)):
+            start = time.time()
             if self.stopped():
                 break
             msgs = []
             radar_hits = df[df.index == res[i]]
             for index, row in radar_hits.iterrows():
                 msg = {
-                    'TimeStamp': {'h': index.hour, 'm': index.minute, 's': index.microsecond},
+                    'TimeStamp': {'h': index.hour,
+                                  'm': index.minute,
+                                  's': int(index.second * 1000 + (index.microsecond / 1000))},
                     'objZone': -1,
                     'objID': row['Object_ID'],
                     'xPos': row['x_Point1'],
@@ -49,7 +55,11 @@ class RadarEmulator(StoppableThread):
                     'yVel': row['Speed_y']
                 }
                 msgs.append(msg)
+            count += len(msgs)
             self._radar.push(msgs)
-            time.sleep(1. / self._pub_freq)
+            diff = time.time() - start
+            time.sleep(period - diff)
 
-        print("  [*] {} finished sending messages...".format(self.name))
+        run_end = time.time()
+        print("  [{}] Sent {} messages in {} seconds, at {} msgs/sec...".format(self.name, count, run_end - run_start,
+                                                                                count / (run_end - run_start)))

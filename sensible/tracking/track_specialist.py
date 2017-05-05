@@ -60,7 +60,7 @@ class TrackSpecialist:
         self.track_association = association
 
         self._logger = logger
-        logger_title = "TrackID,TrackState,Filtered,timestamp,yPos,speed,Sensor\n"
+        logger_title = "TrackID,TrackState,Filtered,timestamp,yPos,ySpeed,Sensor\n"
         self._logger.write(logger_title)
 
         topic_filters = sensors['topic_filters']
@@ -138,7 +138,7 @@ class TrackSpecialist:
                 for (topic, subscriber) in self._subscribers.items():
                     try:
                         string = subscriber.recv_string(flags=zmq.NOBLOCK)
-                        m_topic, msg = string.split(" ")
+                        m_topic, msg = string.split(" ", 1)
                         message_queue.append((m_topic, pickle.loads(str(msg))))
                     except zmq.Again as e:
                         continue
@@ -237,7 +237,7 @@ class TrackSpecialist:
         :param msg: The new sensor measurement
         :return:
         """
-        print("  [MA] timestamp: {},{},{}".format(msg['h'], msg['m'], msg['s']))
+        print("  [MA] ID: {}, sensor: {}, timestamp: {},{},{}".format(msg['id'], topic, msg['h'], msg['m'], msg['s']))
 
         if topic == Radar.topic() and msg['objZone'] > -1:
             # measurement-to-track association

@@ -1,8 +1,6 @@
 from __future__ import division
 
 import numpy as np
-import time
-from datetime import datetime
 
 import xml.etree.cElementTree as ElementTree
 from collections import deque
@@ -25,7 +23,6 @@ class DSRC:
     def __init__(self, verbose=False):
         self._queue = deque()
         self._verbose = verbose
-        # self._synchronizer = DSRCSynchronizer(self._queue, self._local_port, self.topic(), self._verbose)
 
     @property
     def queue(self):
