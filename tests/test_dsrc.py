@@ -20,30 +20,6 @@ try:  # python 2.7
 except ImportError:  # python 3.5 or 3.6
     import pickle
 
-# def test_csm_parsing0():
-#     """Test that a csm can be parsed correctly."""
-#     dsrc = DSRC("", remote_port=4200, local_port=6666)
-#
-#     with open("data/csm-nb.txt") as f:
-#         csm = f.read()
-#         result = dsrc.parse(csm)
-#
-#         assert result['msg_count'] == 126
-#         assert result['id'] == 779882017
-#         assert result['lane'] == 8
-#         assert result['max_accel'] == 3.0
-#         assert result['max_decel'] == -3.0
-#         assert result['h'] == 0
-#         assert result['m'] == 0
-#         assert result['s'] == 0
-#         assert result['speed'] == 8
-#         assert result['lat'] == 29.644256
-#         assert result['lon'] == -82.346891
-#         assert result['heading'] == 0.0
-#         assert result['served'] == 0
-#
-#         assert DSRC.get_default_vehicle_type(id=result['id']) == VehicleType.AUTOMATED
-
 
 def test_csm_parsing2():
 
@@ -51,22 +27,6 @@ def test_csm_parsing2():
         csm = f.read()
         result = DSRC.parse(csm)
         assert result['served'] == 0
-
-
-# def test_lat_lon():
-#     """Test decoding latitude and longitude"""
-#
-#     with open("data/csm-nb.txt") as f:
-#         csm = f.read()
-#         root = ElementTree.fromstring(csm)
-#         data = root.find('blob1').text
-#         data = ''.join(data.split())
-#
-#         lat = ops.twos_comp(int(data[18:26], 16), 32) * 1e-7
-#         lon = ops.twos_comp(int(data[26:34], 16), 32) * 1e-7
-#
-#         assert lat == 29.644256
-#         assert lon == -82.346891
 
 
 def test_push_msg0():

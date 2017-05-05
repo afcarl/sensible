@@ -29,6 +29,12 @@ class Radar:
         self.x, self.y, self.zone, self.letter = utm.from_latlon(
             radar_lat, radar_lon)
 
+        self.count = 0
+
+    @property
+    def queue(self):
+        return self._queue
+
     @staticmethod
     def topic():
         return "Radar"
@@ -98,9 +104,9 @@ class Radar:
         else:
             return {
                 'id': msg['objID'],
-                'h': h,
-                'm': m,
-                's': s,
+                'h': msg['TimeStamp']['h'],
+                'm': msg['TimeStamp']['m'],
+                's': msg['TimeStamp']['s'],
                 'xPos': self.x - msg['yPos'],
                 'yPos': self.y + msg['xPos'],
                 'speed': speed,  # accept 14 mph to 45 mph ~
@@ -111,10 +117,11 @@ class Radar:
                 'objZone': msg['objZone']
             }
 
-    def push(self, msg):
+    def push(self, msgs):
         """Process incoming data. Overrides StoppableThread's push method."""
-        for val in msg:
-            res = self.parse(val)
+        self.count += len(msgs)
+        for msg in msgs:
+            res = self.parse(msg)
             if res is not None:
                 #self.logger.write()
                 self.add_to_queue(res)

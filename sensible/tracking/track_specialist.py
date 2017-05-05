@@ -7,7 +7,6 @@ import zmq
 
 import sensible.tracking.data_associator as data_associator
 import sensible.tracking.track_fusion as tf
-from radar_parsing.radar_serial import RadarSerial
 from sensible.sensors.DSRC import DSRC
 from sensible.sensors.radar import Radar
 from sensible.tracking.track import Track
@@ -238,16 +237,16 @@ class TrackSpecialist:
         :param msg: The new sensor measurement
         :return:
         """
-        #print("timestamp: {},{},{}".format(msg['h'], msg['m'], msg['s']))
+        print("  [MA] timestamp: {},{},{}".format(msg['h'], msg['m'], msg['s']))
 
-        if topic == RadarSerial.topic() and msg['objZone'] > -1:
+        if topic == Radar.topic() and msg['objZone'] > -1:
             # measurement-to-track association
             result, match_id = self.track_association(self.track_list, msg,
                                                       method="measurement-to-track", verbose=self._verbose)
             if result == 0x5:
                 # send BSM for new conventional vehicle.
                 try:
-                    self._bsm_writer.sendto(RadarSerial.zone_bsm(
+                    self._bsm_writer.sendto(Radar.zone_bsm(
                         msg, self._sensor_id_idx), ("localhost", self._bsm_port))
                     self._sensor_id_idx += 1
                 except socket.error as e:
@@ -310,8 +309,6 @@ class TrackSpecialist:
             fusion_method = tf.covariance_intersection
         elif topic == Radar.topic():
             sensor = Radar
-        elif topic == RadarSerial.topic():
-            sensor = RadarSerial
 
         self._sensor_id_map[msg['id']] = self._sensor_id_idx
         self._sensor_id_idx += 1
@@ -366,7 +363,7 @@ class TrackSpecialist:
                 else:
                     label = '1'
 
-                if track.sensor == RadarSerial or track.sensor == Radar:
+                if track.sensor == Radar:
                     sens = "Radar"
                 elif track.sensor == DSRC:
                     sens = "DSRC"

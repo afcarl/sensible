@@ -10,17 +10,9 @@ from sensible.sensors.sensible_threading import StoppableThread
 
 class RadarEmulator(StoppableThread):
     """Utility class for emulating a DSRC radio. Used for testing."""
-    def __init__(self, port, pub_freq, fname, name="RadioEmulator"):
-        """
-        Args:
-            :param port:
-            :param pub_freq:
-            :param fname:
-            :param name:
-
-        """
+    def __init__(self, radar, pub_freq, fname, name="RadioEmulator"):
         super(RadarEmulator, self).__init__(name)
-        self._port = port
+        self._radar = radar
         self._pub_freq = pub_freq
         self._fname = fname
 
@@ -41,23 +33,23 @@ class RadarEmulator(StoppableThread):
         res = df.index.get_duplicates()
 
         for i in range(len(res)):
+            if self.stopped():
+                break
             msgs = []
             radar_hits = df[df.index == res[i]]
-            for val in radar_hits:
+            for index, row in radar_hits.iterrows():
                 msg = {
-                    'TimeStamp': 0,
+                    'TimeStamp': {'h': index.hour, 'm': index.minute, 's': index.microsecond},
                     'objZone': -1,
-                    'objID': val['Object_ID'],
-                    'xPos': val['x_Point1'],
-                    'yPos': val['y_Point1'],
-                    'objLength': val['Length'],
-                    'xVel': val['Speed_x'],
-                    'yVel': val['Speed_y']
+                    'objID': row['Object_ID'],
+                    'xPos': row['x_Point1'],
+                    'yPos': row['y_Point1'],
+                    'objLength': row['Length'],
+                    'xVel': row['Speed_x'],
+                    'yVel': row['Speed_y']
                 }
                 msgs.append(msg)
-
-            self._socket.sendto(msg, ("localhost", self._port))
-            time.sleep(1 / self._pub_freq)
-        self._socket.close()
+            self._radar.push(msgs)
+            time.sleep(1. / self._pub_freq)
 
         print("  [*] {} finished sending messages...".format(self.name))
