@@ -39,8 +39,8 @@ class TrackSpecialist:
                  verbose=False,
                  frequency=5,
                  track_confirmation_threshold=5,
-                 track_zombie_threshold=3,
-                 track_drop_threshold=5,
+                 track_zombie_threshold=5,
+                 track_drop_threshold=10,
                  max_n_tracks=15):
         self._context = zmq.Context()
         self._subscribers = {}
@@ -168,8 +168,7 @@ class TrackSpecialist:
                                     if fused_track_id in self._track_list:
                                         # remove the track being deleted from
                                         # the other track's fusion list
-                                        del self._track_list[
-                                            fused_track_id].fused_track_ids[track_id]
+                                        self._track_list[fused_track_id].fused_track_ids.remove(track_id)
                                         # if the other track is no longer fusing estimates with any other track,
                                         # reset it's fusion state
                                         if len(self._track_list[fused_track_id].fused_track_ids) == 0:
@@ -179,10 +178,9 @@ class TrackSpecialist:
 
                         else:
                             # generate a new time stamp anyways
-                            prev_ts = track.state_estimator.t[
-                                track.state_estimator.k - 1]
+                            prev_ts = track.state_estimator.t[-1]
                             prev_ts.s = str(float(prev_ts.s) +
-                                            track.state_estimator.sensor_kf.dt)
+                                            track.state_estimator.sensor_kf.dt * 1000)
                             track.state_estimator.store(msg=None, time=prev_ts)
                             # do a step without receiving a new measurement
                             # by propagating the predicted state
@@ -237,7 +235,7 @@ class TrackSpecialist:
         :param msg: The new sensor measurement
         :return:
         """
-        print("  [MA] ID: {}, sensor: {}, timestamp: {},{},{}".format(msg['id'], topic, msg['h'], msg['m'], msg['s']))
+        #print("  [MA] ID: {}, sensor: {}, timestamp: {},{},{}".format(msg['id'], topic, msg['h'], msg['m'], msg['s']))
 
         if topic == Radar.topic() and msg['objZone'] > -1:
             # measurement-to-track association
@@ -317,7 +315,8 @@ class TrackSpecialist:
         self._track_list[self._sensor_id_map[
             msg['id']]].store(msg, self._track_list)
         ops.show(
-            "  [*] Creating track {}".format(self._sensor_id_map[msg['id']]), self._verbose)
+            "  [*] Creating track {} for {} track with ID {}".format(self._sensor_id_map[msg['id']],
+                                                                     topic, msg['id']), self._verbose)
 
     def delete_track(self, track_id):
         """remove it from the track list."""
@@ -359,6 +358,9 @@ class TrackSpecialist:
                 kf_str, msg_str = track.state_estimator.to_string()
 
                 if track.state_estimator.fused_track:
+                    kf_unfused_str, msg_str = track.state_estimator.to_string(get_unfused=True)
+
+                if track.state_estimator.fused_track:
                     label = '2'
                 else:
                     label = '1'
@@ -370,6 +372,9 @@ class TrackSpecialist:
 
                 self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
                                    ',' + label + ',' + kf_str[:-1] + ',' + sens + '\n')
+                if track.state_estimator.fused_track:
+                    self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
+                                       ',' + '1' + ',' + kf_unfused_str[:-1] + ',' + sens + '\n')
                 self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
                                    ',' + str(0) + ',' + msg_str[:-1] + ',' + sens + '\n')
 

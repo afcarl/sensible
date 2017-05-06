@@ -39,13 +39,13 @@ class Track(object):
         # compile states and covariances
         mu = []
         sigma = []
-        s, t = self.state_estimator.state()
+        s, t = self.state_estimator.state(get_unfused=True)
         p = self.state_estimator.process_covariance()
         mu.append(s)
         sigma.append(p)
 
         for track in tracks:
-            s, t = track.state_estimator.state()
+            s, t = track.state_estimator.state(get_unfused=True)
             mu.append(s)
             sigma.append(track.state_estimator.process_covariance())
         fused_mu, fused_sigma = self.fusion_method(mu, sigma)

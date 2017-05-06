@@ -19,7 +19,6 @@ class StateEstimator(object):
         self.y_k = []  # filtered measurement
         self.x_k_fused = []  # result of the covariance intersection algorithm
         self.t = []  # time stamps
-        self.k = -1  # current time step
         self.fused_track = fused_track
 
     def get_latest_message(self):
@@ -27,44 +26,34 @@ class StateEstimator(object):
         Returns the latest message
         :return:
         """
-        if -1 < self.k < len(self.y):
-            t = self.t[self.k]
-            time = t if t is not None else ts.unavailable()
-            return self.y[self.k], time
-        else:
-            return None, None
+        t = self.t[-1]
+        time = t if t is not None else ts.unavailable()
+        return self.y[-1], time
 
-    def state(self):
+    def state(self, get_unfused=False):
         """Return the latest Kalman Filter prediction of the state, and the timestamp."""
-        if -1 < self.k <= len(self.x_k):
-            t = self.t[self.k]
-            time = t if t is not None else ts.unavailable()
-            if not self.fused_track or self.x_k_fused[self.k] is None:
-                return self.x_k[self.k], time
-            else:
-                return self.x_k_fused[self.k], time
+        t = self.t[-1]
+        time = t if t is not None else ts.unavailable()
+        if not self.fused_track or self.x_k_fused[-1] is None or get_unfused:
+            return self.x_k[-1], time
         else:
-            return None, None
+            return self.x_k_fused[-1], time
 
     def measurement(self):
         """Return the latest Kalman Filter prediction of the measurement, and the timestamp."""
-        if -1 < self.k < len(self.y_k):
-            t = self.t[self.k]
-            time = t if t is not None else ts.unavailable()
-            return self.y_k[self.k], time
-        else:
-            return None, None
+        t = self.t[-1]
+        time = t if t is not None else ts.unavailable()
+        return self.y_k[-1], time
 
     def store(self, msg=None, time=None):
-        self.k += 1
         if msg is None:
             self.y.append(msg)
             self.t.append(time)
         else:
             self.y.append(self.parse_msg(msg))
             self.t.append(time)
-            if self.k == 0:
-                self.x_k.append(self.y[self.k])
+            if len(self.x_k) == 0:
+                self.x_k.append(self.y[-1])
                 self.x_k_fused.append(None)
 
     def save_measurement(self, destination):
@@ -79,8 +68,8 @@ class StateEstimator(object):
         ops.dump({'time': t.to_string(), 'm': xk, 'cov': cov},
                  os.path.join(destination, 'kf-state-', t.to_fname_string(), '.pkl'))
 
-    def to_string(self):
-        kf_state, t = self.state()
+    def to_string(self, get_unfused=False):
+        kf_state, t = self.state(get_unfused=get_unfused)
 
         if type(t) is not str:
             t = t.to_string()
@@ -101,7 +90,7 @@ class StateEstimator(object):
 
         return kf_log_str, msg_log_str
 
-    def mahalanobis(self, s, P, ts1=None):
+    def mahalanobis(self, s, P, ts2=None):
         """
         Compute the track-to-track or measurement-to-track mahalanobis distance
         between track state or measurement `s` and the estimated state of this track
@@ -111,7 +100,7 @@ class StateEstimator(object):
         :return: the M distance
         """
         # TODO: Add cross-cov terms
-        ss, ts2 = self.state()
+        ss, ts1 = self.state()
 
         PP = self.process_covariance()
 

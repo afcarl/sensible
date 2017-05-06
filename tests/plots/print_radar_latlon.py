@@ -1,8 +1,6 @@
 import os
 import sys
 import sensible.util.ops as ops
-#import matplotlib
-#matplotlib.use('Qt4Agg')
 import matplotlib.pyplot as plt
 import utm
 import pandas as pd
@@ -12,7 +10,7 @@ RADAR_LAT = 29.6216931
 RADAR_LON = -82.3867591
 
 #RADAR_DIR = "C:\\Users\Patrick\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned radar"
-GPS_DIR = "C:\Users\pemami\Workspace\Github\sensible\\tests\data\SW-42-SW-40\\"
+GPS_DIR = "C:\Users\Patrick\Github\sensible\\tests\data\SW-42-SW-40\\"
 
 #RADAR_TRACKS = ["AV_Track_ID_26_GPS_track_2.pkl", "AV_Track_ID_22_GPS_track_3.pkl", "AV_Track_ID_45_GPS_track_4.pkl",
 #                "AV_Track_ID_32_GPS_track_5.pkl", "AV_Track_ID_40_GPS_track_6.pkl", "AV_Track_ID_50_GPS_track_7.pkl"]
@@ -33,7 +31,9 @@ if __name__ == '__main__':
     suitcase_y = []
 
     # load radar tracks
-    df = ops.load_pkl(os.path.join(GPS_DIR, "radar_truck_1_20170502_objID_3.pkl"))
+    #df = ops.load_pkl(os.path.join(GPS_DIR, "radar_truck_1_20170502_objID_3.pkl"))
+    df = pd.DataFrame.from_csv(os.path.join(GPS_DIR, "radar_log_20170502.csv"), sep=' ', index_col=None)
+    df = df.loc[df.Object_ID == 3]
     # #df.to_csv(RADAR_DIR + "\AV_Track_ID_50_solo_GPS_track_7.csv")
     #
     # # load GPS
@@ -84,8 +84,8 @@ if __name__ == '__main__':
         suitcase_y.append(sy)
         print("{},{},{}:{}:{}".format(sc_lat[i], sc_lon[i], h[i], m[i], s[i]))
 
-    # plt.scatter(gps_x, gps_y, c='r')
-    # plt.scatter(radar_x, radar_y, c='b')
-    # plt.scatter(suitcase_x, suitcase_y, c='y')
-    # plt.show()
+    #plt.scatter(gps_x, gps_y, c='r')
+    plt.scatter(radar_x, radar_y, c='b')
+    plt.scatter(suitcase_x, suitcase_y, c='y')
+    plt.show()
 

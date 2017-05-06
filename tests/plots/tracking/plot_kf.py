@@ -14,8 +14,8 @@ if __name__ == '__main__':
     df = pandas.read_csv(args['logfile'])
     df.drop(df[df.TrackState == 'ZOMBIE'].index, inplace=True)
 
-    filtered_data = df.query('Filtered == 1 & TrackID == 4')
-    real_data = df.query('Filtered == 0 & TrackID == 4')
+    filtered_data = df.query('Filtered == 1 & TrackID == 0')
+    real_data = df.query('Filtered == 0 & TrackID == 0')
 
     # for i in range(8):
     #track_i = filtered_data.loc[filtered_data['TrackID'] == i]

@@ -68,7 +68,7 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
         ops.show("  [Track association] Track {} has a mahalanobis distance of {} "
                  "to the query with time-alignment of {} and {}, respectively".format(track_id, md, ts1, ts2), verbose)
 
-        if md <= 20:
+        if md <= 25:
             results.append((track_id, md))
 
     # radar_t_stamp = TimeStamp(radar_msg['h'], radar_msg['m'], radar_msg['s'])
@@ -104,7 +104,7 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
             sorted_results = sorted(results, key=lambda pair: len(pair[1]))
             id = sorted_results[0][0]
             ops.show("  [Track association] Associating with closest track {}".format(id), verbose)
-            if sensor.topic() == Radar.topic():
+            if sensor == Radar.topic():
                 if method == "track-to-track":
                     return 0x2, id
                 elif method == "measurement-to-track":
@@ -113,7 +113,7 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
                 return 0x4, id
         else:
             r = results[0]
-            if sensor.topic() == Radar.topic():
+            if sensor == Radar.topic():
                 if method == "track-to-track":
                     ops.show("  [Track association] Associating with track {}".format(r[0]), verbose)
                     return 0x2, r[0]

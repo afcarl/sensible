@@ -30,14 +30,14 @@ class KalmanFilter(StateEstimator):
 
         m, _ = self.get_latest_message()
 
-        x_k_bar = np.matmul(self.F, self.x_k[self.k]) + np.matmul(self.Q, np.random.normal(size=self.sensor_kf.state_dim))
+        x_k_bar = np.matmul(self.F, self.x_k[-1]) + np.matmul(self.Q, np.random.normal(size=self.sensor_kf.state_dim))
         # state covariance prediction
         self.P = np.matmul(self.F, np.matmul(self.P, self.F.T)) + self.Q
         # measurement prediction
         self.y_k.append(x_k_bar + np.matmul(self.R, np.random.normal(size=self.sensor_kf.state_dim)))
         # innovation
         # if no new measurements, e_k is 0.
-        e_k = (m - self.y_k[self.k]) if m is not None else np.zeros([self.sensor_kf.state_dim])
+        e_k = (m - self.y_k[-1]) if m is not None else np.zeros([self.sensor_kf.state_dim])
 
         # K_k = P * inv(P + R)
         u = scipy.linalg.inv(self.P + self.R)

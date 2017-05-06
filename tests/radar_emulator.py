@@ -9,11 +9,12 @@ from sensible.sensors.sensible_threading import StoppableThread
 
 class RadarEmulator(StoppableThread):
     """Utility class for emulating a DSRC radio. Used for testing."""
-    def __init__(self, radar, pub_freq, fname, name="RadioEmulator"):
+    def __init__(self, radar, pub_freq, fname, delay=0, name="RadioEmulator"):
         super(RadarEmulator, self).__init__(name)
         self._radar = radar
         self._pub_freq = pub_freq
         self._fname = fname
+        self._delay = delay
 
         # UDP port
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -32,6 +33,9 @@ class RadarEmulator(StoppableThread):
         res = df.index.get_duplicates()
 
         period = 1. / self._pub_freq
+
+        time.sleep(self._delay)
+
         run_start = time.time()
         count = 0
 
