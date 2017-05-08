@@ -116,12 +116,13 @@ class SerialThread(StoppableThread):
         # Trigger positions
         # ALL measurements must be in meters.
         # ALL lane coordinates have to be with respect to the sensor, not the blue crossed origin.
-        front_line_xs = [28.07, 27.78, 27.37, 27.33, 73.51, 73.1, 73.06, 119.24, 118.83, 118.79]
-        line_lengths = [14.02, 14.33, 14.63, 14.63, 14.63, 14.33, 14.33, 13.72, 13.72, 13.72]
+        # Patrick: for a zone at SW 42nd SW 40th at -96 to -86 m in lane 1
+        front_line_xs = [108.31]
+        line_lengths = [10]
         # left with respect to the a drive driving in the lanes. SMS gives lane positions from the middle so the points have to be adjusted.
-        left_line_ys = [-5.585, -2.136, 1.274, 4.734, -2.136, 1.274, 4.734, -2.136, 1.274, 4.734]
-        line_width = 3.35
-        trigger_offset = .75
+        left_line_ys = [5.3]
+        line_width = 4.5   # 4.5 m
+        trigger_offset = 0
         #timeStamp = ''
         car_width = 1.5
         status_id_type = ''

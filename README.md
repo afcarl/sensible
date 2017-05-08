@@ -7,3 +7,7 @@ The framework support parallel, real-time processing and filtering of incoming d
 Sensible is mainly useful for others doing research in sensor fusion for traffic applications; as such, the algorithms for state estimation and data association can easily be swapped out for experimentation purposes. 
 
 This work is being done as a part of a larger project aimed at developing a complete smart traffic intersection controller that handles both autonomous and conventional vehicles: see our project website [here](avian.essie.ufl.edu).
+
+## TODO
+
+* Create node.js app that listens to BSM port and plots tracks on Google Maps viz

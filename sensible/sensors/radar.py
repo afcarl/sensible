@@ -17,13 +17,14 @@ class Radar:
     Radar messages are "asynchronous"
     """
 
-    def __init__(self, mode, lane, radar_lat, radar_lon, verbose=False):
+    def __init__(self, mode, lane, radar_lat, radar_lon, clock_offset=0, verbose=False):
         self._queue = deque()
         self._mode = mode
         self._verbose = verbose
         self._lane = lane
         self.x, self.y, self.zone, self.letter = utm.from_latlon(
             radar_lat, radar_lon)
+        self.clock_offset = clock_offset
 
     @property
     def queue(self):
@@ -93,7 +94,7 @@ class Radar:
                 'id': int(msg['objID']),
                 'h': msg['TimeStamp']['h'],
                 'm': msg['TimeStamp']['m'],
-                's': msg['TimeStamp']['s'],
+                's': msg['TimeStamp']['s'] + self.clock_offset,
                 'xPos': self.x - msg['yPos'],
                 'yPos': self.y + msg['xPos'],
                 'speed': msg['xVel'],  # accept 14 mph to 45 mph ~

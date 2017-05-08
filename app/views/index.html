@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      #map {
+        height: 100%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-uVi1hKsC0fAq6B7AftxZMRGBzwY38p4
+        &libraries=visualization&callback=initMap">
+		/**
+		 * The JavaScript code that creates the firebase map goes between the empty script tags below.
+		 */
+		<script>
+			function initMap() {
+			  var map = new google.maps.Map(document.getElementById('map'), {
+				center: {lat: 29.6216931, lng: -82.3867591},
+				zoom: 32,
+				mapTypeId: google.maps.MapTypeId.SATELLITE,
+				styles: [{
+				  featureType: 'poi',
+				  stylers: [{ visibility: 'off' }]  // Turn off points of interest.
+				}, {
+				  featureType: 'transit.station',
+				  stylers: [{ visibility: 'off' }]  // Turn off bus stations, train stations, etc.
+				}],
+				disableDoubleClickZoom: true
+			  });
+			}
+		</script>
+    </script>
+  </body>
+</html>

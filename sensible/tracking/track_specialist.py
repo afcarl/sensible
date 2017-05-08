@@ -59,9 +59,12 @@ class TrackSpecialist:
 
         self.track_association = association
 
-        self._logger = logger
-        logger_title = "TrackID,TrackState,Filtered,timestamp,yPos,ySpeed,Sensor\n"
-        self._logger.write(logger_title)
+        if logger is not None:
+            self._logger = logger
+            logger_title = "TrackID,TrackState,Filtered,timestamp,xPos,xSpeed,yPos,ySpeed,Sensor\n"
+            self._logger.write(logger_title)
+        else:
+            self._logger = None
 
         topic_filters = sensors['topic_filters']
         sensor_ports = sensors['sensor_ports']
@@ -217,7 +220,8 @@ class TrackSpecialist:
 
         self._bsm_writer.close()
         try:
-            self._logger.close()
+            if self._logger is not None:
+                self._logger.close()
         except Exception:
             print("  [!] Unable to close log file")
         ops.show(
@@ -355,28 +359,29 @@ class TrackSpecialist:
         for (track_id, track) in self._track_list.items():
             if track.track_state == TrackState.CONFIRMED or track.track_state == TrackState.ZOMBIE:
 
-                kf_str, msg_str = track.state_estimator.to_string()
+                if self._logger is not None:
+                    kf_str, msg_str = track.state_estimator.to_string()
 
-                if track.state_estimator.fused_track:
-                    kf_unfused_str, msg_str = track.state_estimator.to_string(get_unfused=True)
+                    if track.state_estimator.fused_track:
+                        kf_unfused_str, msg_str = track.state_estimator.to_string(get_unfused=True)
 
-                if track.state_estimator.fused_track:
-                    label = '2'
-                else:
-                    label = '1'
+                    if track.state_estimator.fused_track:
+                        label = '2'
+                    else:
+                        label = '1'
 
-                if track.sensor == Radar:
-                    sens = "Radar"
-                elif track.sensor == DSRC:
-                    sens = "DSRC"
+                    if track.sensor == Radar:
+                        sens = "Radar"
+                    elif track.sensor == DSRC:
+                        sens = "DSRC"
 
-                self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
-                                   ',' + label + ',' + kf_str[:-1] + ',' + sens + '\n')
-                if track.state_estimator.fused_track:
                     self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
-                                       ',' + '1' + ',' + kf_unfused_str[:-1] + ',' + sens + '\n')
-                self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
-                                   ',' + str(0) + ',' + msg_str[:-1] + ',' + sens + '\n')
+                                       ',' + label + ',' + kf_str[:-1] + ',' + sens + '\n')
+                    if track.state_estimator.fused_track:
+                        self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
+                                           ',' + '1' + ',' + kf_unfused_str[:-1] + ',' + sens + '\n')
+                    self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
+                                       ',' + str(0) + ',' + msg_str[:-1] + ',' + sens + '\n')
 
                 if track.track_state == TrackState.CONFIRMED and not track.served:
                     # only need to send 1 BSM per fused tracks
@@ -386,6 +391,7 @@ class TrackSpecialist:
                         try:
                             self._bsm_writer.sendto(track.sensor.bsm(
                                 track_id, track), ("localhost", self._bsm_port))
+                            print(track.sensor.bsm(track_id, track))
                         except socket.error as e:
                             # log the error
                             print("  [*] Couldn't send BSM for track ["
