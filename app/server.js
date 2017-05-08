@@ -44,7 +44,7 @@ function initAuthentication() {
 
 app.get("/", function (request, response) {
     response.sendFile(__dirname + '/views/index.html');
-    // Create an anonymous user
+    // Create an anonymous user for this session
     initAuthentication();
 });
 
@@ -71,6 +71,7 @@ app.post("/track", function (request, response) {
     response.status(200).end();
 });
 
+// delete all tracks in db for a given track_id
 //app.post("/delete", function (request, response) {
 //
 //});
