@@ -14,29 +14,83 @@
   </head>
   <body>
     <div id="map"></div>
+    <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-uVi1hKsC0fAq6B7AftxZMRGBzwY38p4
         &libraries=visualization&callback=initMap">
-		/**
-		 * The JavaScript code that creates the firebase map goes between the empty script tags below.
-		 */
-		<script>
-			function initMap() {
-			  var map = new google.maps.Map(document.getElementById('map'), {
-				center: {lat: 29.6216931, lng: -82.3867591},
-				zoom: 32,
-				mapTypeId: google.maps.MapTypeId.SATELLITE,
-				styles: [{
-				  featureType: 'poi',
-				  stylers: [{ visibility: 'off' }]  // Turn off points of interest.
-				}, {
-				  featureType: 'transit.station',
-				  stylers: [{ visibility: 'off' }]  // Turn off bus stations, train stations, etc.
-				}],
-				disableDoubleClickZoom: true
-			  });
-			}
-		</script>
+    </script>
+
+    /**
+     * The JavaScript code that creates the firebase map goes between the empty script tags below.
+     * https://developers.google.com/maps/documentation/javascript/firebase
+     */
+    <script>
+      var firebase = new Firebase("https://sensible-viz-1494193988644.firebaseio.com/");
+
+      function makeInfoBox(controlDiv, map) {
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.boxShadow = 'rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px';
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '2px';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.marginTop = '10px';
+        controlUI.style.textAlign = 'center';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '100%';
+        controlText.style.padding = '6px';
+        controlText.innerText = 'This map shows all active tracks and trajectories.';
+        controlUI.appendChild(controlText);
+      }
+
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 29.6216931, lng: -82.3867591},
+          zoom: 32,
+          mapTypeId: google.maps.MapTypeId.SATELLITE,
+          styles: [{
+            featureType: 'poi',
+            stylers: [{ visibility: 'off' }]  // Turn off points of interest.
+          }, {
+            featureType: 'transit.station',
+            stylers: [{ visibility: 'off' }]  // Turn off bus stations, train stations, etc.
+          }],
+          disableDoubleClickZoom: true
+        });
+        // Create the DIV to hold the control and call the makeInfoBox() constructor
+        // passing in this DIV.
+        var infoBoxDiv = document.createElement('div');
+        var infoBox = new makeInfoBox(infoBoxDiv, map);
+        infoBoxDiv.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(infoBoxDiv);
+        initFirebase(map);
+      }
+
+      function initFirebase(map) {
+        var tracks = firebase.child('track');
+        tracks.on('value', function(snapshot) {
+          console.log('in callback!');
+          var newPoint = snapshot.val();
+          var rect = new google.maps.Rectangle({
+              strokeColor: '#FF0000',
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              fillColor: '#FF0000',
+              fillOpacity: 0.35,
+              map: map,
+              center: {lat: newPoint.lat, lng: newPoint.lon},
+              radius: 5
+          });
+        });
+      }
+
     </script>
   </body>
 </html>

@@ -391,7 +391,6 @@ class TrackSpecialist:
                         try:
                             self._bsm_writer.sendto(track.sensor.bsm(
                                 track_id, track), ("localhost", self._bsm_port))
-                            print(track.sensor.bsm(track_id, track))
                         except socket.error as e:
                             # log the error
                             print("  [*] Couldn't send BSM for track ["

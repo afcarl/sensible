@@ -13,12 +13,13 @@ class StateEstimator(object):
 
     """
 
-    def __init__(self, fused_track):
+    def __init__(self, fused_track, stationary_R):
         self.y = []  # messages
         self.x_k = []  # filtered track state
         self.y_k = []  # filtered measurement
         self.x_k_fused = []  # result of the covariance intersection algorithm
         self.t = []  # time stamps
+        self.stationary_R = stationary_R
         self.fused_track = fused_track
 
     def get_latest_message(self):
@@ -50,7 +51,12 @@ class StateEstimator(object):
             self.y.append(msg)
             self.t.append(time)
         else:
-            self.y.append(self.parse_msg(msg))
+            if self.stationary_R:
+                msg_ = self.parse_msg(msg, self.stationary_R)
+            else:
+                msg_, x_rms, y_rms = self.parse_msg(msg, self.stationary_R)
+                self.update_measurement_covariance(x_rms, y_rms)
+            self.y.append(msg_)
             self.t.append(time)
             if len(self.x_k) == 0:
                 self.x_k.append(self.y[-1])
@@ -120,6 +126,9 @@ class StateEstimator(object):
         dx = s - ss
         return np.matmul(dx.T, np.matmul(scipy.linalg.inv(PP + P), dx)), ts1.to_string(), ts2.to_string()
 
+    def update_measurement_covariance(self, x_rms, y_rms):
+        raise NotImplementedError
+
     def measurement_residual_covariance(self):
         raise NotImplementedError
 
@@ -132,5 +141,5 @@ class StateEstimator(object):
     def process_covariance(self):
         raise NotImplementedError
 
-    def parse_msg(self, msg):
+    def parse_msg(self, msg, stationary_R):
         raise NotImplementedError

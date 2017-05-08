@@ -36,7 +36,7 @@ if __name__ == '__main__':
     # topic_filters = ["Radar"]
     sensors = {'sensor_ports': sensor_ports, 'topic_filters': topic_filters}
 
-    ts = sensible.TrackSpecialist(sensors, bsm_port, run_for, p, frequency=freq, verbose=False)
+    ts = sensible.TrackSpecialist(sensors, bsm_port, run_for, p, frequency=freq, verbose=True)
 
     dsrc_recv = sensible.DSRC()
     dsrc_thread = sensible.SocketThread(sensor=dsrc_recv, ip_address="localhost", port=dsrc_recv_port, msg_len=300,
@@ -44,8 +44,9 @@ if __name__ == '__main__':
 
     radar_recv = sensible.Radar(mode="Tracking", lane=4, radar_lat=RADAR_LAT, radar_lon=RADAR_LON, verbose=False)
 
+    # 15.5
     radar_sender = RadarEmulator(radar=radar_recv, pub_freq=20,
-                                 fname="tests\data\SW-42-SW-40\\radar_log_20170502.csv", delay=15.5)
+                                 fname="tests\data\SW-42-SW-40\\radar_log_20170502.csv", delay=15.9)
 
     dsrc_sender = SensorEmulator(port=dsrc_recv_port, pub_freq=20,
                                  file_names=["tests/data/SW-42-SW-40/dsrc_truck_1_20170502.txt"],

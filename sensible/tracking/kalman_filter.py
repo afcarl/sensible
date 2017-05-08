@@ -10,15 +10,15 @@ class KalmanFilter(StateEstimator):
     vehicles following a standard constant velocity model.
     """
     def __init__(self, sensor_kf, fused_track=False):
-        super(KalmanFilter, self).__init__(fused_track)
+        super(KalmanFilter, self).__init__(fused_track, sensor_kf.stationary_R)
         self.Q = sensor_kf.Q
         self.P = sensor_kf.P
         self.F = sensor_kf.F
         self.R = sensor_kf.R
         self.sensor_kf = sensor_kf
 
-    def parse_msg(self, msg):
-        return self.sensor_kf.parse_msg(msg)
+    def parse_msg(self, msg, stationary_R=True):
+        return self.sensor_kf.parse_msg(msg, stationary_R)
 
     def measurement_residual_covariance(self):
         return self.P + self.R
@@ -26,8 +26,10 @@ class KalmanFilter(StateEstimator):
     def process_covariance(self):
         return self.P
 
-    def step(self):
+    def update_measurement_covariance(self, x_rms, y_rms):
+        self.R = self.sensor_kf.update_measurement_covariance(x_rms, y_rms)
 
+    def step(self):
         m, _ = self.get_latest_message()
 
         x_k_bar = np.matmul(self.F, self.x_k[-1]) + np.matmul(self.Q, np.random.normal(size=self.sensor_kf.state_dim))
@@ -51,7 +53,5 @@ class KalmanFilter(StateEstimator):
         self.P -= np.matmul(K_k, self.P)
 
         if not np.all(np.diagonal(self.P) >= 0.):
-            print("  [!] State covariance no longer positive definite!")
+            print("  [!] State covariance no longer positive semi-definite!")
             print("{}".format(self.P))
-
-        #print("  [*] Kalman step {}".format(self.k))

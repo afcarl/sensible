@@ -8,6 +8,7 @@ class DSRCTrackCfg:
         self.z = 3.49  # z-score corresponding to 95 %
         self.dt = dt
         self.state_dim = 4
+        self.stationary_R = False
 
         # should cover the min and max acceleration of any vehicle
         # that will be tracked
@@ -24,18 +25,18 @@ class DSRCTrackCfg:
                                        [0, 0, (np.power(self.dt, 4) / 4), (np.power(self.dt, 3) / 2)],
                                        [0, 0, (np.power(self.dt, 3) / 2), np.power(self.dt, 2)]]))
 
-        # variance of a gaussian distribution over a position (x,y) meters corresponding to += 1 m
+        # std dev of a gaussian distribution over a position (x,y) meters corresponding to += 1 m
         # TODO: try 2 ?
         sigma_1 = 4 / self.z
-        # variance corresponding to a standard normal (+= 1 m)
+        # std dev corresponding to a standard normal (+= 1 m)
         sigma_2 = 1 / self.z
 
         # measurement covariance
         self.R = np.eye(self.state_dim)
-        self.R[0][0] = sigma_1 ** 2
-        self.R[1][1] = sigma_2 ** 2
-        self.R[2][2] = sigma_1 ** 2
-        self.R[3][3] = sigma_2 ** 2
+        self.R[0][0] = sigma_1 ** 2  # x
+        self.R[1][1] = sigma_2 ** 2  # x dot
+        self.R[2][2] = sigma_1 ** 2  # y
+        self.R[3][3] = sigma_2 ** 2  # y dot
 
         # Dynamics
         self.F = np.eye(self.state_dim)
@@ -45,8 +46,13 @@ class DSRCTrackCfg:
         # initial state covariance
         self.P = np.eye(self.state_dim)
 
+    def update_measurement_covariance(self, x_rms, y_rms):
+        self.R[0][0] = (x_rms / self.z) ** 2
+        self.R[2][2] = (y_rms / self.z) ** 2
+        return self.R
+
     @staticmethod
-    def parse_msg(msg):
+    def parse_msg(msg, stationary_R):
         """
         Extract the values needed to run a Kalman Filter
         :param msg:
@@ -65,4 +71,10 @@ class DSRCTrackCfg:
         x_hat_dot = msg['speed'] * np.cos(np.deg2rad(heading - 180.0))
         y_hat_dot = msg['speed'] * np.sin(np.deg2rad(heading - 180.0))
 
-        return np.array([x_hat, x_hat_dot, y_hat, y_hat_dot])
+        x_rms = msg['rms_lat']
+        y_rms = msg['rms_lon']
+
+        if not stationary_R:
+            return np.array([x_hat, x_hat_dot, y_hat, y_hat_dot]), x_rms, y_rms
+        else:
+            return np.array([x_hat, x_hat_dot, y_hat, y_hat_dot])

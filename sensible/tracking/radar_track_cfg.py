@@ -14,6 +14,7 @@ class RadarTrackCfg:
         self.z = 3.49  # z-score corresponding to 95 %
         self.dt = dt
         self.state_dim = 2
+        self.stationary_R = True
 
         # should cover the min and max acceleration of any vehicle
         # that will be tracked
@@ -46,7 +47,7 @@ class RadarTrackCfg:
         self.P = np.eye(self.state_dim)
 
     @staticmethod
-    def parse_msg(msg):
+    def parse_msg(msg, stationary_R):
         """
         Extract the values needed to run a Kalman Filter
         :param msg:
