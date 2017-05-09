@@ -139,11 +139,11 @@ class SerialThread(StoppableThread):
                         for var in incoming_data[3:11]:
                             timeStampHold += var
                         timeStampBin = bin(int((timeStampHold), 16))[2:]
-                        timeStampHold = ''
                         if len(timeStampBin) < 64:
                             timeStampBin = SerialThread.addZeros(timeStampBin)
                         timeStamp = str(int(timeStampBin[0:8], 2)) + str(int(timeStampBin[8:16], 2)) + str(
                             int(timeStampBin[16:24], 2)) + str(int(timeStampBin[24:32], 2))
+                        timeStampHold = ''
                         binary_stuff = incoming_data[-8]
                         for var in incoming_data[-7:]:
                             binary_stuff += var

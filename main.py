@@ -40,7 +40,7 @@ if __name__ == '__main__':
         raise ValueError('Unable to disable both types of sensors')
 
     logger = None
-    if args['disable_logging']:
+    if not args['disable_logging']:
         # Track logger
         t = time.localtime()
         log_dir = os.getcwd()
@@ -67,21 +67,21 @@ if __name__ == '__main__':
                                             port=int(args['dsrc_remote_port']), msg_len=300, name='DSRCThread')
         dsrc_synchronizer = sensible.Synchronizer(publish_freq=int(args['track_frequency']), queue=dsrc_recv.queue,
                                                   port=int(args['dsrc_local_port']),
-                                                  topic=dsrc_recv.topic(), verbose=args['v'], name='DSRCSynchronizer')
+                                                  topic=dsrc_recv.topic(), verbose=False, name='DSRCSynchronizer')
         dsrc_synchronizer.start()
         dsrc_thread.start()
 
     if not args['disable_radar']:
         radar_recv = sensible.Radar(mode=args['radar_mode'], lane=int(args['radar_lane']),
                                     radar_lat=float(args['radar_lat']), radar_lon=float(args['radar_lon']),
-                                    verbose=args['v'])
+                                    verbose=False)
 
-        radar_thread = sensible.SerialThread(radar_recv, int(args['radar_com_port']), int(args['radar_baudrate']),
+        radar_thread = sensible.SerialThread(radar_recv, args['radar_com_port'], int(args['radar_baudrate']),
                                              name='RadarThread')
 
         radar_synchronizer = sensible.Synchronizer(publish_freq=int(args['track_frequency']), queue=radar_recv.queue,
                                                    port=int(args['radar_local_port']),
-                                                   topic=radar_recv.topic(), verbose=args['v'], name='RadarSynchronizer')
+                                                   topic=radar_recv.topic(), verbose=False, name='RadarSynchronizer')
 
         radar_synchronizer.start()
         radar_thread.start()

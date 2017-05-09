@@ -89,20 +89,23 @@ class Radar:
         if self._mode == "Tracking" and zone >= 0:
             raise ValueError("Expected a zone number of -1")
 
-        # dt = datetime.utcnow()
-        # h = dt.hour
-        # m = dt.minute
-        # s = int(dt.second * 1000 + round(dt.microsecond/1000))
-        # print('Correct time: {}:{}:{}'.format(h, m, s))
-
         if msg['xVel'] > -4 or msg['xVel'] < -21:
             return None
         else:
+            # dt = datetime.utcnow()
+            # h = dt.hour
+            # m = dt.minute
+            # s = int(dt.second * 1000 + round(dt.microsecond / 1000))
+            # print('Correct time: {}:{}:{}'.format(h, m, s))
+            # print('Radar time: {}'.format(msg['TimeStamp']))
+            h = int(msg['TimeStamp'][0:2])
+            m = int(msg['TimeStamp'][2:4])
+            s = int(msg['TimeStamp'][4:])
             return {
                 'id': int(msg['objID']),
-                'h': msg['TimeStamp']['h'],
-                'm': msg['TimeStamp']['m'],
-                's': msg['TimeStamp']['s'] + self.clock_offset,
+                'h': h,
+                'm': m,
+                's': s + self.clock_offset,
                 'xPos': self.x - msg['yPos'],
                 'yPos': self.y + msg['xPos'],
                 'speed': msg['xVel'],  # accept 14 mph to 45 mph ~
