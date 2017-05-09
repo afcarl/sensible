@@ -96,7 +96,7 @@ class Radar:
             h = dt.hour
             m = dt.minute
             s = int(dt.second * 1000 + round(dt.microsecond / 1000))
-            print('Radar correct time: {}:{}:{}'.format(h, m, s))
+            #print('Radar correct time: {}:{}:{}'.format(h, m, s))
             #print('Radar time: {}'.format(msg['TimeStamp']))
             #h = int(msg['TimeStamp'][0:2])
             #m = int(msg['TimeStamp'][2:4])
