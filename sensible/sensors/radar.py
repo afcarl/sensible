@@ -62,8 +62,9 @@ class Radar:
     def bsm(track_id, track):
         state, t = track.state_estimator.state()
 
-        return "{},{},{},{},{},{},{},{},{},{},{},{}".format(
+        return "{},{},{},{},{},{},{},{},{},{},{},{},{}".format(
             track_id,
+	    track.veh_id,
             t.h,
             t.m,
             t.s,

@@ -15,7 +15,7 @@ class Track(object):
         self.fused_track_ids = []  # the track id of the other track fused with this one
         self.fusion_method = fusion_method
 
-        self._veh_id = first_msg['id']
+        self.veh_id = first_msg['id']
 
         self.track_state = TrackState.UNCONFIRMED
         self.sensor = sensor
@@ -28,7 +28,7 @@ class Track(object):
         self.max_accel = first_msg['max_accel']
         self.max_decel = first_msg['max_decel']
 
-        self.type = sensor.get_default_vehicle_type(id=self._veh_id)
+        self.type = sensor.get_default_vehicle_type(id=self.veh_id)
 
     def step(self):
         """Carry out a single forward recursion of the state estimation."""
