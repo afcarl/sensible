@@ -86,7 +86,7 @@ class SerialThread(StoppableThread):
 
     @staticmethod
     def positionData(data):
-        if (len(data) < 64):
+        if len(data) < 64:
             # subStr = ''
             # newStr = ''
             # for i in range(0,(64-len(data))):
@@ -123,7 +123,8 @@ class SerialThread(StoppableThread):
         left_line_ys = [5.3]
         line_width = 4.5   # 4.5 m
         trigger_offset = 0
-        #timeStamp = ''
+        timeStampHold = ''
+        timeStamp = ''
         car_width = 1.5
         status_id_type = ''
 
@@ -132,18 +133,17 @@ class SerialThread(StoppableThread):
             if cars_coming:
                 if len(incoming_data) is 33:
                     if incoming_data[22] == status_id_type:
-                        # timeStampHold = ''
-                        # for var in incoming_data[3:11]:
-                        #     timeStampHold += var
-                        # if timeStampHold == '':
-                        #     continue
-                        # timeStampBin = bin(int((timeStampHold), 16))[2:]
-                        # timeStampBinZeros = SerialThread.addZeros(timeStampBin)
-                        # timeStamp = str(int(timeStampBinZeros[0:8], 2)) + str(
-                        #     int(timeStampBinZeros[8:16], 2)) + str(
-                        #     int(timeStampBinZeros[16:24], 2)) + str(int(timeStampBinZeros[24:32], 2))
-                        # print('TIME: ')
-                        # print(timeStamp)
+                        #print('timestamp Binary: ')
+                        #print(incoming_data[0:11])
+                        # should be 060008 then time stamp
+                        for var in incoming_data[3:11]:
+                            timeStampHold += var
+                        timeStampBin = bin(int((timeStampHold), 16))[2:]
+                        timeStampHold = ''
+                        if len(timeStampBin) < 64:
+                            timeStampBin = SerialThread.addZeros(timeStampBin)
+                        timeStamp = str(int(timeStampBin[0:8], 2)) + str(int(timeStampBin[8:16], 2)) + str(
+                            int(timeStampBin[16:24], 2)) + str(int(timeStampBin[24:32], 2))
                         binary_stuff = incoming_data[-8]
                         for var in incoming_data[-7:]:
                             binary_stuff += var
@@ -151,37 +151,35 @@ class SerialThread(StoppableThread):
                         if binary_stuff == '':
                             continue
                         obtainedData = SerialThread.positionData(bin(int((binary_stuff), 16))[2:])
-                        #obtainedData['TimeStamp'] = timeStamp
+                        obtainedData['TimeStamp'] = timeStamp
                         cars.append(obtainedData)
                         # car_check
-                        # for box in range(0, 10):
-                        #     if (((front_line_xs[box] + line_lengths[box]) >= float(obtainedData['xPos']) >=
-                        #              front_line_xs[
-                        #                  box] or (front_line_xs[box] + line_lengths[box]) >= (
-                        #                 float(obtainedData['xPos']) + float(obtainedData['objLength'])) >=
-                        #         front_line_xs[
-                        #             box] or (
-                        #                 front_line_xs[box] + line_lengths[box]) <= (
-                        #                 float(obtainedData['xPos']) + float(obtainedData['objLength'])) and float(
-                        #         obtainedData['xPos']) <= front_line_xs[box]) and (
-                        #                             (left_line_ys[box] + line_width - trigger_offset) >= float(
-                        #                             obtainedData['yPos']) - (car_width / 2) >= (
-                        #                                 left_line_ys[box] + trigger_offset) or (
-                        #                                 left_line_ys[box] + line_width - trigger_offset) >= (
-                        #                             float(obtainedData['yPos']) + (car_width / 2)) >= (
-                        #                             left_line_ys[box] + trigger_offset) or (
-                        #                             left_line_ys[box] + line_width - trigger_offset) <= (
-                        #                         float(obtainedData['yPos']) + (car_width / 2)) and (
-                        #                         float(obtainedData['yPos']) - (car_width / 2)) <= (
-                        #                         left_line_ys[box] + trigger_offset))):
-                        #         tracked_car = dict(obtainedData)
-                        #         tracked_car['objMessage'] = 'Trigger'
-                        #         tracked_car['objZone'] = box
-                        #         cars.append(tracked_car)
-
+                        for box in range(len(front_line_xs)):
+                            if (((front_line_xs[box] + line_lengths[box]) >= float(obtainedData['xPos']) >=
+                                     front_line_xs[
+                                         box] or (front_line_xs[box] + line_lengths[box]) >= (
+                                        float(obtainedData['xPos']) + float(obtainedData['objLength'])) >=
+                                front_line_xs[
+                                    box] or (
+                                        front_line_xs[box] + line_lengths[box]) <= (
+                                        float(obtainedData['xPos']) + float(obtainedData['objLength'])) and float(
+                                obtainedData['xPos']) <= front_line_xs[box]) and (
+                                                    (left_line_ys[box] + line_width - trigger_offset) >= float(
+                                                    obtainedData['yPos']) - (car_width / 2) >= (
+                                                        left_line_ys[box] + trigger_offset) or (
+                                                        left_line_ys[box] + line_width - trigger_offset) >= (
+                                                    float(obtainedData['yPos']) + (car_width / 2)) >= (
+                                                    left_line_ys[box] + trigger_offset) or (
+                                                    left_line_ys[box] + line_width - trigger_offset) <= (
+                                                float(obtainedData['yPos']) + (car_width / 2)) and (
+                                                float(obtainedData['yPos']) - (car_width / 2)) <= (
+                                                left_line_ys[box] + trigger_offset))):
+                                tracked_car = dict(obtainedData)
+                                tracked_car['objMessage'] = 'Trigger'
+                                tracked_car['objZone'] = box
+                                cars.append(tracked_car)
                         incoming_data = incoming_data[:-11]
                     else:
-                        # it's reset here
                         incoming_data = []
                         try:
                             self.push(cars)

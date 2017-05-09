@@ -5,6 +5,8 @@ from collections import deque
 from sensible.tracking.radar_track_cfg import RadarTrackCfg
 from sensible.tracking.vehicle_type import VehicleType
 
+from datetime import datetime
+
 try:  # python 2.7
     import cPickle as pickle
 except ImportError:  # python 3.5 or 3.6
@@ -86,6 +88,12 @@ class Radar:
             raise ValueError("Expected a zone number > 0")
         if self._mode == "Tracking" and zone >= 0:
             raise ValueError("Expected a zone number of -1")
+
+        # dt = datetime.utcnow()
+        # h = dt.hour
+        # m = dt.minute
+        # s = int(dt.second * 1000 + round(dt.microsecond/1000))
+        # print('Correct time: {}:{}:{}'.format(h, m, s))
 
         if msg['xVel'] > -4 or msg['xVel'] < -21:
             return None
