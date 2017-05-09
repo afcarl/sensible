@@ -18,9 +18,9 @@ if __name__ == '__main__':
     parser.add_argument('--radar-lane', default=4, help='Lane # to append to radar outgoing message')
     parser.add_argument('--radar-local-port', default=5200, help='Port for comms between radar and'
                                                                  ' central tracking component')
-    parser.add_argument('--dsrc-ip-address', default='localhost', help='IP address for comms with DSRC radio')
+    parser.add_argument('--dsrc-ip-address', default='169.254.30.4', help='IP address for comms with DSRC radio')
     parser.add_argument('--dsrc-remote-port', default=4200, help='Port for receiving incoming radio messages')
-    parser.add_argument('--dsrc-local-port', default=4201, help='Port for comms between dsrc and'
+    parser.add_argument('--dsrc-local-port', default=4202, help='Port for comms between dsrc and'
                                                                 ' central tracking component')
     parser.add_argument('--track-frequency', default=5, help='Frequency (Hz) at which to run the central tracking system')
     parser.add_argument('--output-port', default=24601, help='Port on localhost to which to forward tracking info')

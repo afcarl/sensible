@@ -92,15 +92,15 @@ class Radar:
         if msg['xVel'] > -4 or msg['xVel'] < -21:
             return None
         else:
-            # dt = datetime.utcnow()
-            # h = dt.hour
-            # m = dt.minute
-            # s = int(dt.second * 1000 + round(dt.microsecond / 1000))
-            # print('Correct time: {}:{}:{}'.format(h, m, s))
-            # print('Radar time: {}'.format(msg['TimeStamp']))
-            h = int(msg['TimeStamp'][0:2])
-            m = int(msg['TimeStamp'][2:4])
-            s = int(msg['TimeStamp'][4:])
+            dt = datetime.utcnow()
+            h = dt.hour
+            m = dt.minute
+            s = int(dt.second * 1000 + round(dt.microsecond / 1000))
+            print('Radar correct time: {}:{}:{}'.format(h, m, s))
+            #print('Radar time: {}'.format(msg['TimeStamp']))
+            #h = int(msg['TimeStamp'][0:2])
+            #m = int(msg['TimeStamp'][2:4])
+            #s = int(msg['TimeStamp'][4:])
             return {
                 'id': int(msg['objID']),
                 'h': h,
@@ -108,7 +108,7 @@ class Radar:
                 's': s + self.clock_offset,
                 'xPos': self.x - msg['yPos'],
                 'yPos': self.y + msg['xPos'],
-                'speed': msg['xVel'],  # accept 14 mph to 45 mph ~
+                'speed': msg['xVel'],  # accept ~14 mph to 45 mph ~
                 'veh_len': msg['objLength'],
                 'lane': self._lane,
                 'max_accel': 5,

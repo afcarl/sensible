@@ -4,7 +4,7 @@ import numpy as np
 
 import xml.etree.cElementTree as ElementTree
 from collections import deque
-
+from datetime import datetime
 from sensible.tracking.dsrc_track_cfg import DSRCTrackCfg
 from sensible.tracking.vehicle_type import VehicleType
 
@@ -75,6 +75,13 @@ class DSRC:
         max_accel = ops.verify(int(data[56:60], 16), 0, 2000) * 0.01  # m/s^2
         max_decel = ops.verify(int(data[60:64], 16), 0, 2000) * -0.01  # m/s^2
         served = int(data[64:66], 16)
+        
+        #ts = datetime.utcnow()
+        #h = ts.hour
+        #m = ts.minute
+        #s = int(ts.second * 1000 + round(ts.microsecond/1000))
+	if served == 1:	
+	    print('served is true!')
 
         return {
             'msg_count': msg_count,

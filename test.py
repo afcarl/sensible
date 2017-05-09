@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     # 15.5
     radar_sender = RadarEmulator(radar=radar_recv, pub_freq=20,
-                                 fname="tests\data\SW-42-SW-40\\radar_log_20170502.csv", delay=15.9)
+                                 fname="tests/data/SW-42-SW-40/radar_log_20170502.csv", delay=15.5)
 
     dsrc_sender = SensorEmulator(port=dsrc_recv_port, pub_freq=20,
                                  file_names=["tests/data/SW-42-SW-40/dsrc_truck_1_20170502.txt"],

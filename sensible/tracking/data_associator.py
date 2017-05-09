@@ -68,7 +68,7 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
         ops.show("  [Track association] Track {} has a mahalanobis distance of {} "
                  "to the query with time-alignment of {} and {}, respectively".format(track_id, md, ts1, ts2), verbose)
 
-        if md <= 25:
+        if md <= 35:
             results.append((track_id, md))
 
     # radar_t_stamp = TimeStamp(radar_msg['h'], radar_msg['m'], radar_msg['s'])
