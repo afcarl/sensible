@@ -10,8 +10,8 @@ class TimeStamp:
         self.s = s
 
     def to_string(self):
-        return "{}:{}:{}".format(self.h, self.m, self.s)
+        return "{}:{}:{}".format(self.h, self.m, int(self.s))
 
     def to_fname_string(self):
-        return "{}-{}-{}".format(self.h, self.m, self.s)
+        return "{}-{}-{}".format(self.h, self.m, int(self.s))
 

@@ -325,6 +325,7 @@ class TrackSpecialist:
     def delete_track(self, track_id):
         """remove it from the track list."""
         ops.show("  [*] Dropping track {}".format(track_id), self._verbose)
+        # TODO: add line to log file
         msg_id = None
         for k, v in self._sensor_id_map.items():
             if v == track_id:
@@ -357,7 +358,8 @@ class TrackSpecialist:
         """
 
         for (track_id, track) in self._track_list.items():
-            if track.track_state == TrackState.CONFIRMED or track.track_state == TrackState.ZOMBIE:
+            if track.track_state == TrackState.UNCONFIRMED or \
+                            track.track_state == TrackState.CONFIRMED or track.track_state == TrackState.ZOMBIE:
 
                 if self._logger is not None:
                     kf_str, msg_str = track.state_estimator.to_string()
@@ -372,16 +374,18 @@ class TrackSpecialist:
 
                     if track.sensor == Radar:
                         sens = "Radar"
+                        placeholder = 'NaN,NaN,'
                     elif track.sensor == DSRC:
                         sens = "DSRC"
+                        placeholder = ''
 
                     self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
-                                       ',' + label + ',' + kf_str[:-1] + ',' + sens + '\n')
+                                       ',' + label + ',' + placeholder + kf_str[:-1] + ',' + sens + '\n')
                     if track.state_estimator.fused_track:
                         self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
-                                           ',' + '1' + ',' + kf_unfused_str[:-1] + ',' + sens + '\n')
+                                           ',' + '1' + ',' + placeholder + kf_unfused_str[:-1] + ',' + sens + '\n')
                     self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
-                                       ',' + str(0) + ',' + msg_str[:-1] + ',' + sens + '\n')
+                                       ',' + str(0) + ',' + placeholder + msg_str[:-1] + ',' + sens + '\n')
 
                 if track.track_state == TrackState.CONFIRMED and not track.served:
                     # only need to send 1 BSM per fused tracks
