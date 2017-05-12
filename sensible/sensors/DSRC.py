@@ -137,4 +137,5 @@ class DSRC:
             if queued_msg['id'] == msg['id'] and queued_msg['s'] == msg['s']:
                 # Found a duplicate
                 return
+        # add X to the right end of the queue
         self._queue.append(msg)

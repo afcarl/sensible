@@ -41,7 +41,8 @@ class Synchronizer(StoppableThread):
         """
         if len(self._queue) > 0:
             sent_ids = []
-            for queued_msg in list(self._queue):
+            while len(self._queue) > 0:
+                queued_msg = self._queue.pop()
                 if queued_msg['id'] not in sent_ids:
                     self._publisher.send_string("{} {}".format(self._topic, pickle.dumps(queued_msg)))
                     sent_ids.append(queued_msg['id'])
@@ -52,7 +53,7 @@ class Synchronizer(StoppableThread):
                     #                                                   queued_msg['m'],
                     #                                                   queued_msg['s']),
                     #          self._verbose)
-            # drop all messages
+            # make sure all messages are dropped
             self._queue.clear()
 
     def run(self):

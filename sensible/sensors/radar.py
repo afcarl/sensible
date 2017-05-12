@@ -1,4 +1,7 @@
 import utm
+import csv
+import time
+import os
 
 from collections import deque
 
@@ -19,7 +22,7 @@ class Radar:
     Radar messages are "asynchronous"
     """
 
-    def __init__(self, mode, lane, radar_lat, radar_lon, clock_offset=0, verbose=False):
+    def __init__(self, mode, lane, radar_lat, radar_lon, clock_offset=0, record_csv=False, verbose=False):
         self._queue = deque()
         self._mode = mode
         self._verbose = verbose
@@ -27,6 +30,16 @@ class Radar:
         self.x, self.y, self.zone, self.letter = utm.from_latlon(
             radar_lat, radar_lon)
         self.clock_offset = clock_offset
+
+        if record_csv:
+            t = time.localtime()
+            timestamp = time.strftime('%m-%d-%Y_%H%M', t)
+            radar_logger = open(os.path.join('logs', "radarLog_" + timestamp + ".csv"), 'wb')
+            header = ['objMessage', 'objID', 'objLength', 'yVel', 'xVel', 'yPos', 'xPos', 'TimeStamp', 'objZone']
+            self._logger = csv.DictWriter(radar_logger, fieldnames=header)
+            self._logger.writeheader()
+        else:
+            self._logger = None
 
     @property
     def queue(self):
@@ -64,7 +77,7 @@ class Radar:
 
         return "{},{},{},{},{},{},{},{},{},{},{},{},{}".format(
             track_id,
-	    track.veh_id,
+            track.veh_id,
             t.h,
             t.m,
             t.s,
@@ -120,6 +133,8 @@ class Radar:
     def push(self, msgs):
         """Process incoming data. Overrides StoppableThread's push method."""
         for msg in msgs:
+            if self._logger is not None:
+                self._logger.writerow(msg)
             res = self.parse(msg)
             if res is not None:
                 self.add_to_queue(res)
@@ -130,4 +145,5 @@ class Radar:
             if queued_msg['id'] == msg['id'] and queued_msg['s'] == msg['s']:
                 # Found a duplicate
                 return
+        # add X to the right side of the queue
         self._queue.append(msg)

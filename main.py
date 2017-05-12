@@ -28,24 +28,21 @@ if __name__ == '__main__':
     parser.add_argument('--disable-logging', action='store_true', help='Enable logging')
     parser.add_argument('--disable-radar', action='store_true', help='Only run with DSRC tracking')
     parser.add_argument('--disable-dsrc', action='store_true', help='Only run with radar tracking')
+    parser.add_argument('--record-csv', action='store_true', help='Record all radar msgs to a .csv')
 
     parser.set_defaults(disable_logging=False)
     parser.set_defaults(v=False)
     parser.set_defaults(disable_radar=False)
     parser.set_defaults(disable_dsrc=False)
+    parser.set_defaults(record_csv=False)
 
     args = vars(parser.parse_args())
 
     if args['disable_radar'] and args['disable_dsrc']:
         raise ValueError('Unable to disable both types of sensors')
 
-    logger = None
     if not args['disable_logging']:
-        # Track logger
-        t = time.localtime()
-        log_dir = os.getcwd()
-        timestamp = time.strftime('%m-%d-%Y_%H%M', t)
-        logger = open(os.path.join('logs', 'trackLog_' + timestamp + '.csv'), 'wb')
+        sensible.ops.initialize_logs()
 
     sensor_ports = []
     topic_filters = []
@@ -59,7 +56,7 @@ if __name__ == '__main__':
     sensors = {'sensor_ports': sensor_ports, 'topic_filters': topic_filters}
 
     ts = sensible.TrackSpecialist(sensors, int(args['output_port']), int(args['run_for']),
-                                  logger, frequency=int(args['track_frequency']), verbose=args['v'])
+                                  sensible.ops.track_logger, frequency=int(args['track_frequency']), verbose=args['v'])
 
     if not args['disable_dsrc']:
         dsrc_recv = sensible.DSRC()
@@ -74,7 +71,7 @@ if __name__ == '__main__':
     if not args['disable_radar']:
         radar_recv = sensible.Radar(mode=args['radar_mode'], lane=int(args['radar_lane']),
                                     radar_lat=float(args['radar_lat']), radar_lon=float(args['radar_lon']),
-                                    verbose=False)
+                                    record_csv=args['record_csv'], verbose=False)
 
         radar_thread = sensible.SerialThread(radar_recv, args['radar_com_port'], int(args['radar_baudrate']),
                                              name='RadarThread')
@@ -86,7 +83,8 @@ if __name__ == '__main__':
         radar_synchronizer.start()
         radar_thread.start()
 
-    print("  [Sensible] Starting app...")
+    sensible.ops.show("  [Sensible] Starting app...\n", True)
+
     ts.run()
 
     if not args['disable_dsrc']:
@@ -97,4 +95,5 @@ if __name__ == '__main__':
         radar_synchronizer.stop()
         radar_thread.stop()
 
-    print("  [Sensible] Shutting down app...")
+    sensible.ops.show("  [Sensible] Shutting down app...\n", True)
+    sensible.ops.close_logs()
