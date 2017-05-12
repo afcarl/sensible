@@ -46,12 +46,12 @@ class Synchronizer(StoppableThread):
                     self._publisher.send_string("{} {}".format(self._topic, pickle.dumps(queued_msg)))
                     sent_ids.append(queued_msg['id'])
 
-                    ops.show(' [{}] Sent msg for veh: {} at {}:{}:{}'.format(self.name,
-                                                                      queued_msg['id'],
-                                                                      queued_msg['h'],
-                                                                      queued_msg['m'],
-                                                                      queued_msg['s']),
-                             self._verbose)
+                    # ops.show('  [{}] Sent msg for veh: {} at {}:{}:{}\n'.format(self.name,
+                    #                                                   queued_msg['id'],
+                    #                                                   queued_msg['h'],
+                    #                                                   queued_msg['m'],
+                    #                                                   queued_msg['s']),
+                    #          self._verbose)
             # drop all messages
             self._queue.clear()
 

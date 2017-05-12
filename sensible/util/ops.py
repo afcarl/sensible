@@ -3,6 +3,13 @@ try:  # python 2.7
 except ImportError:  # python 3.5 or 3.6
     import pickle
 
+import time
+import os
+from datetime import datetime
+
+track_logger = None
+system_logger = None
+
 
 def verify(val, min_val, max_val):
     """If val < min or val > max, raise a ParseError
@@ -74,6 +81,40 @@ def merge_n_lists(big_list):
     return result
 
 
+def initialize_logs():
+    global system_logger
+    global track_logger
+    if track_logger is None:
+        # Track logger
+        t = time.localtime()
+        timestamp = time.strftime('%m-%d-%Y_%H%M', t)
+        track_logger = open(os.path.join('logs', "trackLog_" + timestamp + ".csv"), 'wb')
+        logger_title = "TrackID,TrackState,Filtered,timestamp,xPos,xSpeed,yPos,ySpeed,Sensor\n"
+        track_logger.write(logger_title)
+    if system_logger is None:
+        # System logger
+        t = time.localtime()
+        timestamp = time.strftime('%m-%d-%Y_%H%M', t)
+        system_logger = open(os.path.join('logs', "systemLog_" + timestamp + ".log"), 'wb')
+
+
 def show(string, verbose):
-    if verbose:
-        print(string)
+    global system_logger
+    if system_logger is None:
+        print("  [!] Need to call ops.initializer_logs() first")
+    else:
+        ts = datetime.utcnow()
+        ts = '[{}:{}:{}]'.format(ts.hour, ts.minute, (ts.second * 1000) + (ts.microsecond/1000))
+        string = ts + string
+        system_logger.write(string)
+        if verbose:
+            print(string)
+
+
+def close_logs():
+    global track_logger
+    global system_logger
+    if track_logger is not None:
+        track_logger.close()
+    if system_logger is not None:
+        system_logger.close()

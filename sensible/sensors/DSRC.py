@@ -80,8 +80,6 @@ class DSRC:
         #h = ts.hour
         #m = ts.minute
         #s = int(ts.second * 1000 + round(ts.microsecond/1000))
-	if served == 1:	
-	    print('served is true!')
 
         return {
             'msg_count': msg_count,

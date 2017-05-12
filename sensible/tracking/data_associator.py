@@ -3,7 +3,7 @@ from sensible.tracking import radar_track_cfg
 from sensible.util import ops
 
 
-def single_hypothesis_track_association(track_list, query, method="track-to-track", verbose=False):
+def single_hypothesis_track_association(track_list, query_track_info, method="track-to-track", verbose=False):
     """
     Single-hypothesis association
 
@@ -35,7 +35,7 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
           state to fused. Send BSM if not yet served.
 
     :param track_list: List of (id, track) pairs
-    :param query: The track or measurement that is to be associated
+    :param query_track_info: Tuple of (id, track) for track-to-track, otherwise it is the measurement that is to be associated
     :param method: options are "track-to-track" and "measurement-to-track"
     :param verbose: display verbose information
     :return: tuple (result code, associated track id)
@@ -50,23 +50,33 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
     #      "C:\\Users\\pemami\\Workspace\\Github\\sensible\\tests\\data\\trajectories\\radar-" + t.to_fname_string() + ".pkl")
 
     results = []
+
     for (track_id, track) in track_list.items():
 
         if method == "track-to-track":
+            query_track_id = query_track_info[0]
+            query_track = query_track_info[1]
             # First condition ensures the query track isn't fused with itself,
             # and the second condition ensures two radar or two DSRC tracks
             # aren't fused together
-            if track == query or track.sensor == query.sensor or track_id in query.fused_track_ids:
+            if track == query_track or track.sensor == query_track.sensor or track_id in query_track.fused_track_ids:
                 continue
 
-            s, ts = query.state_estimator.state()
-            md, ts1, ts2 = track.state_estimator.mahalanobis(s, query.state_estimator.process_covariance(), ts)
+            s, ts = query_track.state_estimator.state()
+            md, ts1, ts2 = track.state_estimator.mahalanobis(s, query_track.state_estimator.process_covariance(), ts)
+
+            ops.show("  [TTTA] Track {} has a mahalanobis distance of {} "
+                     "to the query track {} with time-alignment of {} and {}, respectively\n".format(track_id, md,
+                                                                                              query_track_id, ts1, ts2),
+                     verbose)
+
         elif method == "measurement-to-track":
 
-            md, ts1, ts2 = track.state_estimator.mahalanobis(query, radar_track_cfg.RadarTrackCfg(0.1).R)
+            md, ts1, ts2 = track.state_estimator.mahalanobis(query_track_info, radar_track_cfg.RadarTrackCfg(0.1).R)
 
-        ops.show("  [Track association] Track {} has a mahalanobis distance of {} "
-                 "to the query with time-alignment of {} and {}, respectively".format(track_id, md, ts1, ts2), verbose)
+            ops.show("  [TTMA] Track {} has a mahalanobis distance of {} "
+                     "to the query with time-alignment of {} and {}, respectively\n".format(track_id, md, ts1, ts2),
+                     verbose)
 
         if md <= 35:
             results.append((track_id, md))
@@ -79,7 +89,7 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
     # print(radar_log_str)
 
     if method == "track-to-track":
-        sensor = query.sensor.topic()
+        sensor = query_track.sensor.topic()
     elif method == "measurement-to-track":
         sensor = Radar.topic()
 
@@ -89,36 +99,37 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
         # associate as a conventional vehicle
         if sensor == Radar.topic():
             if method == "track-to-track":
-                ops.show("  [Track association] Conventional vehicle detected", verbose)
+                ops.show("  [TTTA] New conventional vehicle detected\n", verbose)
                 return 0x1, None
             elif method == "measurement-to-track":
-                ops.show("  [Measurement association] No matching DSRC track, classifying as conventional", verbose)
+                ops.show("  [TTMA] No matching DSRC track for radar detection, classifying as conventional\n", verbose)
                 return 0x5, None
         else:
-            ops.show("  [Track association] DSRC track but no matching radar track", verbose)
+            ops.show("  [TTTA] No matching radar track for DSRC track {}\n".format(query_track_id), verbose)
             return 0x3, None
     else:
         if len(results) > 1:
-            ops.show("  [Warning] {} vehicles within gating region of radar detection!".format(len(results)), verbose)
+            ops.show("  [Warning] {} vehicles within gating region of radar detection!\n".format(len(results)), verbose)
             # choose the closest
             sorted_results = sorted(results, key=lambda pair: len(pair[1]))
-            id = sorted_results[0][0]
-            ops.show("  [Track association] Associating with closest track {}".format(id), verbose)
+            res_id = sorted_results[0][0]
+            ops.show("  [TTTA] Associating with closest track {}\n".format(res_id), verbose)
             if sensor == Radar.topic():
                 if method == "track-to-track":
-                    return 0x2, id
+                    return 0x2, res_id
                 elif method == "measurement-to-track":
-                    return 0x6, id
+                    return 0x6, res_id
             else:
-                return 0x4, id
+                return 0x4, res_id
         else:
             r = results[0]
             if sensor == Radar.topic():
                 if method == "track-to-track":
-                    ops.show("  [Track association] Associating with track {}".format(r[0]), verbose)
+                    ops.show("  [TTTA] Associating radar track {} with DSRC track {}\n".format(query_track_id, r[0]), verbose)
                     return 0x2, r[0]
                 elif method == "measurement-to-track":
-                    ops.show("  [Measurement association] Associating with track {}".format(r[0]), verbose)
+                    ops.show("  [TTMA] Associating radar detection with track {}\n".format(r[0]), verbose)
                     return 0x6, r[0]
             else:
+                ops.show("  [TTTA] Associating DSRC track {} with radar track {}\n".format(query_track_id, r[0]), verbose)
                 return 0x4, r[0]

@@ -81,12 +81,22 @@ class StateEstimator(object):
             t = t.to_string()
 
         kf_log_str = t + ','
+
+        # For Radar
+        if np.shape(kf_state)[0] == 2:
+            kf_log_str += 'NaN,NaN,'
+
         for i in range(np.shape(kf_state)[0]):
             kf_log_str += str(kf_state[i]) + ','
 
         m, _ = self.get_latest_message()
 
         msg_log_str = t + ','
+
+        # For Radar
+        if np.shape(kf_state)[0] == 2:
+            msg_log_str += 'NaN,NaN,'
+
         if m is not None:
             for i in range(np.shape(m)[0]):
                 msg_log_str += str(m[i]) + ','
