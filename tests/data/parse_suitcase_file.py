@@ -33,8 +33,8 @@ def parse(msg):
     lat = ops.verify(ops.twos_comp(int(data[18:26], 16), 32), -900000000, 900000000) * 1e-7
     lon = ops.verify(ops.twos_comp(int(data[26:34], 16), 32), -1799999999, 1800000000) * 1e-7
     heading = ops.verify(int(data[34:38], 16), 0, 28799) * 0.0125
-    rms_lat = int(data[38:42], 16)
-    rms_lon = int(data[42:46], 16)
+    rms_lat = int(data[38:42], 16) * 0.01
+    rms_lon = int(data[42:46], 16) * 0.01
     speed = ops.verify(int(data[46:50], 16), 0, 8190) * 0.02  # m/s
     lane = int(data[50:52], 16)
     veh_len = ops.verify(int(data[52:56], 16), 0, 16383) * 0.01  # m
@@ -51,6 +51,8 @@ def parse(msg):
         'lat': lat,
         'lon': lon,
         'heading': heading,
+        'rms_lat': rms_lat,
+        'rms_lon': rms_lon,
         'speed': speed,
         'lane': lane,
         'veh_len': veh_len,

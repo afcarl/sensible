@@ -30,6 +30,7 @@ class RadarTrackCfg:
                                        [(self.dt ** 3) / 2, self.dt ** 2]]))
 
         # variance of a gaussian distribution over a position (x,y) meters corresponding to += 3.5 m
+        # TODO: change to be large in range, small in lateral dist
         sigma_1 = 5 / self.z  # actually is around +- 2.8 m, but mean is ~ 1.1 m
         # variance corresponding to a standard normal
         sigma_2 = 0.5 / self.z  # 1 std dev is +- 0.25 m/s

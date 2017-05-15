@@ -197,6 +197,21 @@ if __name__ == '__main__':
         fig.savefig('imgs/hp-vs-radar-range-errors-hist-track-' + str(ii + 1) + '.png', dpi=100)
         plt.close()
 
+        # range errors histogram of radar-vs-HP GPS and low-prec GPS-vs-HP GPS
+        plt.scatter(range(len(gps_y[ii][start:])), errs_y[errs_y_start_idx: errs_y_start_idx + len(gps_y[ii]) - start], c='r', label='Low-Precision GPS errors')
+        plt.scatter(range(len(gps_y[ii][start:])),
+                         errs_hp_radar_range_all[
+                         errs_hp_radar_start: errs_hp_radar_start + len(gps_y[ii]) - start], c='b', label='Radar errors')
+        plt.title('Low-precision GPS and radar range errors wrt high-precision GPS\ntrack %d' % (ii + 1))
+        plt.legend()
+        plt.ylabel('meters')
+        plt.xlabel(r'$\bigtriangleup$ t = 100 ms')
+        plt.grid(True)
+        fig = plt.gcf()
+        fig.set_size_inches(8, 6)
+        fig.savefig('imgs/lp-radar-vs-hp-gps-range-errors-track-' + str(ii + 1) + '.png', dpi=100)
+        plt.close()
+
     fig, axarr = plt.subplots(2)
     axarr[0].hist(errs_y, bins=15)
     axarr[0].set_title('Error between low- and high-precision GPS range')
