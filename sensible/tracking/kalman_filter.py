@@ -16,6 +16,7 @@ class KalmanFilter(StateEstimator):
         self.F = sensor_kf.F
         self.R = sensor_kf.R
         self.sensor_kf = sensor_kf
+        self.K = None
 
     def parse_msg(self, msg, stationary_R=True):
         return self.sensor_kf.parse_msg(msg, stationary_R)
@@ -28,6 +29,26 @@ class KalmanFilter(StateEstimator):
 
     def update_measurement_covariance(self, x_rms, y_rms):
         self.R = self.sensor_kf.update_measurement_covariance(x_rms, y_rms)
+
+    def mahalanobis_(self, s1, p1, s2, p2, K):
+
+        if np.shape(p1)[0] == 4:
+            p1 = p1[2:4, 2:4]
+
+        if np.shape(p2)[0] == 4:
+            p2 = p2[2:4, 2:4]
+
+        if np.shape(s1)[0] == 4:
+            s1 = s1[2:4]
+
+        if np.shape(s2)[0] == 4:
+            s2 = s2[2:4]
+
+        dx = s1 - s2
+        # cross-covariance terms
+        p3 = (np.eye(2) - self.K) * self.Q * (np.eye(2) - K)
+        # P_i + P_j  - P_ij - P_ji
+        return np.matmul(dx.T, np.matmul(scipy.linalg.inv(p1 + p2 - p3 - p3), dx))
 
     def step(self):
         m, _ = self.get_latest_message()
@@ -43,14 +64,14 @@ class KalmanFilter(StateEstimator):
 
         # K_k = P * inv(P + R)
         u = scipy.linalg.inv(self.P + self.R)
-        K_k = np.matmul(self.P, u)
+        self.K = np.matmul(self.P, u)
         # l = scipy.linalg.cho_factor(self.P + self.R)
         # u = scipy.linalg.cho_solve(l, np.eye(4))
         # K_k = np.matmul(self.P, scipy.linalg.solve(l[0].T, u, sym_pos=True, lower=True))
         # state update
-        self.x_k.append(x_k_bar + np.matmul(K_k, e_k))
+        self.x_k.append(x_k_bar + np.matmul(self.K, e_k))
         # covariance update
-        self.P -= np.matmul(K_k, self.P)
+        self.P -= np.matmul(self.K, self.P)
 
         if not np.all(np.diagonal(self.P) >= 0.):
             print("  [!] State covariance no longer positive semi-definite!")

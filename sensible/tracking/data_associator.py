@@ -1,5 +1,4 @@
 from sensible.sensors.radar import Radar
-from sensible.tracking import radar_track_cfg
 from sensible.util import ops
 
 
@@ -59,11 +58,11 @@ def single_hypothesis_track_association(track_list, query, method="track-to-trac
             if track == query or track.sensor == query.sensor or track_id in query.fused_track_ids:
                 continue
 
-            s, ts = query.state_estimator.state()
-            md, ts1, ts2 = track.state_estimator.mahalanobis(s, query.state_estimator.process_covariance(), ts)
+            # track-to-track association between tracks
+            md, ts1, ts2 = track.state_estimator.TTTA(query)
         elif method == "measurement-to-track":
 
-            md, ts1, ts2 = track.state_estimator.mahalanobis(query, radar_track_cfg.RadarTrackCfg(0.1).R)
+            md, ts1, ts2 = track.state_estimator.TTMA(query)
 
         ops.show("  [Track association] Track {} has a mahalanobis distance of {} "
                  "to the query with time-alignment of {} and {}, respectively".format(track_id, md, ts1, ts2), verbose)
