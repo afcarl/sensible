@@ -145,9 +145,9 @@ if __name__ == '__main__':
             idx += 1
 
         # PLACE PER-TRACK PLOTTING HERE
-        plt.scatter(range(len(suitcase_y[ii][start:])), suitcase_y[ii][start:], c='r', label='LP-GPS')
+        plt.scatter(range(len(suitcase_y[ii][start:])), suitcase_y[ii][start:], c='r', label='WAAS-GPS')
         plt.scatter(range(len(gps_y[ii][start:])), gps_y[ii][start:], c='b', label='HP-GPS')
-        plt.title('High- vs low-precision GPS range\ntrack %d' % (ii+1))
+        plt.title('GPS/IMU vs WAAS GPS range\nRun %d' % (ii+1))
         plt.legend()
         plt.ylabel('meters')
         plt.xlabel(r'$\bigtriangleup$ t = 100 ms')
@@ -160,7 +160,7 @@ if __name__ == '__main__':
         # histogram
         fig, axarr = plt.subplots(2)
         axarr[0].hist(errs_y[errs_y_start_idx: errs_y_start_idx + len(gps_y[ii]) - start], bins=15)
-        axarr[0].set_title('Error between low- and high-precision GPS range for track %d' % (ii + 1))
+        axarr[0].set_title('Error between GPS/IMU vs WAAS GPS range estimates for run %d' % (ii + 1))
         axarr[0].grid(True)
         axarr[1].scatter(range(len(gps_y[ii][start:])), errs_y[errs_y_start_idx: errs_y_start_idx + len(gps_y[ii]) - start])
         axarr[1].set_xlabel(r'$\bigtriangleup$ t = 100 ms')
@@ -172,7 +172,7 @@ if __name__ == '__main__':
         # histogram
         fig, axarr = plt.subplots(2)
         axarr[0].hist(errs_lp_radar_range_all[errs_lp_radar_start: errs_lp_radar_start + len(suitcase_y[ii]) - start], bins=15)
-        axarr[0].set_title('Error between low-precision GPS and radar range for track %d' % (ii + 1))
+        axarr[0].set_title('Error between WAAS GPS and radar range estimates for run %d' % (ii + 1))
         axarr[0].grid(True)
         axarr[1].scatter(range(len(suitcase_y[ii][start:])),
                          errs_lp_radar_range_all[errs_lp_radar_start: errs_lp_radar_start + len(suitcase_y[ii]) - start])
@@ -186,7 +186,7 @@ if __name__ == '__main__':
         fig, axarr = plt.subplots(2)
         axarr[0].hist(errs_hp_radar_range_all[errs_hp_radar_start: errs_hp_radar_start + len(gps_y[ii]) - start],
                       bins=15)
-        axarr[0].set_title('Error between high-precision GPS and radar range for track %d' % (ii + 1))
+        axarr[0].set_title('Error between GPS/IMU and radar range estimates for run %d' % (ii + 1))
         axarr[0].grid(True)
         axarr[1].scatter(range(len(gps_y[ii][start:])),
                          errs_hp_radar_range_all[
@@ -198,11 +198,11 @@ if __name__ == '__main__':
         plt.close()
 
         # range errors histogram of radar-vs-HP GPS and low-prec GPS-vs-HP GPS
-        plt.scatter(range(len(gps_y[ii][start:])), errs_y[errs_y_start_idx: errs_y_start_idx + len(gps_y[ii]) - start], c='r', label='Low-Precision GPS errors')
+        plt.scatter(range(len(gps_y[ii][start:])), errs_y[errs_y_start_idx: errs_y_start_idx + len(gps_y[ii]) - start], c='r', label='WAAS-GPS')
         plt.scatter(range(len(gps_y[ii][start:])),
                          errs_hp_radar_range_all[
-                         errs_hp_radar_start: errs_hp_radar_start + len(gps_y[ii]) - start], c='b', label='Radar errors')
-        plt.title('Low-precision GPS and radar range errors wrt high-precision GPS\ntrack %d' % (ii + 1))
+                         errs_hp_radar_start: errs_hp_radar_start + len(gps_y[ii]) - start], c='b', label='Radar')
+        plt.title('WAAS GPS and radar range estimate errors wrt GPS/IMU solution\nRun %d' % (ii + 1))
         plt.legend()
         plt.ylabel('meters')
         plt.xlabel(r'$\bigtriangleup$ t = 100 ms')
@@ -214,7 +214,7 @@ if __name__ == '__main__':
 
     fig, axarr = plt.subplots(2)
     axarr[0].hist(errs_y, bins=15)
-    axarr[0].set_title('Error between low- and high-precision GPS range')
+    axarr[0].set_title('GPS/IMU vs WAAS GPS range estimate errors')
     axarr[0].grid(True)
     axarr[1].hist(errs_y_abs, bins=15)
     axarr[1].set_title('Absolute error')
@@ -228,7 +228,7 @@ if __name__ == '__main__':
     ax = fig.add_subplot(111)
     ax.hist(errs_hp_radar_range_all, bins=25)
     ax.set_xlabel('meters')
-    ax.set_title('Error between high-precision GPS and radar range')
+    ax.set_title('GPS/IMU vs radar range estimate errors')
     fig.set_size_inches(8, 6)
     plt.grid(True)
     fig.savefig('imgs/hp-vs-radar-range-error.png', dpi=100)
@@ -242,14 +242,14 @@ if __name__ == '__main__':
     ax = fig.add_subplot(111)
     ax.hist(errs_lp_radar_range_all, bins=25)
     ax.set_xlabel('meters')
-    ax.set_title('Error between low-precision GPS and radar range')
+    ax.set_title('WAAS GPS vs radar range estimate errors')
     fig.set_size_inches(8, 6)
     plt.grid(True)
     fig.savefig('imgs/lp-vs-radar-range-error.png', dpi=100)
     plt.close()
 
     fig, axarr = plt.subplots(5, sharex=True)
-    titles = ["Error between high-precision GPS and radar range\n0 - 50 m", "50 - 100 m", "100 - 150 m", "150 - 200 m", "200 - 300 m"]
+    titles = ["GPS/IMU vs radar range estimate errors\n0 - 50 m", "50 - 100 m", "100 - 150 m", "150 - 200 m", "200 - 300 m"]
     for i in range(5):
         axarr[i].hist(errs_hp_radar_range_incremental_meters[i], bins=15)
         axarr[i].set_title(titles[i])
@@ -260,7 +260,7 @@ if __name__ == '__main__':
     plt.close()
 
     fig, axarr = plt.subplots(5, sharex=True)
-    titles = ["Error between low-precision GPS and radar range\n0 - 50 m", "50 - 100 m", "100 - 150 m", "150 - 200 m",
+    titles = ["WAAS GPS vs radar range estimate errors\n0 - 50 m", "50 - 100 m", "100 - 150 m", "150 - 200 m",
               "200 - 300 m"]
     for i in range(5):
         axarr[i].hist(errs_lp_radar_range_incremental_meters[i], bins=15)
@@ -272,7 +272,7 @@ if __name__ == '__main__':
     plt.close()
 
     fig, axarr = plt.subplots(5, sharex=True)
-    titles = ["Error between low-precision GPS and radar range\n0 - 100 ft", "100 - 200 ft", "200 - 300 ft",
+    titles = ["WAAS GPS vs radar range estimate errors\n0 - 100 ft", "100 - 200 ft", "200 - 300 ft",
               "300 - 400 ft", "400 - 500 ft"]
     for i in range(5):
         axarr[i].hist(errs_lp_radar_range_incremental_feet[i], bins=15)
@@ -284,7 +284,7 @@ if __name__ == '__main__':
     plt.close()
 
     fig, axarr = plt.subplots(5, sharex=True)
-    titles = ["Error between high-precision GPS and radar range\n0 - 100 ft", "100 - 200 ft", "200 - 300 ft",
+    titles = ["GPS/IMU vs radar range estimate errors\n0 - 100 ft", "100 - 200 ft", "200 - 300 ft",
               "300 - 400 ft", "400 - 500 ft"]
     for i in range(5):
         axarr[i].hist(errs_hp_radar_range_incremental_feet[i], bins=15)

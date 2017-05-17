@@ -1,5 +1,3 @@
-import matplotlib
-matplotlib.use('Qt4Agg')
 import matplotlib.pyplot as plt
 import sensible.util.ops as ops
 import utm
@@ -61,7 +59,7 @@ if __name__ == '__main__':
             elif 121.92 < radar_y[ii][j] <= 152.4:
                 errs_lp_radar_speed_incremental_feet[4].append(suitcase_speed[ii][j] - radar_speed[ii][j])
 
-        plt.scatter(range(len(suitcase_speed[ii][start:])), suitcase_speed[ii][start:], c='r', label='low-precision GPS')
+        plt.scatter(range(len(suitcase_speed[ii][start:])), suitcase_speed[ii][start:], c='r', label='WAAS-GPS')
         plt.scatter(range(len(radar_speed[ii][start:])), radar_speed[ii][start:], c='b', label='radar')
         plt.xlabel(r'$\bigtriangleup$ t = 100 ms')
         plt.ylabel('meters/s')
@@ -69,7 +67,7 @@ if __name__ == '__main__':
         plt.xlim(-20, 250)
         plt.legend(loc=4)
         plt.grid(True)
-        plt.title('Low-precision GPS speed vs radar speed\ntrack %d' % (ii + 1))
+        plt.title('WAAS-GPS vs radar speed estimates\nRun %d' % (ii + 1))
         fig = plt.gcf()
         fig.set_size_inches(10, 6)
         fig.savefig('imgs/lp-vs-radar-speed-error-track-' + str(ii + 1) + '.png', dpi=100)
@@ -79,29 +77,29 @@ if __name__ == '__main__':
     ax = fig.add_subplot(111)
     ax.hist(errs_lp_radar_speed_all, bins=25)
     ax.set_xlabel('m/s')
-    ax.set_title('Error between low-precision GPS speed and radar speed')
+    ax.set_title('Error between WAAS-GPS and radar speed estimates')
     fig.set_size_inches(8, 6)
     plt.grid(True)
     fig.savefig('imgs/lp-vs-radar-speed-error.png', dpi=100)
 
     fig, axarr = plt.subplots(5, sharex=True)
-    titles = ["Error between low-precision GPS speed and radar speed\n0 - 50 m", "50 - 100 m", "100 - 150 m",
+    titles = ["Error between WAAS-GPS and radar speed estimates\n0 - 50 m", "50 - 100 m", "100 - 150 m",
               "150 - 200 m", "200 - 300 m"]
     for i in range(5):
         axarr[i].hist(errs_lp_radar_speed_incremental_meters[i], bins=15)
         axarr[i].set_title(titles[i])
-        plt.grid(True)
+        axarr[i].grid(True)
     axarr[-1].set_xlabel('m/s')
     fig.set_size_inches(8, 8)
     fig.savefig('imgs/lp-vs-radar-speed-incremental-meters.png', dpi=100)
 
     fig, axarr = plt.subplots(5, sharex=True)
-    titles = ["Error between low-precision GPS speed and radar speed\n0 - 100 ft", "100 - 200 ft", "200 - 300 ft",
+    titles = ["Error between WAAS-GPS and radar speed estimates\n0 - 100 ft", "100 - 200 ft", "200 - 300 ft",
               "300 - 400 ft", "400 - 500 ft"]
     for i in range(5):
         axarr[i].hist(errs_lp_radar_speed_incremental_feet[i], bins=15)
         axarr[i].set_title(titles[i])
-        plt.grid(True)
+        axarr[i].grid(True)
     axarr[-1].set_xlabel('m/s')
     fig.set_size_inches(8, 8)
     fig.savefig('imgs/lp-vs-radar-speed-incremental-feet.png', dpi=100)

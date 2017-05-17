@@ -89,7 +89,7 @@ def initialize_logs():
         t = time.localtime()
         timestamp = time.strftime('%m-%d-%Y_%H%M', t)
         track_logger = open(os.path.join('logs', "trackLog_" + timestamp + ".csv"), 'wb')
-        logger_title = "TrackID,TrackState,Filtered,timestamp,xPos,xSpeed,yPos,ySpeed,Sensor\n"
+        logger_title = "TrackID,TrackState,Filtered,timestamp,xPos,xSpeed,yPos,ySpeed,Sensor,Served\n"
         track_logger.write(logger_title)
     if system_logger is None:
         # System logger

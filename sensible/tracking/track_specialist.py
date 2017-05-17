@@ -382,10 +382,15 @@ class TrackSpecialist:
             elif track.sensor == DSRC:
                 sens = "DSRC"
 
+            if track.served:
+                served = "1"
+            else:
+                served = "0"
+
             self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
-                               ',' + label + ',' + kf_str[:-1] + ',' + sens + '\n')
+                               ',' + label + ',' + kf_str[:-1] + ',' + sens + ',' + served + '\n')
             if track.state_estimator.fused_track:
                 self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
-                                   ',' + '1' + ',' + kf_unfused_str[:-1] + ',' + sens + '\n')
+                                   ',' + '1' + ',' + kf_unfused_str[:-1] + ',' + sens + ',' + served + '\n')
             self._logger.write(str(track_id) + ',' + TrackState.to_string(track.track_state) +
-                               ',' + str(0) + ',' + msg_str[:-1] + ',' + sens + '\n')
+                               ',' + str(0) + ',' + msg_str[:-1] + ',' + sens + ',' + served + '\n')

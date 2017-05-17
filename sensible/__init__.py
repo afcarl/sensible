@@ -5,3 +5,4 @@ from sensible.sensors.radar import Radar
 from sensible.sensors.synchronizer import Synchronizer
 from sensible.sensors.sensible_threading import SocketThread, SerialThread
 from sensible.util import ops
+from .manager import Manager
