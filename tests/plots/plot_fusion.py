@@ -18,8 +18,8 @@ if __name__ == '__main__':
     plt.plot(dsrc_fusion['yPos'] - UTM['y'], c='k', label='Fused estimate')
     plt.annotate('Optimization begins', xy=(687, 3277838 - UTM['y']), xytext=(600, 3277900 - UTM['y']), arrowprops=dict(arrowstyle="->", connectionstyle="arc3"))
 
-    plt.title('Covariance Intersection for range estimate between WAAS-GPS and radar')
-    plt.ylabel('Range (meters)')
+    plt.title('Covariance Intersection for UTM Northing estimate\n between WAAS-GPS and radar')
+    plt.ylabel('Distance from radar (meters)')
     plt.legend()
     plt.show()
 

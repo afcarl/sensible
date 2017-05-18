@@ -100,6 +100,7 @@ if __name__ == '__main__':
         axarr[i].hist(errs_lp_radar_speed_incremental_feet[i], bins=15)
         axarr[i].set_title(titles[i])
         axarr[i].grid(True)
+        axarr[i].set_xlim([-3, 3])
     axarr[-1].set_xlabel('m/s')
     fig.set_size_inches(8, 8)
     fig.savefig('imgs/lp-vs-radar-speed-incremental-feet.png', dpi=100)
