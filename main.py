@@ -1,7 +1,5 @@
 #!/usr/bin/python
 import sensible
-import time
-import os
 import argparse
 
 
@@ -28,73 +26,17 @@ if __name__ == '__main__':
     parser.add_argument('--disable-logging', action='store_true', help='Enable logging')
     parser.add_argument('--disable-radar', action='store_true', help='Only run with DSRC tracking')
     parser.add_argument('--disable-dsrc', action='store_true', help='Only run with radar tracking')
+    parser.add_argument('--record-csv', action='store_true', help='Record all radar msgs to a .csv')
 
     parser.set_defaults(disable_logging=False)
     parser.set_defaults(v=False)
     parser.set_defaults(disable_radar=False)
     parser.set_defaults(disable_dsrc=False)
+    parser.set_defaults(record_csv=False)
 
     args = vars(parser.parse_args())
 
-    if args['disable_radar'] and args['disable_dsrc']:
-        raise ValueError('Unable to disable both types of sensors')
+    fusion = sensible.Manager(args)
 
-    logger = None
-    if not args['disable_logging']:
-        # Track logger
-        t = time.localtime()
-        log_dir = os.getcwd()
-        timestamp = time.strftime('%m-%d-%Y_%H%M', t)
-        logger = open(os.path.join('logs', 'trackLog_' + timestamp + '.csv'), 'wb')
+    fusion.run()
 
-    sensor_ports = []
-    topic_filters = []
-    if not args['disable_radar']:
-        sensor_ports.append(int(args['radar_local_port']))
-        topic_filters.append('Radar')
-    if not args['disable_dsrc']:
-        sensor_ports.append(int(args['dsrc_local_port']))
-        topic_filters.append('DSRC')
-
-    sensors = {'sensor_ports': sensor_ports, 'topic_filters': topic_filters}
-
-    ts = sensible.TrackSpecialist(sensors, int(args['output_port']), int(args['run_for']),
-                                  logger, frequency=int(args['track_frequency']), verbose=args['v'])
-
-    if not args['disable_dsrc']:
-        dsrc_recv = sensible.DSRC()
-        dsrc_thread = sensible.SocketThread(sensor=dsrc_recv, ip_address=args['dsrc_ip_address'],
-                                            port=int(args['dsrc_remote_port']), msg_len=300, name='DSRCThread')
-        dsrc_synchronizer = sensible.Synchronizer(publish_freq=int(args['track_frequency']), queue=dsrc_recv.queue,
-                                                  port=int(args['dsrc_local_port']),
-                                                  topic=dsrc_recv.topic(), verbose=False, name='DSRCSynchronizer')
-        dsrc_synchronizer.start()
-        dsrc_thread.start()
-
-    if not args['disable_radar']:
-        radar_recv = sensible.Radar(mode=args['radar_mode'], lane=int(args['radar_lane']),
-                                    radar_lat=float(args['radar_lat']), radar_lon=float(args['radar_lon']),
-                                    verbose=False)
-
-        radar_thread = sensible.SerialThread(radar_recv, args['radar_com_port'], int(args['radar_baudrate']),
-                                             name='RadarThread')
-
-        radar_synchronizer = sensible.Synchronizer(publish_freq=int(args['track_frequency']), queue=radar_recv.queue,
-                                                   port=int(args['radar_local_port']),
-                                                   topic=radar_recv.topic(), verbose=False, name='RadarSynchronizer')
-
-        radar_synchronizer.start()
-        radar_thread.start()
-
-    print("  [Sensible] Starting app...")
-    ts.run()
-
-    if not args['disable_dsrc']:
-        dsrc_synchronizer.stop()
-        dsrc_thread.stop()
-
-    if not args['disable_radar']:
-        radar_synchronizer.stop()
-        radar_thread.stop()
-
-    print("  [Sensible] Shutting down app...")
