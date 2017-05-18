@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.linalg
+from sensible.tracking.radar_track_cfg import RadarTrackCfg
 from sensible.util import ops
 from sensible.util import time_stamp as ts
 import os
@@ -106,35 +107,36 @@ class StateEstimator(object):
 
         return kf_log_str, msg_log_str
 
-    def mahalanobis(self, s, P, ts2=None):
+    def TTMA(self, m):
+        """
+        Statistical distance between a track and a radar measurement
+        :param m: measurement
+        :return:
+        """
+        s, ts = self.state()
+        R = RadarTrackCfg(0.1).R
+        dx = s - m
+        P = self.process_covariance()
+        return np.matmul(dx.T, np.matmul(scipy.linalg.inv(P + R), dx))
+
+    def TTTA(self, track):
         """
         Compute the track-to-track or measurement-to-track mahalanobis distance
         between track state or measurement `s` and the estimated state of this track
 
-        :param s: measurement [x, xdot, y, ydot]
-        :param P: covariance of s
-        :return: the M distance
+        :param track:
+        :return: the M distance, time stamps of comparison
         """
-        # TODO: Add cross-cov terms
-        ss, ts1 = self.state()
+        s2, ts2 = track.state_estimator.state()
+        p2 = track.state_estimator.process_covariance()
+        K2 = track.state_estimator.K
 
-        PP = self.process_covariance()
+        s1, ts1 = self.state()
+        p1 = self.process_covariance()
+        return self.mahalanobis_(s1=s1, p1=p1, s2=s2, p2=p2, K=K2), ts1.to_string(), ts2.to_string()
 
-        if np.shape(PP)[0] == 4:
-            PP = PP[2:4, 2:4]
-
-        if np.shape(P)[0] == 4:
-            P = P[2:4, 2:4]
-
-        if np.shape(ss)[0] == 4:
-            ss = ss[2:4]
-
-        if np.shape(s)[0] == 4:
-            s = s[2:4]
-
-        #print('Track A state: {}, Track B state: {}'.format(s, ss))
-        dx = s - ss
-        return np.matmul(dx.T, np.matmul(scipy.linalg.inv(PP + P), dx)), ts1.to_string(), ts2.to_string()
+    def mahalanobis_(self, s1, p1, s2, p2, K):
+        raise NotImplementedError
 
     def update_measurement_covariance(self, x_rms, y_rms):
         raise NotImplementedError
