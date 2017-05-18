@@ -65,5 +65,5 @@ class RadarEmulator(StoppableThread):
             time.sleep(period - diff)
 
         run_end = time.time()
-        print("  [{}] Sent {} messages in {} seconds, at {} msgs/sec...".format(self.name, count, run_end - run_start,
+        print("[{}] Sent {} messages in {} seconds, at {} msgs/sec...".format(self.name, count, run_end - run_start,
                                                                                 count / (run_end - run_start)))

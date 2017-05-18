@@ -80,6 +80,7 @@ class DSRC:
         #h = ts.hour
         #m = ts.minute
         #s = int(ts.second * 1000 + round(ts.microsecond/1000))
+
         return {
             'msg_count': msg_count,
             'id': veh_id,
@@ -136,4 +137,5 @@ class DSRC:
             if queued_msg['id'] == msg['id'] and queued_msg['s'] == msg['s']:
                 # Found a duplicate
                 return
+        # add X to the right end of the queue
         self._queue.append(msg)

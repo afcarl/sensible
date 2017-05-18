@@ -13,12 +13,6 @@ if __name__ == '__main__':
     # run_for = int(sys.argv[1])  # seconds
     run_for = 60
 
-    # Track logger
-    t = time.localtime()
-    log_dir = os.getcwd()
-    timestamp = time.strftime('%m-%d-%Y_%H%M', t)
-    p = open(os.path.join('logs', "trackLog_" + timestamp + ".csv"), 'wb')
-
     bsm_port = 24601
 
     # radar_com_port = 'COM3'
@@ -36,7 +30,10 @@ if __name__ == '__main__':
     # topic_filters = ["Radar"]
     sensors = {'sensor_ports': sensor_ports, 'topic_filters': topic_filters}
 
-    ts = sensible.TrackSpecialist(sensors, bsm_port, run_for, p, frequency=freq, verbose=True)
+    # loggers
+    sensible.ops.initialize_logs()
+
+    ts = sensible.TrackSpecialist(sensors, bsm_port, run_for, sensible.ops.track_logger, frequency=freq, verbose=True)
 
     dsrc_recv = sensible.DSRC()
     dsrc_thread = sensible.SocketThread(sensor=dsrc_recv, ip_address="localhost", port=dsrc_recv_port, msg_len=300,
@@ -71,4 +68,6 @@ if __name__ == '__main__':
     radar_sender.stop()
     dsrc_sender.stop()
     dsrc_thread.stop()
+
+    sensible.ops.close_logs()
 

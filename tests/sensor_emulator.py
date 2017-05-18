@@ -88,4 +88,4 @@ class SensorEmulator(StoppableThread):
                 time.sleep(1 / self._pub_freq)
             self._socket.close()
 
-        print("  [*] {} finished sending messages...".format(self.name))
+        print("[*] {} finished sending messages...\n".format(self.name))
