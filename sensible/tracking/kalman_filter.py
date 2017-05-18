@@ -51,6 +51,7 @@ class KalmanFilter(StateEstimator):
             if np.shape(p2_[i])[0] == 4:
                 p2 = p2_[i][2:4, 2:4]
                 K2 = K2_[i][2:4, 2:4]
+		K1 = np.array(self.K[i])
             else:
                 K2 = K2_[i]
 
@@ -65,10 +66,12 @@ class KalmanFilter(StateEstimator):
                 ss2 = s2[i]
 
             dx = ss1 - ss2
+	    
             # cross-covariance terms
             cross_cov = np.matmul((np.eye(2) - K1), np.matmul(np.matmul(F, cross_cov_prev), F.T), (np.eye(2) - K2)) + \
                 np.matmul(np.matmul((np.eye(2) - K1), Q), (np.eye(2) - K2))
             cross_cov_prev = cross_cov
+            print(cross_cov)
             # P_i + P_j  - P_ij - P_ji
             dist += np.matmul(dx.T, np.matmul(scipy.linalg.inv(p1 + p2 - cross_cov - cross_cov), dx))
         return dist

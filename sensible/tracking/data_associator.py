@@ -105,8 +105,9 @@ def single_hypothesis_track_association(track_list, query_track_info, threshold,
         if len(results) > 1:
             ops.show("  [Warning] {} vehicles within gating region of radar detection!\n".format(len(results)), verbose)
             # choose the closest
-            sorted_results = sorted(results, key=lambda pair: len(pair[1]))
-            res_id = sorted_results[0][0]
+            #sorted_results = sorted(results, key=lambda pair: len(pair[1]))
+            #res_id = sorted_results[0][0]
+            res_id = results[0]
             ops.show("  [TTTA] Associating with closest track {}\n".format(res_id), verbose)
             if sensor == Radar.topic():
                 if method == "track-to-track":
