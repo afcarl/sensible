@@ -2,7 +2,7 @@ from sensible.sensors.radar import Radar
 from sensible.util import ops
 
 
-def single_hypothesis_track_association(track_list, query_track_info, method="track-to-track", verbose=False):
+def single_hypothesis_track_association(track_list, query_track_info, threshold, method="track-to-track", verbose=False):
     """
     Single-hypothesis association
 
@@ -34,6 +34,7 @@ def single_hypothesis_track_association(track_list, query_track_info, method="tr
           state to fused. Send BSM if not yet served.
 
     :param track_list: List of (id, track) pairs
+    :param threshold: chi-squared threshold
     :param query_track_info: Tuple of (id, track) for track-to-track, otherwise it is the measurement that is to be associated
     :param method: options are "track-to-track" and "measurement-to-track"
     :param verbose: display verbose information
@@ -62,16 +63,16 @@ def single_hypothesis_track_association(track_list, query_track_info, method="tr
                 continue
 
             # track-to-track association between tracks
-            md, ts1, ts2 = track.state_estimator.TTTA(query)
+            md, ts1, ts2 = track.state_estimator.TTTA(query_track)
         elif method == "measurement-to-track":
 
-            md, ts1, ts2 = track.state_estimator.TTMA(query)
+            md, ts1, ts2 = track.state_estimator.TTMA(query_track_info)
 
         ops.show("  [TTMA] Track {} has a mahalanobis distance of {} "
-                 "to the query with time-alignment of {} and {}, respectively\n".format(track_id, md, ts1, ts2),
+                 "to the query with time-alignment of {} and {} respectively\n".format(track_id, md, ts1, ts2),
                  verbose)
 
-        if md <= 35:
+        if md <= threshold:
             results.append((track_id, md))
 
     # radar_t_stamp = TimeStamp(radar_msg['h'], radar_msg['m'], radar_msg['s'])

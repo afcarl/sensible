@@ -33,7 +33,8 @@ if __name__ == '__main__':
     # loggers
     sensible.ops.initialize_logs()
 
-    ts = sensible.TrackSpecialist(sensors, bsm_port, run_for, sensible.ops.track_logger, frequency=freq, verbose=True)
+    ts = sensible.TrackSpecialist(sensors, bsm_port, run_for, sensible.ops.track_logger, association_threshold=70,
+                                  n_scan=2, frequency=freq, verbose=True)
 
     dsrc_recv = sensible.DSRC()
     dsrc_thread = sensible.SocketThread(sensor=dsrc_recv, ip_address="localhost", port=dsrc_recv_port, msg_len=300,

@@ -78,12 +78,12 @@ class Radar:
         return "{},{},{},{},{},{},{},{},{},{},{},{},{}".format(
             track_id,
             track.veh_id,
-            t.h,
-            t.m,
-            t.s,
+            t[0].h,
+            t[0].m,
+            t[0].s,
             '0',  # meters easting
-            state[0],  # meters northing
-            abs(state[1]),  # m/s
+            state[0][0],  # meters northing
+            abs(state[0][1]),  # m/s
             track.lane,
             track.veh_len,
             track.max_accel,

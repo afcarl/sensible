@@ -34,8 +34,9 @@ class TrackSpecialist:
     produce IDs in non-overlapping ranges.
     """
 
-    def __init__(self, sensors, bsm_port, run_for, track_logger,
+    def __init__(self, sensors, bsm_port, run_for, track_logger, n_scan,
                  association=data_associator.single_hypothesis_track_association,
+                 association_threshold=35,
                  verbose=False,
                  frequency=5,
                  track_confirmation_threshold=5,
@@ -51,8 +52,10 @@ class TrackSpecialist:
         self._period = 1 / frequency  # seconds
         self._run_for = run_for
         self._max_n_tracks = max_n_tracks
+        self._n_scan = n_scan
         self._verbose = verbose
         self._logger = track_logger
+        self._association_threshold = association_threshold
 
         self.track_confirmation_threshold = track_confirmation_threshold
         self.track_zombie_threshold = track_zombie_threshold
@@ -231,6 +234,7 @@ class TrackSpecialist:
         if topic == Radar.topic() and msg['objZone'] > -1:
             # measurement-to-track association
             result, match_id = self.track_association(self.track_list, msg,
+                                                      threshold=self._association_threshold,
                                                       method="measurement-to-track", verbose=self._verbose)
             if result == 0x5:
                 # send BSM for new conventional vehicle.
@@ -264,7 +268,8 @@ class TrackSpecialist:
 
                         # attempt to fuse tracks
                         result, match_id = self.track_association(
-                            self.track_list, (track_id, track), verbose=self._verbose)
+                            self.track_list, (track_id, track), threshold=self._association_threshold,
+                            verbose=self._verbose)
 
                         if result == 0x1:
                             track.type = VehicleType.CONVENTIONAL
@@ -303,7 +308,7 @@ class TrackSpecialist:
         self._sensor_id_map[msg['id']] = self._sensor_id_idx
         self._sensor_id_idx += 1
         self._track_list[self._sensor_id_map[msg['id']]] = Track(
-            self._period, msg, sensor, fusion_method)
+            self._period, msg, sensor, self._n_scan, fusion_method)
         self._track_list[self._sensor_id_map[
             msg['id']]].store(msg, self._track_list)
         ops.show(

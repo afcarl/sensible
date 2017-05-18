@@ -7,7 +7,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Arguments for Sensible')
 
-    parser.add_argument('--run-for', default=60, help='Num seconds to run application for')
+    parser.add_argument('--run-for', default=20, help='Num seconds to run application for')
     parser.add_argument('--radar-lat', default=29.6216931, help='Latitude of radar')
     parser.add_argument('--radar-lon', default=-82.3867591, help='Longitude of radar')
     parser.add_argument('--radar-com-port', default='COM3', help='Serial port for radar comms')
@@ -20,6 +20,9 @@ if __name__ == '__main__':
     parser.add_argument('--dsrc-remote-port', default=4200, help='Port for receiving incoming radio messages')
     parser.add_argument('--dsrc-local-port', default=4202, help='Port for comms between dsrc and'
                                                                 ' central tracking component')
+    parser.add_argument('--n-scan', default=1, help='Sliding window size for data-association')
+    parser.add_argument('--association-threshold', default=35, help='Acceptance of null-hypothesis for Chi-squared test'
+                                                                    ' for data association')
     parser.add_argument('--track-frequency', default=5, help='Frequency (Hz) at which to run the central tracking system')
     parser.add_argument('--output-port', default=24601, help='Port on localhost to which to forward tracking info')
     parser.add_argument('--v', action='store_true', help='Verbose output')

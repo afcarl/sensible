@@ -118,3 +118,15 @@ def close_logs():
         track_logger.close()
     if system_logger is not None:
         system_logger.close()
+
+
+def replace_none(x, replace_with):
+    if hasattr(x, 'len'):
+        for i in range(len(x)):
+            if x[i] is None:
+                x[i] = replace_with
+    else:
+        if x is None:
+            return replace_with
+    return x
+
