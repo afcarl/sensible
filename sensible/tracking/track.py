@@ -7,7 +7,7 @@ from sensible.sensors import DSRC
 class Track(object):
     """Maintains state of a track and delegates state updates to a
     state estimator."""
-    def __init__(self, dt, first_msg, sensor, fusion_method=None):
+    def __init__(self, dt, first_msg, sensor, n_scan, fusion_method=None):
         self.n_consecutive_measurements = 0
         self.n_consecutive_missed = 0
         self.received_measurement = False
@@ -20,7 +20,7 @@ class Track(object):
         self.track_state = TrackState.UNCONFIRMED
         self.sensor = sensor
 
-        self.state_estimator = KalmanFilter(sensor.get_filter(dt))
+        self.state_estimator = KalmanFilter(sensor.get_filter(dt), n_scan)
 
         # TODO: make an estimated value
         self.lane = first_msg['lane']
@@ -40,14 +40,14 @@ class Track(object):
         mu = []
         sigma = []
         s, t = self.state_estimator.state(get_unfused=True)
-        p = self.state_estimator.process_covariance()
-        mu.append(s)
-        sigma.append(p)
+        p = self.state_estimator.P
+        mu.append(s[0])
+        sigma.append(p[-1])
 
         for track in tracks:
             s, t = track.state_estimator.state(get_unfused=True)
-            mu.append(s)
-            sigma.append(track.state_estimator.process_covariance())
+            mu.append(s[0])
+            sigma.append(track.state_estimator.P[-1])
         fused_mu, fused_sigma = self.fusion_method(mu, sigma)
         self.state_estimator.x_k_fused.append(fused_mu)
 

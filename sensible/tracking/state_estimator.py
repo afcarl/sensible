@@ -4,6 +4,8 @@ from sensible.tracking.radar_track_cfg import RadarTrackCfg
 from sensible.util import ops
 from sensible.util import time_stamp as ts
 import os
+import warnings
+warnings.filterwarnings('ignore', category=FutureWarning)
 
 
 class StateEstimator(object):
@@ -14,7 +16,7 @@ class StateEstimator(object):
 
     """
 
-    def __init__(self, fused_track, stationary_R):
+    def __init__(self, fused_track, sliding_window, stationary_R):
         self.y = []  # messages
         self.x_k = []  # filtered track state
         self.y_k = []  # filtered measurement
@@ -22,6 +24,7 @@ class StateEstimator(object):
         self.t = []  # time stamps
         self.stationary_R = stationary_R
         self.fused_track = fused_track
+        self.sliding_window = sliding_window
 
     def get_latest_message(self):
         """
@@ -32,20 +35,20 @@ class StateEstimator(object):
         time = t if t is not None else ts.unavailable()
         return self.y[-1], time
 
-    def state(self, get_unfused=False):
+    def state(self, window=1, get_unfused=False):
         """Return the latest Kalman Filter prediction of the state, and the timestamp."""
-        t = self.t[-1]
-        time = t if t is not None else ts.unavailable()
-        if not self.fused_track or self.x_k_fused[-1] is None or get_unfused:
-            return self.x_k[-1], time
+        t = self.t[-window:]
+        time = ops.replace_none(t, ts.unavailable())
+        if not self.fused_track or None in self.x_k_fused[-window:] or get_unfused:
+            return self.x_k[-window:], time
         else:
-            return self.x_k_fused[-1], time
+            return self.x_k_fused[-window:], time
 
-    def measurement(self):
+    def measurement(self, window=1):
         """Return the latest Kalman Filter prediction of the measurement, and the timestamp."""
-        t = self.t[-1]
-        time = t if t is not None else ts.unavailable()
-        return self.y_k[-1], time
+        t = self.t[-window:]
+        time = ops.replace_none(t, ts.unavailable())
+        return self.y_k[-window:], time
 
     def store(self, msg=None, time=None):
         if msg is None:
@@ -70,13 +73,16 @@ class StateEstimator(object):
                  os.path.join(destination, 'kf-measurement-', t.to_fname_string(), '.pkl'))
 
     def save_state(self, destination):
+        raise NotImplementedError
         xk, t = self.state()
-        cov = self.process_covariance()
+        #cov = self.
         ops.dump({'time': t.to_string(), 'm': xk, 'cov': cov},
                  os.path.join(destination, 'kf-state-', t.to_fname_string(), '.pkl'))
 
     def to_string(self, get_unfused=False):
         kf_state, t = self.state(get_unfused=get_unfused)
+        kf_state = kf_state[0]
+        t = t[0]
 
         if type(t) is not str:
             t = t.to_string()
@@ -113,6 +119,7 @@ class StateEstimator(object):
         :param m: measurement
         :return:
         """
+        raise NotImplementedError
         s, ts = self.state()
         R = RadarTrackCfg(0.1).R
         dx = s - m
@@ -127,15 +134,22 @@ class StateEstimator(object):
         :param track:
         :return: the M distance, time stamps of comparison
         """
-        s2, ts2 = track.state_estimator.state()
-        p2 = track.state_estimator.process_covariance()
+        s2, ts2 = track.state_estimator.state(window=self.sliding_window)
+        p2 = track.state_estimator.P
         K2 = track.state_estimator.K
 
-        s1, ts1 = self.state()
-        p1 = self.process_covariance()
-        return self.mahalanobis_(s1=s1, p1=p1, s2=s2, p2=p2, K=K2), ts1.to_string(), ts2.to_string()
+        t = self.t[-self.sliding_window:]
+        time = ops.replace_none(t, ts.unavailable())
 
-    def mahalanobis_(self, s1, p1, s2, p2, K):
+        t1 = ''
+        t2 = ''
+        for i in range(self.sliding_window):
+            t1 += time[i].to_string() + ', '
+            t2 += ts2[i].to_string() + ', '
+
+        return self.n_scan_mahalanobis(s2=s2, p2_=p2, K2_=K2), t1, t2
+
+    def n_scan_mahalanobis(self, s2, p2_, K2_):
         raise NotImplementedError
 
     def update_measurement_covariance(self, x_rms, y_rms):
@@ -148,9 +162,6 @@ class StateEstimator(object):
         """One iteration of a discrete-time filtering algorithm.
         Uses the latest message saved by calling self.store(msg).
         """
-        raise NotImplementedError
-
-    def process_covariance(self):
         raise NotImplementedError
 
     def parse_msg(self, msg, stationary_R):

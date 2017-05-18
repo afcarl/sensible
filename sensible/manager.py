@@ -3,7 +3,7 @@ import sensible
 
 class Manager:
     def __init__(self, args):
-        for k, v in args:
+        for k, v in args.items():
             setattr(self, k, v)
 
     def run(self):
@@ -25,8 +25,9 @@ class Manager:
         sensors = {'sensor_ports': sensor_ports, 'topic_filters': topic_filters}
 
         ts = sensible.TrackSpecialist(sensors, int(self.output_port), int(self.run_for),
-                                      sensible.ops.track_logger, frequency=int(self.track_frequency),
-                                      verbose=self.v)
+                                      sensible.ops.track_logger, n_scan=self.n_scan,
+                                      frequency=int(self.track_frequency),
+                                      association_threshold=self.association_threshold, verbose=self.v)
 
         if not self.disable_dsrc:
             dsrc_recv = sensible.DSRC()

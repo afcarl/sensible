@@ -114,12 +114,12 @@ class DSRC:
         return "{},{},{},{},{},{},{},{},{},{},{},{},{}".format(
             track_id,
             track.veh_id,
-            t.h,
-            t.m,
-            t.s,
-            state[0],  # meters easting
-            state[2],  # meters northing
-            np.round(np.sqrt(state[1] ** 2 + state[3] ** 2), 3),  # m/s
+            t[0].h,
+            t[0].m,
+            t[0].s,
+            state[0][0],  # meters easting
+            state[0][2],  # meters northing
+            np.round(np.sqrt(state[0][1] ** 2 + state[0][3] ** 2), 3),  # m/s
             track.lane,
             track.veh_len,
             track.max_accel,

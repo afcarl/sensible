@@ -2,7 +2,7 @@ from sensible.sensors.radar import Radar
 from sensible.util import ops
 
 
-def single_hypothesis_track_association(track_list, query_track_info, method="track-to-track", verbose=False):
+def single_hypothesis_track_association(track_list, query_track_info, threshold, method="track-to-track", verbose=False):
     """
     Single-hypothesis association
 
@@ -34,6 +34,7 @@ def single_hypothesis_track_association(track_list, query_track_info, method="tr
           state to fused. Send BSM if not yet served.
 
     :param track_list: List of (id, track) pairs
+    :param threshold: chi-squared threshold
     :param query_track_info: Tuple of (id, track) for track-to-track, otherwise it is the measurement that is to be associated
     :param method: options are "track-to-track" and "measurement-to-track"
     :param verbose: display verbose information
@@ -68,10 +69,10 @@ def single_hypothesis_track_association(track_list, query_track_info, method="tr
             md, ts1, ts2 = track.state_estimator.TTMA(query_track_info)
 
         ops.show("  [TTMA] Track {} has a mahalanobis distance of {} "
-                 "to the query with time-alignment of {} and {}, respectively\n".format(track_id, md, ts1, ts2),
+                 "to the query with time-alignment of {} and {} respectively\n".format(track_id, md, ts1, ts2),
                  verbose)
 
-        if md <= 35:
+        if md <= threshold:
             results.append((track_id, md))
 
     # radar_t_stamp = TimeStamp(radar_msg['h'], radar_msg['m'], radar_msg['s'])
@@ -104,8 +105,9 @@ def single_hypothesis_track_association(track_list, query_track_info, method="tr
         if len(results) > 1:
             ops.show("  [Warning] {} vehicles within gating region of radar detection!\n".format(len(results)), verbose)
             # choose the closest
-            sorted_results = sorted(results, key=lambda pair: len(pair[1]))
-            res_id = sorted_results[0][0]
+            #sorted_results = sorted(results, key=lambda pair: len(pair[1]))
+            #res_id = sorted_results[0][0]
+            res_id = results[0]
             ops.show("  [TTTA] Associating with closest track {}\n".format(res_id), verbose)
             if sensor == Radar.topic():
                 if method == "track-to-track":
