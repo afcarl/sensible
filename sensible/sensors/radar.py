@@ -106,12 +106,16 @@ class Radar:
         if msg['xVel'] > -4 or msg['xVel'] < -21:  # 9 mph to 47 mph
             return None
         else:
-
-            #print('Radar correct time: {}:{}:{}'.format(h, m, s))
-            #print('Radar time: {}'.format(msg['TimeStamp']))
-            h = int(msg['TimeStamp'][0:2])
-            m = int(msg['TimeStamp'][3:5])
-            s = int(msg['TimeStamp'][6:11])
+            dt = datetime.utcnow()
+            h = dt.hour
+            m = dt.minute
+            s = int(dt.second * 1000 + round(dt.microsecond / 1000))
+            # #print('Radar correct time: {}:{}:{}'.format(h, m, s))
+            # #print('Radar time: {}'.format(msg['TimeStamp']))
+            # t = msg['TimeStamp'].split(':')
+            # h = int(t[0])
+            # m = int(t[1])
+            # s = int(t[2])
             return {
                 'id': int(msg['objID']),
                 'h': h,
@@ -130,11 +134,11 @@ class Radar:
     def push(self, msgs):
         """Process incoming data. Overrides StoppableThread's push method."""
         for msg in msgs:
-            dt = datetime.utcnow()
-            h = dt.hour
-            m = dt.minute
-            s = int(dt.second * 1000 + round(dt.microsecond / 1000))
-            msg['TimeStamp'] = "{}:{}:{}".format(h, m, s)
+            # dt = datetime.utcnow()
+            # h = dt.hour
+            # m = dt.minute
+            # s = int(dt.second * 1000 + round(dt.microsecond / 1000))
+            # msg['TimeStamp'] = "{}:{}:{}".format(h, m, s)
             if self._logger is not None:
                 self._logger.writerow(msg)
             res = self.parse(msg)
