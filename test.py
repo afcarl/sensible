@@ -13,13 +13,13 @@ if __name__ == '__main__':
     # run_for = int(sys.argv[1])  # seconds
     run_for = 60
 
-    bsm_port = 24601
+    bsm_port = 24602
 
     # radar_com_port = 'COM3'
     # radar_baudrate = 115200
     radar_method = "Tracking"
 
-    radar_recv_port = 4201
+    radar_recv_port = 4203
     dsrc_recv_port = 4200
     dsrc_send_port = 6667
     radar_send_port = 6668
@@ -33,21 +33,22 @@ if __name__ == '__main__':
     # loggers
     sensible.ops.initialize_logs()
 
-    ts = sensible.TrackSpecialist(sensors, bsm_port, run_for, sensible.ops.track_logger, association_threshold=70,
-                                  n_scan=2, frequency=freq, verbose=True)
+    ts = sensible.TrackSpecialist(sensors, bsm_port, run_for, sensible.ops.track_logger, association_threshold=150,
+                                  n_scan=1, frequency=freq, verbose=True)
 
     dsrc_recv = sensible.DSRC()
     dsrc_thread = sensible.SocketThread(sensor=dsrc_recv, ip_address="localhost", port=dsrc_recv_port, msg_len=300,
                                         name="DSRCThread")
 
-    radar_recv = sensible.Radar(mode="Tracking", lane=4, radar_lat=RADAR_LAT, radar_lon=RADAR_LON, verbose=False)
+    radar_recv = sensible.Radar(mode="Tracking", lane=4, radar_lat=RADAR_LAT, radar_lon=RADAR_LON, verbose=False, record_csv=False)
 
     # 15.5
     radar_sender = RadarEmulator(radar=radar_recv, pub_freq=20,
-                                 fname="tests/data/SW-42-SW-40/radar_log_20170502.csv", delay=15.5)
+                                 fname="tests/data/SW-42-SW-40/radar_log_20170502.csv", delay=6)
 
-    dsrc_sender = SensorEmulator(port=dsrc_recv_port, pub_freq=20,
-                                 file_names=["tests/data/SW-42-SW-40/dsrc_truck_1_20170502.txt"],
+    dsrc_sender = SensorEmulator(port=dsrc_recv_port, pub_freq=40,
+                                 file_names=["tests/data/SW-42-SW-40/NaviGator_test1-05-02.txt",
+                                             "tests/data/SW-42-SW-40/dsrc_truck_1_20170502_shortened.txt"],
                                  delim='<START>', loop=False, delay=0, start=0, name="DSRC")
 
     radar_synchronizer = sensible.Synchronizer(publish_freq=5, queue=radar_recv.queue, port=radar_send_port,

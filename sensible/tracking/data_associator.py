@@ -65,11 +65,11 @@ def single_hypothesis_track_association(track_list, query_track_info, threshold,
             # track-to-track association between tracks
             md, ts1, ts2 = track.state_estimator.TTTA(query_track)
         elif method == "measurement-to-track":
-
+            query_track_id = "UNKNOWN"
             md, ts1, ts2 = track.state_estimator.TTMA(query_track_info)
 
         ops.show("  [TTMA] Track {} has a mahalanobis distance of {} "
-                 "to the query with time-alignment of {} and {} respectively\n".format(track_id, md, ts1, ts2),
+                 "to the query track {} with time-alignment of {} and {} respectively\n".format(track_id, md, query_track_id, ts1, ts2),
                  verbose)
 
         if md <= threshold:

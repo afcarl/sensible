@@ -11,6 +11,7 @@ class KalmanFilter(StateEstimator):
     A linear Gaussian Kalman Filter for tracking
     vehicles following a standard constant velocity model.
     """
+
     def __init__(self, sensor_kf, sliding_window, fused_track=False):
         super(KalmanFilter, self).__init__(fused_track, sliding_window, sensor_kf.stationary_R)
         self.Q = sensor_kf.Q
@@ -40,20 +41,19 @@ class KalmanFilter(StateEstimator):
         F = np.array(self.F)
         Q = np.array(self.Q)
 
-        dist = 0.
+        dist_cc = 0.
         for i in range(self.sliding_window):
             if np.shape(self.P[i])[0] == 4:
                 p1 = self.P[i][2:4, 2:4]
                 K1 = np.array(self.K[i][2:4, 2:4])
+                K2 = K2_[i]
                 Q = np.array(self.Q[2:4, 2:4])
                 F = np.array(self.F[2:4, 2:4])
 
             if np.shape(p2_[i])[0] == 4:
                 p2 = p2_[i][2:4, 2:4]
                 K2 = K2_[i][2:4, 2:4]
-		K1 = np.array(self.K[i])
-            else:
-                K2 = K2_[i]
+                K1 = np.array(self.K[i])
 
             if np.shape(s1[i])[0] == 4:
                 ss1 = s1[i][2:4]
@@ -66,15 +66,14 @@ class KalmanFilter(StateEstimator):
                 ss2 = s2[i]
 
             dx = ss1 - ss2
-	    
+
             # cross-covariance terms
             cross_cov = np.matmul((np.eye(2) - K1), np.matmul(np.matmul(F, cross_cov_prev), F.T), (np.eye(2) - K2)) + \
-                np.matmul(np.matmul((np.eye(2) - K1), Q), (np.eye(2) - K2))
+                        np.matmul(np.matmul((np.eye(2) - K1), Q), (np.eye(2) - K2))
             cross_cov_prev = cross_cov
-            print(cross_cov)
             # P_i + P_j  - P_ij - P_ji
-            dist += np.matmul(dx.T, np.matmul(scipy.linalg.inv(p1 + p2 - cross_cov - cross_cov), dx))
-        return dist
+            dist_cc += np.matmul(dx.T, np.matmul(scipy.linalg.inv(p1 + p2 - cross_cov - cross_cov), dx))
+        return dist_cc
 
     def step(self):
         m, _ = self.get_latest_message()

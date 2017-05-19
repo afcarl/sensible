@@ -103,18 +103,15 @@ class Radar:
         if self._mode == "Tracking" and zone >= 0:
             raise ValueError("Expected a zone number of -1")
 
-        if msg['xVel'] > -4 or msg['xVel'] < -21:
+        if msg['xVel'] > -4 or msg['xVel'] < -21:  # 9 mph to 47 mph
             return None
         else:
-            dt = datetime.utcnow()
-            h = dt.hour
-            m = dt.minute
-            s = int(dt.second * 1000 + round(dt.microsecond / 1000))
+
             #print('Radar correct time: {}:{}:{}'.format(h, m, s))
             #print('Radar time: {}'.format(msg['TimeStamp']))
-            #h = int(msg['TimeStamp'][0:2])
-            #m = int(msg['TimeStamp'][2:4])
-            #s = int(msg['TimeStamp'][4:])
+            h = int(msg['TimeStamp'][0:2])
+            m = int(msg['TimeStamp'][3:5])
+            s = int(msg['TimeStamp'][6:11])
             return {
                 'id': int(msg['objID']),
                 'h': h,
@@ -125,14 +122,19 @@ class Radar:
                 'speed': msg['xVel'],  # accept ~14 mph to 45 mph ~
                 'veh_len': msg['objLength'],
                 'lane': self._lane,
-                'max_accel': 5,
-                'max_decel': -5,
+                'max_accel': 3.048,
+                'max_decel': -4.572,
                 'objZone': msg['objZone']
             }
 
     def push(self, msgs):
         """Process incoming data. Overrides StoppableThread's push method."""
         for msg in msgs:
+            dt = datetime.utcnow()
+            h = dt.hour
+            m = dt.minute
+            s = int(dt.second * 1000 + round(dt.microsecond / 1000))
+            msg['TimeStamp'] = "{}:{}:{}".format(h, m, s)
             if self._logger is not None:
                 self._logger.writerow(msg)
             res = self.parse(msg)

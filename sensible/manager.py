@@ -25,9 +25,9 @@ class Manager:
         sensors = {'sensor_ports': sensor_ports, 'topic_filters': topic_filters}
 
         ts = sensible.TrackSpecialist(sensors, int(self.output_port), int(self.run_for),
-                                      sensible.ops.track_logger, n_scan=self.n_scan,
+                                      sensible.ops.track_logger, n_scan=int(self.n_scan),
                                       frequency=int(self.track_frequency),
-                                      association_threshold=self.association_threshold, verbose=self.v)
+                                      association_threshold=int(self.association_threshold), verbose=self.v)
 
         if not self.disable_dsrc:
             dsrc_recv = sensible.DSRC()
