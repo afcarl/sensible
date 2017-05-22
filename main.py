@@ -14,6 +14,7 @@ if __name__ == '__main__':
     parser.add_argument('--radar-baudrate', default=115200, help='Baudrate for radar serial comms')
     parser.add_argument('--radar-mode', default='Tracking', help='Options are {Tracking|Zone}')
     parser.add_argument('--radar-lane', default=4, help='Lane # to append to radar outgoing message')
+    parser.add_argument('--radar-orientation', default=3.62, help='Degrees the radar is rotated counter-clockwise')
     parser.add_argument('--radar-local-port', default=5200, help='Port for comms between radar and'
                                                                  ' central tracking component')
     parser.add_argument('--dsrc-ip-address', default='169.254.30.4', help='IP address for comms with DSRC radio')

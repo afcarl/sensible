@@ -42,7 +42,7 @@ class Manager:
         if not self.disable_radar:
             radar_recv = sensible.Radar(mode=self.radar_mode, lane=int(self.radar_lane),
                                         radar_lat=float(self.radar_lat), radar_lon=float(self.radar_lon),
-                                        record_csv=self.record_csv, verbose=False)
+                                        orientation=float(self.radar_orientation), record_csv=self.record_csv, verbose=False)
 
             radar_thread = sensible.SerialThread(radar_recv, self.radar_com_port, int(self.radar_baudrate),
                                                  name='RadarThread')

@@ -10,7 +10,6 @@ RADAR_LAT = 29.6216931
 RADAR_LON = -82.3867591
 
 if __name__ == '__main__':
-    # run_for = int(sys.argv[1])  # seconds
     run_for = 60
 
     bsm_port = 24602
@@ -18,7 +17,7 @@ if __name__ == '__main__':
     # radar_com_port = 'COM3'
     # radar_baudrate = 115200
     radar_method = "Tracking"
-
+    radar_orientation = 3.62  # degrees
     radar_recv_port = 4203
     dsrc_recv_port = 4200
     dsrc_send_port = 6667
@@ -40,7 +39,8 @@ if __name__ == '__main__':
     dsrc_thread = sensible.SocketThread(sensor=dsrc_recv, ip_address="localhost", port=dsrc_recv_port, msg_len=300,
                                         name="DSRCThread")
 
-    radar_recv = sensible.Radar(mode="Tracking", lane=4, radar_lat=RADAR_LAT, radar_lon=RADAR_LON, verbose=False, record_csv=False)
+    radar_recv = sensible.Radar(mode="Tracking", lane=4, radar_lat=RADAR_LAT, radar_lon=RADAR_LON,
+                                orientation=radar_orientation, verbose=False, record_csv=False)
 
     # 15.5
     radar_sender = RadarEmulator(radar=radar_recv, pub_freq=20,

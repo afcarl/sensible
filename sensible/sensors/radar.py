@@ -2,6 +2,7 @@ import utm
 import csv
 import time
 import os
+import numpy as np
 
 from collections import deque
 
@@ -22,7 +23,7 @@ class Radar:
     Radar messages are "asynchronous"
     """
 
-    def __init__(self, mode, lane, radar_lat, radar_lon, clock_offset=0, record_csv=False, verbose=False):
+    def __init__(self, mode, lane, radar_lat, radar_lon, orientation, clock_offset=0, record_csv=False, verbose=False):
         self._queue = deque()
         self._mode = mode
         self._verbose = verbose
@@ -30,6 +31,8 @@ class Radar:
         self.x, self.y, self.zone, self.letter = utm.from_latlon(
             radar_lat, radar_lon)
         self.clock_offset = clock_offset
+        self.rotation = np.array([[np.cos(np.deg2rad(360. - orientation)), -np.sin(np.deg2rad(360. - orientation))],
+                                  [np.sin(np.deg2rad(360. - orientation)), np.cos(np.deg2rad(360. - orientation))]])
 
         if record_csv:
             t = time.localtime()
@@ -116,14 +119,22 @@ class Radar:
             # h = int(t[0])
             # m = int(t[1])
             # s = int(t[2])
+
+            # apply rotation
+            pos = np.array([[-msg['yPos']], [msg['xPos']]])
+            pos_ = np.matmul(self.rotation, pos)
+
+            vel = np.array([[-msg['yVel']], [msg['xVel']]])
+            vel_ = np.matmul(self.rotation, vel)
+
             return {
                 'id': int(msg['objID']),
                 'h': h,
                 'm': m,
                 's': s + self.clock_offset,
-                'xPos': self.x - msg['yPos'],
-                'yPos': self.y + msg['xPos'],
-                'speed': msg['xVel'],  # accept ~14 mph to 45 mph ~
+                'xPos': self.x + pos_[0, 0],
+                'yPos': self.y + pos_[1, 0],
+                'speed': vel_[1, 0],  # longitudinal speed
                 'veh_len': msg['objLength'],
                 'lane': self._lane,
                 'max_accel': 3.048,
@@ -134,11 +145,6 @@ class Radar:
     def push(self, msgs):
         """Process incoming data. Overrides StoppableThread's push method."""
         for msg in msgs:
-            # dt = datetime.utcnow()
-            # h = dt.hour
-            # m = dt.minute
-            # s = int(dt.second * 1000 + round(dt.microsecond / 1000))
-            # msg['TimeStamp'] = "{}:{}:{}".format(h, m, s)
             if self._logger is not None:
                 self._logger.writerow(msg)
             res = self.parse(msg)
