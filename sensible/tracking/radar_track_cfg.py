@@ -1,11 +1,11 @@
 import numpy as np
 import utm
 
-radar_lat = 29.6216931
-radar_lon = -82.3867591
+#radar_lat = 29.6216931
+#radar_lon = -82.3867591
 # compute UTM coordinates of the radar
-utm_n, utm_e, zone, letter = \
-            utm.from_latlon(radar_lat, radar_lon)
+#utm_n, utm_e, zone, letter = \
+#            utm.from_latlon(radar_lat, radar_lon)
 
 
 class RadarTrackCfg:
