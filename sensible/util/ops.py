@@ -104,7 +104,7 @@ def show(string, verbose):
         print("  [!] Need to call ops.initializer_logs() first")
     else:
         ts = datetime.utcnow()
-        ts = '[{}:{}:{}]'.format(ts.hour, ts.minute, (ts.second * 1000) + (ts.microsecond/1000))
+        ts = '[{02}:{02}:{04}]'.format(ts.hour, ts.minute, (ts.second * 1000) + (ts.microsecond/1000))
         string = ts + string
         system_logger.write(string)
         if verbose:

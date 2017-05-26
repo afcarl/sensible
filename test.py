@@ -42,7 +42,7 @@ if __name__ == '__main__':
     radar_recv = sensible.Radar(mode="Tracking", lane=4, radar_lat=RADAR_LAT, radar_lon=RADAR_LON,
                                 orientation=radar_orientation, verbose=False, record_csv=False)
 
-    # 15.5
+    # 6
     radar_sender = RadarEmulator(radar=radar_recv, pub_freq=20,
                                  fname="tests/data/SW-42-SW-40/radar_log_20170502.csv", delay=6)
 
@@ -50,6 +50,10 @@ if __name__ == '__main__':
                                  file_names=["tests/data/SW-42-SW-40/NaviGator_test1-05-02.txt",
                                              "tests/data/SW-42-SW-40/dsrc_truck_1_20170502_shortened.txt"],
                                  delim='<START>', loop=False, delay=0, start=0, name="DSRC")
+
+    # dsrc_sender = SensorEmulator(port=dsrc_recv_port, pub_freq=20,
+    #                              file_names=["tests/data/SW-42-SW-40/NaviGator_test1-05-02-shortened-for-radar.txt"],
+    #                              delim='<START>', loop=False, delay=3.5, start=0, name="DSRC")
 
     radar_synchronizer = sensible.Synchronizer(publish_freq=5, queue=radar_recv.queue, port=radar_send_port,
                                                topic=radar_recv.topic(), verbose=False, name="RadarSynchronizer")

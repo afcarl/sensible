@@ -99,6 +99,7 @@ class Radar:
         return VehicleType.UNKNOWN
 
     def parse(self, msg):
+        # print(msg)
         # TODO: add lane number to msg
         zone = msg['objZone']
         if self._mode == "Zone" and zone == -1:
@@ -110,9 +111,9 @@ class Radar:
             return None
         else:
             dt = datetime.utcnow()
-            h = dt.hour
-            m = dt.minute
-            s = int(dt.second * 1000 + round(dt.microsecond / 1000))
+            hour = dt.hour
+            minute = dt.minute
+            ms = int(dt.second * 1000 + round(dt.microsecond/1000))
             # #print('Radar correct time: {}:{}:{}'.format(h, m, s))
             # #print('Radar time: {}'.format(msg['TimeStamp']))
             # t = msg['TimeStamp'].split(':')
@@ -129,9 +130,9 @@ class Radar:
 
             return {
                 'id': int(msg['objID']),
-                'h': h,
-                'm': m,
-                's': s + self.clock_offset,
+                'h': hour,
+                'm': minute,
+                's': ms,
                 'xPos': self.x + pos_[0, 0],
                 'yPos': self.y + pos_[1, 0],
                 'speed': vel_[1, 0],  # longitudinal speed
@@ -157,5 +158,5 @@ class Radar:
             if queued_msg['id'] == msg['id'] and queued_msg['s'] == msg['s']:
                 # Found a duplicate
                 return
-        # add X to the right side of the queue
+                # add X to the right side of the queue
         self._queue.append(msg)
