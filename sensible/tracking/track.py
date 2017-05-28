@@ -67,10 +67,16 @@ class Track(object):
         self.received_measurement = True
         self.n_consecutive_measurements += 1
         self.n_consecutive_missed = 0
+        self.lane = new_msg['lane']
+        
+        if self.served and self.sensor == DSRC.DSRC and new_msg['served'] == 0:
+            self.served = False
+            if self.state_estimator.fused_track:
+                for fused_track_id in self.fused_track_ids:
+                    track_list[fused_track_id].served = False							
 
-        if not self.served and self.sensor == DSRC and new_msg['served'] == 1:
+        if not self.served and self.sensor == DSRC.DSRC and new_msg['served'] == 1:
             self.served = True
-            # TODO: test
             if self.state_estimator.fused_track:
                 for fused_track_id in self.fused_track_ids:
                     track_list[fused_track_id].served = True

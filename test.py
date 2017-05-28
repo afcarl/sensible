@@ -12,7 +12,7 @@ RADAR_LON = -82.3867591
 if __name__ == '__main__':
     run_for = 60
 
-    bsm_port = 24601
+    bsm_port = 24602
 
     # radar_com_port = 'COM3'
     # radar_baudrate = 115200
