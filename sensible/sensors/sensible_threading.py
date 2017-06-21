@@ -145,8 +145,15 @@ class SerialThread(StoppableThread):
                             timeStampBin = bin(int((timeStampHold), 16))[2:]
                             if len(timeStampBin) < 64:
                                 timeStampBin = SerialThread.addZeros(timeStampBin)
-                            timeStamp = str(int(timeStampBin[0:8], 2)) + str(int(timeStampBin[8:16], 2)) + str(
-                                int(timeStampBin[16:24], 2)) + str(int(timeStampBin[24:32], 2))
+                            
+                            #timeStamp = str(int(timeStampBin[0:8], 2)) + str(int(timeStampBin[8:16], 2)) + str(
+                            #    int(timeStampBin[16:24], 2)) + str(int(timeStampBin[24:32], 2))
+                            
+                            timeStamp = int(timeStampBin[0:8], 2) << 0
+                            timeStamp += int(timeStampBin[8:16], 2) << 8
+                            timeStamp += int(timeStampBin[16:24], 2) << 16
+                            timeStamp += int(timeStampBin[24:32], 2) << 24
+
                             timeStampHold = ''
                         binary_stuff = incoming_data[-8]
                         for var in incoming_data[-7:]:
@@ -156,7 +163,7 @@ class SerialThread(StoppableThread):
                             BAD_BINARY_STUFF = True
                         if not BAD_TIME_STAMP and not BAD_BINARY_STUFF:
                             obtainedData = SerialThread.positionData(bin(int((binary_stuff), 16))[2:])
-                            obtainedData['TimeStamp'] = timeStamp
+                            obtainedData['TimeStamp'] = str(timeStamp)
                             cars.append(obtainedData)
                             #ar_check
                             for box in range(len(front_line_xs)):
