@@ -1,4 +1,4 @@
-<START>2017:05:02 17:47:59:795
+	<START>2017:05:02 17:47:59:795
 <ConnectedSafetyMessage>
     <msgID><connectedSafetyMessage/></msgID>
     <blob1>

@@ -19,8 +19,8 @@ RADAR_LAT = 29.6216931
 RADAR_LON = -82.3867591
 RADAR_POS_VAR = 1.3
 
-RADAR_DIR = "C:\\Users\pemami\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned radar"
-GPS_DIR = "C:\\Users\pemami\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned DSRC"
+RADAR_DIR = "C:\\Users\Patrick\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned radar"
+GPS_DIR = "C:\\Users\Patrick\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned DSRC"
 
 RADAR_TRACKS = ["AV_Track_ID_26_GPS_track_2.pkl", "AV_Track_ID_22_GPS_track_3.pkl", "AV_Track_ID_45_GPS_track_4.pkl",
                 "AV_Track_ID_32_GPS_track_5.pkl", "AV_Track_ID_40_GPS_track_6.pkl", "AV_Track_ID_50_GPS_track_7.pkl"]
@@ -145,6 +145,11 @@ if __name__ == '__main__':
                     suitcase_heading[ii].append(sc_gps_heading[i])
 
             if args['preprocess_radar']:
+                orientation = 3.62
+                rotation = np.array(
+                    [[np.cos(np.deg2rad(360. - orientation)), -np.sin(np.deg2rad(360. - orientation))],
+                     [np.sin(np.deg2rad(360. - orientation)), np.cos(np.deg2rad(360. - orientation))]])
+
                 # load radar tracks
                 df = ops.load_pkl(os.path.join(RADAR_DIR, RADAR_TRACKS[ii]))
                 #df.to_csv(os.path.join(RADAR_DIR, "AV_Track_ID_45_solo_GPS_track_4.csv"))
@@ -162,13 +167,20 @@ if __name__ == '__main__':
                 # coordinate transform
                 y_offsets = interp_r['x_Point1'].values
                 x_offsets = -interp_r['y_Point1'].values
+                speed_y = interp_r['Speed_y'].values
                 speed_x = interp_r['Speed_x'].values
+
+                pos = np.array([y_offsets, x_offsets])
+                speed = np.array([speed_y, speed_x])
+
+                pos = np.matmul(rotation, pos)
+                speed = np.matmul(rotation, speed)
 
                 # compute radar tracks in UTM coordinates
                 for i in range(RADAR_RANGES[ii][0], RADAR_RANGES[ii][1]):
-                    radar_x[ii].append(x + x_offsets[i])
-                    radar_y[ii].append(y + y_offsets[i])
-                    radar_speed[ii].append(speed_x[i])
+                    radar_x[ii].append(x + pos[1][i])
+                    radar_y[ii].append(y + pos[0][i])
+                    radar_speed[ii].append(speed[1][i])
 
                     lat, lon = utm.to_latlon(radar_x[ii][-1], radar_y[ii][-1], zone, letter)
                     # print("{},{},{},{}".format(lat, lon, x_offsets[i], y_offsets[i]))

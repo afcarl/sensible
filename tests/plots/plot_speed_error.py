@@ -1,18 +1,20 @@
 import matplotlib.pyplot as plt
 import sensible.util.ops as ops
 import utm
+import os
 
 N_TRACKS = 6
 RADAR_LAT = 29.6216931
 RADAR_LON = -82.3867591
 # compute UTM coordinates of the radar
 x, y, zone, letter = utm.from_latlon(RADAR_LAT, RADAR_LON)
+data_dir = 'new_data'
 
 if __name__ == '__main__':
-    radar_speed = ops.load_pkl('radar_speed.pkl')
-    suitcase_speed = ops.load_pkl('suitcase_speed.pkl')
-    suitcase_heading = ops.load_pkl('suitcase_heading.pkl')
-    radar_y = ops.load_pkl('radar_y.pkl')
+    radar_speed = ops.load_pkl(os.path.join(data_dir, 'radar_speed.pkl'))
+    suitcase_speed = ops.load_pkl(os.path.join(data_dir, 'suitcase_speed.pkl'))
+    suitcase_heading = ops.load_pkl(os.path.join(data_dir, 'suitcase_heading.pkl'))
+    radar_y = ops.load_pkl(os.path.join(data_dir, 'radar_y.pkl'))
 
     errs_lp_radar_speed_all = []
     errs_lp_radar_speed_incremental_meters = [[] for _ in range(5)]

@@ -1,11 +1,10 @@
-#import matplotlib
-#matplotlib.use('Qt4Agg')
 import matplotlib.pyplot as plt
 import sensible.util.ops as ops
 import utm
 import numpy as np
+import os
 
-
+data_dir = 'new_data'
 N_TRACKS = 6
 RADAR_LAT = 29.6216931
 RADAR_LON = -82.3867591
@@ -13,10 +12,10 @@ RADAR_LON = -82.3867591
 x, y, zone, letter = utm.from_latlon(RADAR_LAT, RADAR_LON)
 
 if __name__ == '__main__':
-    radar_y = ops.load_pkl('radar_y.pkl')
-    gps_y = ops.load_pkl('gps_y.pkl')
-    suitcase_y = ops.load_pkl('suitcase_gps_y.pkl')
-    radar_speed = ops.load_pkl('radar_speed.pkl')
+    radar_y = ops.load_pkl(os.path.join(data_dir, 'radar_y.pkl'))
+    gps_y = ops.load_pkl(os.path.join(data_dir, 'gps_y.pkl'))
+    suitcase_y = ops.load_pkl(os.path.join(data_dir, 'suitcase_gps_y.pkl'))
+    radar_speed = ops.load_pkl(os.path.join(data_dir, 'radar_speed.pkl'))
 
     errs_y = []
     errs_y_abs = []

@@ -1,8 +1,8 @@
 import argparse
-from sensible.util import ops
+import ops
 import xml.etree.cElementTree as ElementTree
 import pandas as pd
-
+import matplotlib.pyplot as plt
 
 def parse(msg):
     """Convert msg data from hex to decimal and filter msgs.
@@ -65,10 +65,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--file', help='Provide a valid path to a DSRC log file')
-    parser.add_argument('--dest', help='Provide a valid path to store pickled messages in')
+    #parser.add_argument('--dest', help='Provide a valid path to store pickled messages in')
 
     args = vars(parser.parse_args())
 
+    rms_x = []
+    rms_y = []
     with open(args['file'], 'rb') as f:
         msgs = f.read().split('<START>')
 
@@ -77,10 +79,16 @@ if __name__ == '__main__':
             if msg == '':
                 continue
             try:
-                results.append(parse(msg))
-            except ValueError as e:
+                m = parse(msg)
+                rms_x.append(m['rms_lat'])
+                rms_y.append(m['rms_lon'])
+                #results.append()
+            except Exception as e:
                 continue
 
-        df = pd.DataFrame(results)
-
-        ops.dump(df, args['dest'])
+        df_x = pd.DataFrame(rms_x)
+        df_y = pd.DataFrame(rms_y)
+    
+        import pdb; pdb.set_trace()
+        
+        #ops.dump(df, args['dest'])
