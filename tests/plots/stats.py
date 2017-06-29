@@ -21,6 +21,7 @@ if __name__ == '__main__':
     suitcase_y = ops.load_pkl(os.path.join(data_dir, 'suitcase_gps_y.pkl'))
     suitcase_x = ops.load_pkl(os.path.join(data_dir, 'suitcase_gps_x.pkl'))
     radar_speed = ops.load_pkl(os.path.join(data_dir, 'radar_speed.pkl'))
+    suitcase_speed = ops.load_pkl(os.path.join(data_dir, 'suitcase_speed.pkl'))
 
     track_2_start = 27
     track_7_start = 10
@@ -32,6 +33,7 @@ if __name__ == '__main__':
     errs_x_abs = []
     errs_hp_radar_lat_all = []
     errs_lp_radar_lat_all = []
+    errs_lp_radar_speed_all = []
 
     for ii in range(N_TRACKS):
 
@@ -86,6 +88,9 @@ if __name__ == '__main__':
             errs_hp_radar_lat_all.append(x1 - x2)
             idx += 1
 
+        for j in range(start, len(suitcase_speed[ii])):
+            errs_lp_radar_speed_all.append(suitcase_speed[ii][j] - radar_speed[ii][j])
+
     sample_mu = np.mean(errs_hp_radar_range_all, axis=0)
     sample_var = np.var(errs_hp_radar_range_all, axis=0, ddof=1)
 
@@ -97,6 +102,9 @@ if __name__ == '__main__':
 
     lat_lp_sample_mu = np.mean(errs_x, axis=0)
     lat_lp_sample_var = np.var(errs_x, axis=0, ddof=1)
+
+    speed_lp_sample_mu = np.mean(errs_lp_radar_speed_all, axis=0)
+    speed_lp_sample_var = np.var(errs_lp_radar_speed_all, axis=0, ddof=1)
 
     print('HP vs radar range')
     print('mu: ', sample_mu)
@@ -113,3 +121,7 @@ if __name__ == '__main__':
     print('\nLP vs HP lat')
     print('mu: ', lat_lp_sample_mu)
     print('var: ', lat_lp_sample_var)
+
+    print('\nLP vs radar speed')
+    print('mu: ', speed_lp_sample_mu)
+    print('var: ', speed_lp_sample_var)

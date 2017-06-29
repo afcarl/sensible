@@ -44,12 +44,12 @@ GPS_TS = [("1900-01-01 18:25:10.0", "1900-01-01 18:25:32.0"),
           ("1900-01-01 18:39:40.8", "1900-01-01 18:39:55.0"),
           ("1900-01-01 18:42:35.5", "1900-01-01 18:42:53.2")]
 
-SUITCASE_TS = [("2017-04-13 18:25:10.0", "2017-04-13 18:25:32.0"),
-          ("2017-04-13 18:28:11.0", "2017-04-13 18:28:34.8"),
-          ("2017-04-13 18:32:05.0", "2017-04-13 18:32:26.8"),
-          ("2017-04-13 18:36:05.2", "2017-04-13 18:36:28.2"),
-          ("2017-04-13 18:39:40.8", "2017-04-13 18:39:55.0"),
-          ("2017-04-13 18:42:35.5", "2017-04-13 18:42:53.2")]
+SUITCASE_TS = [("1900-01-01 18:25:10.0", "1900-01-01 18:25:32.0"),
+          ("1900-01-01 18:28:11.0", "1900-01-01 18:28:34.8"),
+          ("1900-01-01 18:32:05.0", "1900-01-01 18:32:26.8"),
+          ("1900-01-01 18:36:05.2", "1900-01-01 18:36:28.2"),
+          ("1900-01-01 18:39:40.8", "1900-01-01 18:39:55.0"),
+          ("1900-01-01 18:42:35.5", "1900-01-01 18:42:53.2")]
 
 RADAR_RANGES = [(7, 177), (5, 228), (1, 219), (1, 231), (1, 143), (1, 175)]
 
@@ -114,6 +114,13 @@ if __name__ == '__main__':
         suitcase_heading = [[] for _ in range(len(GPS_TRACKS))]
 
         for ii in range(len(GPS_TRACKS)):
+
+            def pad_with_zeros(my_str, n_zeros=5):
+                if len(my_str) < n_zeros:
+                    for _ in range(n_zeros - len(my_str)):
+                        my_str = '0' + my_str
+                return my_str
+
             if args['preprocess_suitcase']:
 
                 # Process suitcase data
@@ -121,8 +128,17 @@ if __name__ == '__main__':
                 sc_df = pd.DataFrame.from_dict(sc)
 
                 # parse the datetime
-                sc_df['time-stamp'] = pd.to_datetime(sc_df['time-stamp'], format="%Y-%m-%d %H:%M:%S:%f")
-                sc_df = sc_df.set_index('time-stamp')
+                #sc_df['time-stamp'] = pd.to_datetime(sc_df['time-stamp'], format="%Y-%m-%d %H:%M:%S:%f")
+                #sc_df = sc_df.set_index('time-stamp')
+
+                sc_df['s'] = sc_df['s'].map(str).apply(pad_with_zeros)
+
+                sc_df['ttime'] = pd.to_datetime(
+                    sc_df['h'].map(str) + ':' + sc_df['m'].map(str) + ':' + sc_df['s'].map(str),
+                    format="%H:%M:%S%f"
+                )
+                sc_df = sc_df.drop_duplicates(subset='ttime', keep='first')
+                sc_df = sc_df.set_index('ttime')
                 idx_sc = pd.date_range(start=SUITCASE_TS[ii][0], end=SUITCASE_TS[ii][1], freq='50ms')
 
                 interp_sc = interpolate(sc_df, idx_sc, ['lat', 'lon', 'heading', 'speed'])
