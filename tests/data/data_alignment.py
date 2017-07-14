@@ -13,14 +13,15 @@ import pandas as pd
 import numpy as np
 import argparse
 
-from sensible.util import ops
+import ops 
 
 RADAR_LAT = 29.6216931
 RADAR_LON = -82.3867591
 RADAR_POS_VAR = 1.3
 
-RADAR_DIR = "C:\\Users\Patrick\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned radar"
-GPS_DIR = "C:\\Users\Patrick\Dropbox (UFL)\Data\SW-42nd-SW-40-Radar-Installation\Cleaned DSRC"
+DROPBOX_DIR = "/Users/pemami/"
+RADAR_DIR = os.path.join(DROPBOX_DIR, "Dropbox (UFL)", "Data","SW-42nd-SW-40-Radar-Installation", "Cleaned radar")
+GPS_DIR = os.path.join(DROPBOX_DIR, "Dropbox (UFL)", "Data","SW-42nd-SW-40-Radar-Installation", "Cleaned DSRC")
 
 RADAR_TRACKS = ["AV_Track_ID_26_GPS_track_2.pkl", "AV_Track_ID_22_GPS_track_3.pkl", "AV_Track_ID_45_GPS_track_4.pkl",
                 "AV_Track_ID_32_GPS_track_5.pkl", "AV_Track_ID_40_GPS_track_6.pkl", "AV_Track_ID_50_GPS_track_7.pkl"]
@@ -126,7 +127,6 @@ if __name__ == '__main__':
                 # Process suitcase data
                 sc = ops.load_pkl(os.path.join(GPS_DIR, SUITCASE_TRACKS[ii]))
                 sc_df = pd.DataFrame.from_dict(sc)
-
                 # parse the datetime
                 #sc_df['time-stamp'] = pd.to_datetime(sc_df['time-stamp'], format="%Y-%m-%d %H:%M:%S:%f")
                 #sc_df = sc_df.set_index('time-stamp')
