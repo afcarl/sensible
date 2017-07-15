@@ -10,4 +10,8 @@ This work is being done as a part of a larger project aimed at developing a comp
 
 ## TODO
 
-* Create node.js app that listens to BSM port and plots tracks on Google Maps viz
+* [ ] Update synchronizer to support linear interpolation 
+* [ ] Update synchronizer to quantize incoming data to fuse at synchronized times
+* [ ] Vehicle lane estimation
+* [ ] Video camera sensor node and thread
+* [ ] Radar - handle stuck/ghost tracks

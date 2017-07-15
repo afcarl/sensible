@@ -1,16 +1,13 @@
 from __future__ import absolute_import
-import gaussPlot2d
 
 import cPickle as pickle
 import os
-import matplotlib
-matplotlib.use('Qt4Agg')
-import matplotlib.pyplot as plt
-from sensible.util import ops
-import numpy as np
-from sensible.util import ops
-from sensible.tracking.kalman_filter import KalmanFilter
 
+import gaussPlot2d
+import matplotlib
+
+matplotlib.use('Qt4Agg')
+import numpy as np
 
 PICKLE_DIR='C:\\Users\\pemami\\Workspace\\Github\\sensible\\tests\\data\\trajectories\\'
 RADAR_MSG='C:\\Users\\pemami\\Workspace\\Github\\sensible\\tests\\data\\trajectories\\radar-16-35-36200.pkl'

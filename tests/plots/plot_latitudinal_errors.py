@@ -133,6 +133,8 @@ if __name__ == '__main__':
         fig.savefig('imgs/hp-vs-lp-gps-lat-errors-hist-track-' + str(ii+1) + '.png', dpi=100)
         plt.close()
 
+    ops.dump(errs_x, 'new_data/suitcase_gps_x_errors.pkl')
+
     fig, axarr = plt.subplots(2)
     axarr[0].hist(errs_x, bins=15)
     axarr[0].set_title('GPS/IMU and WAAS GPS horizontal pos estimation errors')

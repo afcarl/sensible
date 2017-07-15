@@ -1,7 +1,7 @@
-from sensible.tracking.track_state import TrackState
-from sensible.tracking.kalman_filter import KalmanFilter
 import sensible.util.time_stamp as ts
 from sensible.sensors import DSRC
+from sensible.tracking.state_estimation.kalman_filter import KalmanFilter
+from sensible.tracking.track_state import TrackState
 
 
 class Track(object):

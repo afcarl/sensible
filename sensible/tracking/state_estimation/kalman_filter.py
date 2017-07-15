@@ -1,9 +1,9 @@
-from sensible.tracking.state_estimator import StateEstimator
+from collections import deque
 
 import numpy as np
 import scipy.linalg
 
-from collections import deque
+from sensible.tracking.state_estimation.state_estimator import StateEstimator
 
 
 class KalmanFilter(StateEstimator):

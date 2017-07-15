@@ -211,6 +211,8 @@ if __name__ == '__main__':
         fig.savefig('imgs/lp-radar-vs-hp-gps-range-errors-track-' + str(ii + 1) + '.png', dpi=100)
         plt.close()
 
+    ops.dump(errs_y, 'new_data/suitcase_gps_y_errors.pkl')
+
     fig, axarr = plt.subplots(2)
     axarr[0].hist(errs_y, bins=15)
     axarr[0].set_title('Error between GPS/IMU and WAAS-GPS UTM Northing estimates')
