@@ -11,9 +11,6 @@ class ExtendedKalmanFilter(KalmanFilter):
     def __init__(self, ekf_config, sliding_window, fused_track=False):
         super(ExtendedKalmanFilter, self).__init__(ekf_config, sliding_window, fused_track)
 
-    def parse_msg(self, msg, stationary_R=True):
-        return self.kf_config.parse_msg(msg, state_estimation='ekf', stationary_R=stationary_R)
-
     def step(self):
         m, _ = self.get_latest_message()
 
@@ -21,10 +18,20 @@ class ExtendedKalmanFilter(KalmanFilter):
         self.P.append(np.matmul(self.F, np.matmul(self.P[-1], self.F.T)) + self.Q)
 
         # nonlinear measurement update
-        # compute h(x_k|x_k-1)
-        h =
-        # compute jac(h)|x_k-1
-        c = np.jacobian(h)
+        # compute prediction h(x_k|x_k-1)
+        x = self.x_k_bar[-1][0]
+        y = self.x_k_bar[-1][2]
+        x_dot = self.x_k_bar[-1][1]
+        y_dot = self.x_k_bar[-1][3]
+        theta_pred = np.arctan2(y_dot, x_dot) 
+        h = np.array([x, y, x_dot / np.cos(theta_pred), theta_pred])
+        # jacobian of h evaluated at x_k_bar
+        c = np.array([[1, 0, 0, 0],
+                     [0, 1, 0, 0],
+                     [0, 0, 1 / np.cos(theta_pred), 0]
+                     [0, 0, -y_dot/(x_dot ** 2 * ((y_dot ** 2 / x_dot ** 2 ) + 1)),
+                         1 / (x_dot * ((y_dot ** 2 / x_dot ** 2 ) + 1))]])
+
         # measurement prediction
         self.y_k.append(h + np.matmul(self.R, np.random.normal(size=self.kf_config.state_dim)))
 
