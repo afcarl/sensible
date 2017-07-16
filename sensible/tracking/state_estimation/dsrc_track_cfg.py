@@ -24,18 +24,24 @@ class DSRCTrackCfg:
         self.dt = dt
         self.stationary_R = False
 
-        # std dev of a gaussian distribution over a position (x,y) meters corresponding to +- m
+        ### SET MEASUREMENT UNCERTAINTY PARAMETERS HERE ###
+
+        # std dev of a gaussian distribution over a position (x,y) meters
+        # corresponding to +- m
         utm_easting_std_dev = 1 / self.z
-        utm_northing_std_dev = 3 / self.z
+        utm_northing_std_dev = 2.2 / self.z
         # std dev corresponding to a standard normal (+- m/s)
-        speed_std_dev = 2 / self.z
+        speed_std_dev = 1 / self.z
         # std dev heading in degrees, (+- deg)
-        heading_std_dev = 1 / self.z
+        heading_std_dev = 0.1 / self.z
+
+        self.motion_model = motion_model
 
         if motion_model == 'CV':
             mm = self.constant_velocity
             self.accel_std_dev = 4 / self.z # (+- m/s^2)
             self.state_dim = 4
+
         elif motion_model == 'CA':
             mm = self.constant_acceleration
             self.state_dim = 6
@@ -43,7 +49,7 @@ class DSRCTrackCfg:
             print('Unsupported state estimation motion model: {}'.format(motion_model))
             exit(1)
 
-        self.F, self.Q = mm()
+        self.F, self.Q, self.init_state = mm()
 
         # measurement covariance
         self.R = np.eye(self.state_dim)
@@ -58,8 +64,8 @@ class DSRCTrackCfg:
     def constant_velocity(self):
         # Dynamics
         F = np.eye(self.state_dim)
-        F[0][1] = -self.dt
-        F[2][3] = self.dt
+        F[0][1] = self.dt
+        F[2][3] = -self.dt
 
         # Process noise covariance
         Q = np.multiply(self.accel_std_dev ** 2,
@@ -67,8 +73,13 @@ class DSRCTrackCfg:
                                   [(np.power(self.dt, 3) / 2), np.power(self.dt, 2), 0, 0],
                                   [0, 0, (np.power(self.dt, 4) / 4), (np.power(self.dt, 3) / 2)],
                                   [0, 0, (np.power(self.dt, 3) / 2), np.power(self.dt, 2)]]))
-        return F, Q
-    
+
+        def init_state(y_k, y_k_prev, dt):
+            """ [x, xdot = vcos(theta), y, ydot = vsin(theta)] """
+            return np.array([y_k[0], y_k[2] * np.cos(np.deg2rad(y_k[3])),
+                             y_k[1], y_k[2] * np.sin(np.deg2rad(y_k[3]))])
+        return F, Q, init_state
+
     def constant_acceleration(self):
         # Dynamics
         F = np.eye(self.state_dim)
@@ -79,10 +90,26 @@ class DSRCTrackCfg:
         F[3][5] = (self.dt ** 2) / 2
         F[4][5] = self.dt
 
-        # TODO: 
-        # Q
+        # TODO: Check Blackmon pg. 207
+        Q = (self.accel_std_dev ** 2) * np.array([
+            [self.dt ** 5 / 20, self.dt ** 4 / 8, self.dt ** 3 / 6, 0, 0, 0],
+            [self.dt ** 4 / 8, self.dt ** 3 / 3, self.dt ** 2 / 2, 0, 0, 0],
+            [self.dt ** 3 / 6, self.dt ** 2 / 2, self.dt, 0, 0, 0],
+            [0, 0, 0, self.dt ** 5 / 20, self.dt ** 4 / 8, self.dt ** 3 / 6],
+            [0, 0, 0, self.dt ** 4 / 8, self.dt ** 3 / 3, self.dt ** 2 / 2],
+            [0, 0, 0, self.dt ** 3 / 6, self.dt ** 2 / 2, self.dt]
+        ])
 
-        return F, Q
+        def init_state(y_k, y_k_prev, dt):
+            """ [x, xdot, xddot, y, ydot, yddot] """
+            xdot = y_k[2] * np.cos(np.deg2rad(y_k[3]))
+            ydot = y_k[2] * np.sin(np.deg2rad(y_k[3]))
+            xddot = (xdot - (y_k_prev[2] * np.cos(np.deg2rad(y_k[3])))) / dt
+            yddot = (ydot - (y_k_prev[2] * np.sin(np.deg2rad(y_k[3])))) / dt
+
+            return np.array([y_k[0], xdot, xddot,
+                             y_k[1], ydot, yddot])
+        return F, Q, init_state
 
     def update_measurement_covariance(self, x_rms, y_rms):
         self.R[0][0] = (x_rms / self.z) ** 2

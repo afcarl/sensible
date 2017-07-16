@@ -17,19 +17,23 @@ class KalmanFilter(StateEstimator):
         self.Q = sensor_kf.Q
         self.F = sensor_kf.F
         self.R = sensor_kf.R
-        self.sensor_kf = sensor_kf
+        self.sensor_cfg = sensor_kf
         self.P = deque(maxlen=sliding_window)
         self.P.append(sensor_kf.P)
         self.K = deque(maxlen=sliding_window)
 
+    def init_state(self):
+        return self.sensor_cfg.init_state(self.y[-1],
+                                          self.y[-2], self.sensor_cfg.dt)
+
     def parse_msg(self, msg, stationary_R=True):
-        return self.sensor_kf.parse_msg(msg, stationary_R)
+        return self.sensor_cfg.parse_msg(msg, stationary_R)
 
     def measurement_residual_covariance(self):
         return self.P[-1] + self.R
 
     def update_measurement_covariance(self, x_rms, y_rms):
-        self.R = self.sensor_kf.update_measurement_covariance(x_rms, y_rms)
+        self.R = self.sensor_cfg.update_measurement_covariance(x_rms, y_rms)
 
     def n_scan_mahalanobis(self, s2, p2_, K2_):
         s1, time = self.state(self.sliding_window)
@@ -75,29 +79,29 @@ class KalmanFilter(StateEstimator):
             dist_cc += np.matmul(dx.T, np.matmul(scipy.linalg.inv(p1 + p2 - cross_cov - cross_cov), dx))
         return dist_cc
 
-    def step(self):
-        m, _ = self.get_latest_message()
-
-        x_k_bar = np.matmul(self.F, self.x_k[-1]) + np.matmul(self.Q, np.random.normal(size=self.sensor_kf.state_dim))
-        # state covariance prediction
-        self.P.append(np.matmul(self.F, np.matmul(self.P[-1], self.F.T)) + self.Q)
-        # measurement prediction
-        self.y_k.append(x_k_bar + np.matmul(self.R, np.random.normal(size=self.sensor_kf.state_dim)))
-        # innovation
-        # if no new measurements, e_k is 0.
-        e_k = (m - self.y_k[-1]) if m is not None else np.zeros([self.sensor_kf.state_dim])
-
-        # K_k = P * inv(P + R)
-        u = scipy.linalg.inv(self.P[-1] + self.R)
-        self.K.append(np.matmul(self.P[-1], u))
-        # l = scipy.linalg.cho_factor(self.P + self.R)
-        # u = scipy.linalg.cho_solve(l, np.eye(4))
-        # K_k = np.matmul(self.P, scipy.linalg.solve(l[0].T, u, sym_pos=True, lower=True))
-        # state update
-        self.x_k.append(x_k_bar + np.matmul(self.K[-1], e_k))
-        # covariance update
-        self.P[-1] -= np.matmul(self.K[-1], self.P[-1])
-
-        if not np.all(np.diagonal(self.P[-1]) >= 0.):
-            print("  [!] State covariance no longer positive semi-definite!")
-            print("{}".format(self.P[-1]))
+    # def step(self):
+    #     m, _ = self.get_latest_message()
+    #
+    #     x_k_bar = np.matmul(self.F, self.x_k[-1]) + np.matmul(self.Q, np.random.normal(size=self.sensor_cfg.state_dim))
+    #     # state covariance prediction
+    #     self.P.append(np.matmul(self.F, np.matmul(self.P[-1], self.F.T)) + self.Q)
+    #     # measurement prediction
+    #     self.y_k.append(x_k_bar + np.matmul(self.R, np.random.normal(size=self.sensor_cfg.state_dim)))
+    #     # innovation
+    #     # if no new measurements, e_k is 0.
+    #     e_k = (m - self.y_k[-1]) if m is not None else np.zeros([self.sensor_cfg.state_dim])
+    #
+    #     # K_k = P * inv(P + R)
+    #     u = scipy.linalg.inv(self.P[-1] + self.R)
+    #     self.K.append(np.matmul(self.P[-1], u))
+    #     # l = scipy.linalg.cho_factor(self.P + self.R)
+    #     # u = scipy.linalg.cho_solve(l, np.eye(4))
+    #     # K_k = np.matmul(self.P, scipy.linalg.solve(l[0].T, u, sym_pos=True, lower=True))
+    #     # state update
+    #     self.x_k.append(x_k_bar + np.matmul(self.K[-1], e_k))
+    #     # covariance update
+    #     self.P[-1] -= np.matmul(self.K[-1], self.P[-1])
+    #
+    #     if not np.all(np.diagonal(self.P[-1]) >= 0.):
+    #         print("  [!] State covariance no longer positive semi-definite!")
+    #         print("{}".format(self.P[-1]))

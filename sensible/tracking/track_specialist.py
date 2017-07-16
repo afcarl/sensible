@@ -180,7 +180,7 @@ class TrackSpecialist:
                             # generate a new time stamp anyways
                             prev_ts = track.state_estimator.t[-1]
                             prev_ts.s = str(float(prev_ts.s) +
-                                            track.state_estimator.sensor_kf.dt * 1000)
+                                            track.state_estimator.sensor_cfg.dt * 1000)
                             track.state_estimator.store(msg=None, time=prev_ts)
                             # do a step without receiving a new measurement
                             # by propagating the predicted state
@@ -204,7 +204,7 @@ class TrackSpecialist:
                                     fused_tracks.append(other_track)
                         if len(fused_tracks) > 0:
                             track.fuse_estimates(fused_tracks)
-                    else:
+                    elif len(track.state_estimator.x_k) == len(track.state_estimator.x_k_fused) - 1:
                         track.fuse_empty()
 
             # sleep the track specialist so it runs at the given frequency
@@ -371,7 +371,7 @@ class TrackSpecialist:
                                      " due to error: {}\n".format(track_id,  e.message), self._verbose)
 
     def log_track(self, track_id, track):
-        if self._logger is not None:
+        if self._logger is not None and len(track.state_estimator.x_k) > 2:
             kf_str, msg_str = track.state_estimator.to_string()
 
             if track.state_estimator.fused_track:

@@ -1,6 +1,6 @@
 import sensible.util.time_stamp as ts
 from sensible.sensors import DSRC
-from sensible.tracking.state_estimation.kalman_filter import KalmanFilter
+from sensible.tracking.state_estimation.ekf import ExtendedKalmanFilter
 from sensible.tracking.track_state import TrackState
 
 
@@ -20,7 +20,7 @@ class Track(object):
         self.track_state = TrackState.UNCONFIRMED
         self.sensor = sensor
 
-        self.state_estimator = KalmanFilter(sensor.get_filter(dt), n_scan)
+        self.state_estimator = ExtendedKalmanFilter(sensor.get_filter(dt), n_scan)
 
         # TODO: make an estimated value
         self.lane = first_msg['lane']

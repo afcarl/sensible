@@ -28,6 +28,7 @@ class StateEstimator(object):
         self.stationary_R = stationary_R
         self.fused_track = fused_track
         self.sliding_window = sliding_window
+        self.no_step = False
 
     def get_latest_message(self):
         """
@@ -65,9 +66,10 @@ class StateEstimator(object):
                 self.update_measurement_covariance(x_rms, y_rms)
             self.y.append(msg_)
             self.t.append(time)
-            if len(self.x_k) == 0:
-                self.x_k.append(self.y[-1])
+            if len(self.y) >= 2 and len(self.x_k) == 0:
+                self.x_k.append(self.init_state())
                 self.x_k_fused.append(None)
+                self.no_step = True
 
     def save_measurement(self, destination):
         yk, t = self.measurement()
@@ -82,8 +84,8 @@ class StateEstimator(object):
         ops.dump({'time': t.to_string(), 'm': xk, 'cov': cov},
                  os.path.join(destination, 'kf-state-', t.to_fname_string(), '.pkl'))
 
-    def to_string(self, get_unfused=False):
-        kf_state, t = self.state(get_unfused=get_unfused)
+    def to_string(self):
+        kf_state, t = self.measurement()
         kf_state = kf_state[0]
         t = t[0]
 
@@ -151,6 +153,9 @@ class StateEstimator(object):
             t2 += ts2[i].to_string() + ', '
 
         return self.n_scan_mahalanobis(s2=s2, p2_=p2, K2_=K2), t1, t2
+
+    def init_state(self):
+        raise NotImplementedError
 
     def n_scan_mahalanobis(self, s2, p2_, K2_):
         raise NotImplementedError
