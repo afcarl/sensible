@@ -13,7 +13,7 @@ dsrc_recv_port = 4200
 internal_dsrc_port = 6666
 
 
-def get_track_specialist(tmpdir, bsm_port=6667, run_for=20.0, frequency=5):
+def get_track_specialist(tmpdir, bsm_port=6667, run_for=20.0, frequency=20):
     """Return a standard TrackSpecialist object for testing."""
     sensor_ports = [internal_dsrc_port]
     topic_filters = ["DSRC"]

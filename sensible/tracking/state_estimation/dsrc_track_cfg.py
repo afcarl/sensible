@@ -28,18 +28,18 @@ class DSRCTrackCfg:
 
         # std dev of a gaussian distribution over a position (x,y) meters
         # corresponding to +- m
-        utm_easting_std_dev = 1 / self.z
-        utm_northing_std_dev = 2.2 / self.z
+        utm_easting_std_dev = 0.5 / self.z
+        utm_northing_std_dev = 2.25 / self.z
         # std dev corresponding to a standard normal (+- m/s)
-        speed_std_dev = 1 / self.z
+        speed_std_dev = 0.75 / self.z
         # std dev heading in degrees, (+- deg)
-        heading_std_dev = 0.1 / self.z
+        heading_std_dev = 0.5 / self.z
 
         self.motion_model = motion_model
 
         if motion_model == 'CV':
             mm = self.constant_velocity
-            self.accel_std_dev = 4 / self.z # (+- m/s^2)
+            self.accel_std_dev = 4 / self.z  # (+- m/s^2)
             self.state_dim = 4
 
         elif motion_model == 'CA':
@@ -59,7 +59,7 @@ class DSRCTrackCfg:
         self.R[3][3] = heading_std_dev ** 2  # heading
 
         # initial state covariance
-        self.P = np.eye(self.state_dim)
+        self.P = 10 * self.Q
 
     def constant_velocity(self):
         # Dynamics
@@ -128,7 +128,7 @@ class DSRCTrackCfg:
 
         heading = msg['heading']
 
-        if heading >= 0 or heading <= 180:
+        if heading >= 90 or heading <= 180:
             heading -= 90.0
         else:
             heading -= 180.0

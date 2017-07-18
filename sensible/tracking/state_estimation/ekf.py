@@ -27,20 +27,20 @@ class ExtendedKalmanFilter(KalmanFilter):
         # nonlinear measurement update
         # compute prediction h(x_k|x_k-1)
         if self.sensor_cfg.motion_model == 'CV':
+
             x = x_k_bar[0]
             y = x_k_bar[2]
             x_dot = x_k_bar[1]
             y_dot = x_k_bar[3]
             theta_pred = np.arctan2(y_dot, x_dot)
-            h = np.array([x, y, x_dot / np.cos(theta_pred), np.rad2deg(theta_pred)])
+            h = np.array([x, y, np.sqrt(x_dot ** 2 + y_dot ** 2), np.rad2deg(theta_pred)])
             # jacobian of h evaluated at x_k_bar
             c = np.array([[1, 0, 0, 0],
                          [0, 0, 1, 0],
-                         [0, (np.sqrt((y_dot ** 2 / x_dot ** 2)) + 1) - y_dot ** 2 /
-                          (x_dot ** 2 * (np.sqrt((y_dot ** 2 / x_dot ** 2)) + 1)),
-                          0, y_dot / (x_dot ** 2 * (np.sqrt((y_dot ** 2 / x_dot ** 2)) + 1))],
-                         [0, -y_dot/(x_dot ** 2 * ((y_dot ** 2 / x_dot ** 2) + 1)),
-                             0, 1 / (x_dot * ((y_dot ** 2 / x_dot ** 2) + 1))]])
+                         [0, x_dot / (np.sqrt(x_dot ** 2 + y_dot ** 2)),
+                          0, y_dot / (np.sqrt(x_dot ** 2 + y_dot ** 2))],
+                         [0, np.rad2deg(-y_dot/(x_dot ** 2 * ((y_dot ** 2 / x_dot ** 2) + 1))),
+                             0, np.rad2deg(1 / (x_dot * ((y_dot ** 2 / x_dot ** 2) + 1)))]])
         elif self.sensor_cfg.motion_model == 'CA':
             x = x_k_bar[0]
             y = x_k_bar[3]
@@ -69,12 +69,7 @@ class ExtendedKalmanFilter(KalmanFilter):
         # state update
         self.x_k.append(x_k_bar + np.matmul(self.K[-1], e_k))
         # covariance update
-        self.P[-1] -= np.matmul(np.matmul(self.K[-1], c), self.P[-1])
-
-        print('Step: ')
-        print('innovation: {}'.format(e_k))
-        print('kalman gain: {}'.format(self.K[-1]))
-        print('covariance: {}'.format(self.P[-1]))
+        self.P[-1] = np.matmul(np.eye(self.sensor_cfg.state_dim) - np.matmul(self.K[-1], c), self.P[-1])
 
         # divergence check
         if not np.all(np.diagonal(self.P[-1] >= 0.)):
