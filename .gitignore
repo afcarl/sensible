@@ -3,3 +3,4 @@
 tests/.cache/
 logs/
 .DS_Store
+.cache/

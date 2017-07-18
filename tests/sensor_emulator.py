@@ -3,9 +3,11 @@ from __future__ import division
 import socket
 import time
 
-from sensible.util import ops
-from sensible.sensors.sensible_threading import StoppableThread
+import context
 
+import sensible
+
+from sensible.sensors.sensible_threading import StoppableThread
 
 class SensorEmulator(StoppableThread):
     """Utility class for emulating a DSRC radio. Used for testing."""
@@ -55,7 +57,7 @@ class SensorEmulator(StoppableThread):
         time.sleep(self._delay)
 
         if self._use_pickle:
-            msgs = ops.load_pkl(self._fname[0])
+            msgs = sensible.ops.load_pkl(self._fname[0])
         else:
             msgs = []
             for f in self._fname:
@@ -76,7 +78,7 @@ class SensorEmulator(StoppableThread):
             self._socket.close()
         else:
 
-            flattened_msgs = ops.merge_n_lists(msgs)
+            flattened_msgs = sensible.ops.merge_n_lists(msgs)
 
             for i in range(self._start, len(flattened_msgs)):
                 msg = flattened_msgs[i]

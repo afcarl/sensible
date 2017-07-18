@@ -20,7 +20,7 @@ class Track(object):
         self.track_state = TrackState.UNCONFIRMED
         self.sensor = sensor
 
-        self.state_estimator = ExtendedKalmanFilter(sensor.get_filter(dt), n_scan)
+        self.state_estimator = ExtendedKalmanFilter(sensor.get_filter(dt, motion_model='CA'), n_scan)
 
         # TODO: make an estimated value
         self.lane = first_msg['lane']

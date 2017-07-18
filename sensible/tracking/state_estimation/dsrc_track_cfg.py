@@ -23,6 +23,7 @@ class DSRCTrackCfg:
         self.z = 3.49  # z-score corresponding to 95 %
         self.dt = dt
         self.stationary_R = False
+        self.measurement_dim = 4
 
         ### SET MEASUREMENT UNCERTAINTY PARAMETERS HERE ###
 
@@ -36,7 +37,7 @@ class DSRCTrackCfg:
         heading_std_dev = 0.5 / self.z
 
         self.motion_model = motion_model
-
+        
         if motion_model == 'CV':
             mm = self.constant_velocity
             self.accel_std_dev = 4 / self.z  # (+- m/s^2)
@@ -52,7 +53,7 @@ class DSRCTrackCfg:
         self.F, self.Q, self.init_state = mm()
 
         # measurement covariance
-        self.R = np.eye(self.state_dim)
+        self.R = np.eye(self.measurement_dim)
         self.R[0][0] = utm_easting_std_dev ** 2  # x
         self.R[1][1] = utm_northing_std_dev ** 2  # y
         self.R[2][2] = speed_std_dev ** 2  # v
@@ -65,14 +66,14 @@ class DSRCTrackCfg:
         # Dynamics
         F = np.eye(self.state_dim)
         F[0][1] = self.dt
-        F[2][3] = -self.dt
+        F[2][3] = self.dt
 
         # Process noise covariance
         Q = np.multiply(self.accel_std_dev ** 2,
-                        np.array([[(np.power(self.dt, 4) / 4), (np.power(self.dt, 3) / 2), 0, 0],
-                                  [(np.power(self.dt, 3) / 2), np.power(self.dt, 2), 0, 0],
-                                  [0, 0, (np.power(self.dt, 4) / 4), (np.power(self.dt, 3) / 2)],
-                                  [0, 0, (np.power(self.dt, 3) / 2), np.power(self.dt, 2)]]))
+                        np.array([[self.dt ** 3 / 3, self.dt ** 2 / 2, 0, 0],
+                                  [self.dt ** 2 / 2, self.dt, 0, 0],
+                                  [0, 0, self.dt ** 3 / 3, self.dt ** 2 / 2],
+                                  [0, 0, self.dt ** 2 / 2, self.dt]]))
 
         def init_state(y_k, y_k_prev, dt):
             """ [x, xdot = vcos(theta), y, ydot = vsin(theta)] """
@@ -85,13 +86,12 @@ class DSRCTrackCfg:
         F = np.eye(self.state_dim)
         F[0][1] = self.dt
         F[0][2] = (self.dt ** 2) / 2
-        F[1][2] = -self.dt
+        F[1][2] = self.dt
         F[3][4] = self.dt
         F[3][5] = (self.dt ** 2) / 2
         F[4][5] = self.dt
 
-        # TODO: Check Blackmon pg. 207
-        Q = (self.accel_std_dev ** 2) * np.array([
+        Q = 0.001 * np.array([
             [self.dt ** 5 / 20, self.dt ** 4 / 8, self.dt ** 3 / 6, 0, 0, 0],
             [self.dt ** 4 / 8, self.dt ** 3 / 3, self.dt ** 2 / 2, 0, 0, 0],
             [self.dt ** 3 / 6, self.dt ** 2 / 2, self.dt, 0, 0, 0],
@@ -128,10 +128,12 @@ class DSRCTrackCfg:
 
         heading = msg['heading']
 
-        if heading >= 90 or heading <= 180:
-            heading -= 90.0
+        # convert from degrees from true north to
+        # degrees from x axis (UTM easting)
+        if heading >= 0 or heading < 270.0:
+            heading += 90.
         else:
-            heading -= 180.0
+            heading -= 270.
 
         measurement = np.array([x_hat, y_hat, msg['speed'], heading])
 

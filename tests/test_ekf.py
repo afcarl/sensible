@@ -6,14 +6,16 @@ import pytest
 import time
 import os
 
-from tests.sensor_emulator import SensorEmulator
+import context
+
 import sensible
+from sensor_emulator import SensorEmulator
 
 dsrc_recv_port = 4200
 internal_dsrc_port = 6666
 
 
-def get_track_specialist(tmpdir, bsm_port=6667, run_for=20.0, frequency=20):
+def get_track_specialist(tmpdir, bsm_port=6667, run_for=20.0, frequency=5):
     """Return a standard TrackSpecialist object for testing."""
     sensor_ports = [internal_dsrc_port]
     topic_filters = ["DSRC"]
@@ -27,10 +29,11 @@ def get_track_specialist(tmpdir, bsm_port=6667, run_for=20.0, frequency=20):
     return sensible.TrackSpecialist(sensors, bsm_port, run_for, sensible.ops.track_logger, n_scan=1, frequency=frequency, verbose=True)
 
 
-def test_trajectory(tmpdir):
+def test_trajectory(tmpdir=None):
+    d = os.path.join('data', 'SW-42-SW-40/NaviGator_test1-05-02.txt')
+
     dsrc_sender = SensorEmulator(port=dsrc_recv_port, pub_freq=20,
-                           #file_name="data/01-27-17-solarpark/GPS/Solar_UrbanNavi012717/suilog_1485534929.txt",
-                           file_names=["data/SW-42-SW-40/NaviGator_test1-05-02.txt"],
+                           file_names=[d],
                            delim="<START>", loop=False, delay=0)
 
     dsrc_recv = sensible.DSRC()
@@ -82,3 +85,7 @@ def test_trajectory(tmpdir):
 #
 #     radio.stop()
 #     dsrc.stop()
+
+if __name__ == '__main__':
+
+    test_trajectory()

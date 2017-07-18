@@ -1,6 +1,9 @@
+from __future__ import absolute_import
+
 import numpy as np
 import scipy.linalg
-from kalman_filter import KalmanFilter
+
+from .kalman_filter import KalmanFilter
 
 
 class ExtendedKalmanFilter(KalmanFilter):
@@ -26,15 +29,16 @@ class ExtendedKalmanFilter(KalmanFilter):
 
         # nonlinear measurement update
         # compute prediction h(x_k|x_k-1)
+        x = x_k_bar[0]
+        y = x_k_bar[2]
+        x_dot = x_k_bar[1]
+        y_dot = x_k_bar[3]
+        theta_pred = np.arctan2(y_dot, x_dot)
+        if theta_pred < 0:
+            theta_pred = 2*np.pi + theta_pred
+        h = np.array([x, y, np.sqrt(x_dot ** 2 + y_dot ** 2), np.rad2deg(theta_pred)])
+        # jacobian of h evaluated at x_k_bar 
         if self.sensor_cfg.motion_model == 'CV':
-
-            x = x_k_bar[0]
-            y = x_k_bar[2]
-            x_dot = x_k_bar[1]
-            y_dot = x_k_bar[3]
-            theta_pred = np.arctan2(y_dot, x_dot)
-            h = np.array([x, y, np.sqrt(x_dot ** 2 + y_dot ** 2), np.rad2deg(theta_pred)])
-            # jacobian of h evaluated at x_k_bar
             c = np.array([[1, 0, 0, 0],
                          [0, 0, 1, 0],
                          [0, x_dot / (np.sqrt(x_dot ** 2 + y_dot ** 2)),
@@ -42,22 +46,15 @@ class ExtendedKalmanFilter(KalmanFilter):
                          [0, np.rad2deg(-y_dot/(x_dot ** 2 * ((y_dot ** 2 / x_dot ** 2) + 1))),
                              0, np.rad2deg(1 / (x_dot * ((y_dot ** 2 / x_dot ** 2) + 1)))]])
         elif self.sensor_cfg.motion_model == 'CA':
-            x = x_k_bar[0]
-            y = x_k_bar[3]
-            x_dot = x_k_bar[1]
-            y_dot = x_k_bar[4]
-            x_ddot = x_k_bar[2]
-            y_ddot = x_k_bar[5]
-            theta_pred = np.arctan2(y_dot, x_dot)
-            h = np.array([x, y, x_dot / np.cos(theta_pred), np.rad2deg(theta_pred)])
             # jacobian of h evaluated at x_k_bar
             c = np.array([[1, 0, 0, 0, 0, 0],
                           [0, 0, 0, 1, 0, 0],
-                          [0, 1 / np.cos(theta_pred), 0, 0, 0, 0],
-                          [0, -y_dot / (x_dot ** 2 * ((y_dot ** 2 / x_dot ** 2) + 1)), 0, 0,
-                           1 / (x_dot * ((y_dot ** 2 / x_dot ** 2) + 1)), 0]])
+                          [0, x_dot / (np.sqrt(x_dot ** 2 + y_dot ** 2)), 0, 0, y_dot / (np.sqrt(x_dot ** 2 + y_dot ** 2)), 0],
+                          [0, np.rad2deg(-y_dot / (x_dot ** 2 * ((y_dot ** 2 / x_dot ** 2) + 1))), 0, 0,
+                           np.rad2deg(1 / (x_dot * ((y_dot ** 2 / x_dot ** 2) + 1))), 0]])
+        
         # measurement prediction
-        self.y_k.append(h + np.matmul(self.R, np.random.normal(size=self.sensor_cfg.state_dim)))
+        self.y_k.append(h + np.matmul(self.R, np.random.normal(size=self.sensor_cfg.measurement_dim)))
 
         # innovation
         e_k = (m - self.y_k[-1]) if m is not None else np.zeros([self.sensor_cfg.state_dim])
