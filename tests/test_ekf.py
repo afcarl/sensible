@@ -26,7 +26,8 @@ def get_track_specialist(tmpdir, bsm_port=6667, run_for=20.0, frequency=5):
     # log_dir = os.getcwd()
     # timestamp = time.strftime('%m-%d-%Y_%H%M', t)
     # p = open(os.path.join(log_dir, '..', 'logs', "trackLog_" + timestamp + ".csv"), 'wb')
-    return sensible.TrackSpecialist(sensors, bsm_port, run_for, sensible.ops.track_logger, n_scan=1, frequency=frequency, verbose=True)
+    return sensible.TrackSpecialist(sensors, bsm_port, run_for, sensible.ops.track_logger, motion_model='CA',
+                                    n_scan=1, frequency=frequency, verbose=True)
 
 
 def test_trajectory(tmpdir=None):

@@ -4,12 +4,15 @@ import numpy as np
 import cPickle as pickle
 import ops 
 
-DROPBOX_DIR="/Users/pemami"
-GPS_DIR=os.path.join(DROPBOX_DIR, "Dropbox (UFL)", "Data", "SW-42nd-SW-40-Radar-Installation", "Vehicle GPS", "Gainesville Intersection GPS")
-#GPS_FILES=["lane_1", "lane_2", "lane_3", "lane_4"]
-GPS_FILES=["Test2", "Test3", "Test4", "Test5", "Test6", "Test7"]
+DROPBOX_DIR="C:\Users\Patrick\\"
+#GPS_DIR=os.path.join(DROPBOX_DIR, "Dropbox (UFL)", "Data", "SW-42nd-SW-40-Radar-Installation", "Vehicle GPS", "Gainesville Intersection GPS")
+GPS_DIR=os.path.join(DROPBOX_DIR, "Dropbox (UFL)", "Data", "SW-16-SW-13")
+GPS_FILES=["CDGPSrun1"]
+#GPS_FILES=["Test1", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7"]
+#GPS_FILES=["Test1"]
 #DEST_DIR="C:\Users\Patrick\Github\FDOT-Intersection-Controller\cfg\SW-42nd-SW-40th\GPS"
-DEST_DIR=os.path.join(DROPBOX_DIR, "Dropbox (UFL)", "Data", "SW-42nd-SW-40-Radar-Installation", "Cleaned DSRC")
+DEST_DIR=os.path.join(DROPBOX_DIR, "Dropbox (UFL)", "Data", "SW-16-SW-13", "Cleaned DSRC")
+#DEST_DIR=os.path.join(DROPBOX_DIR, "Dropbox (UFL)", "Data", "SW-42nd-SW-40-Radar-Installation", "Cleaned DSRC")
 
 """
 GPS_TS = [('1900-01-01 18:50:38.8', '1900-01-01 18:51:00.4'),
@@ -23,6 +26,7 @@ GPS_TS = [("1900-01-01 18:25:10.0", "1900-01-01 18:25:32.0"),
           ("1900-01-01 18:36:05.2", "1900-01-01 18:36:28.2"),
           ("1900-01-01 18:39:40.8", "1900-01-01 18:39:55.0"),
           ("1900-01-01 18:42:35.5", "1900-01-01 18:42:53.2")]
+
 
 def interpolate(r_df, r_idx, values):
     rs = pd.DataFrame(index=r_idx)
@@ -70,12 +74,14 @@ if __name__ == '__main__':
         # parse the datetime
         gps['utctime'] = pd.to_datetime(gps['utctime'], format="%H%M%S.%f")
         # extend gps time by adding time increments of 50 ms
-        gps = gps.set_index('utctime')
-        idx_g = pd.date_range(start=GPS_TS[ii][0], end=GPS_TS[ii][1], freq='500ms')
+        #gps = gps.set_index('utctime')
+        #idx_g = pd.date_range(start=GPS_TS[ii][0], end=GPS_TS[ii][1], freq='50ms')
 
-        interp_gps = interpolate(gps, idx_g, ['nfmlat', 'nfmlon'])
+        #interp_gps = interpolate(gps, idx_g, ['nlat', 'nlon'])
 
-        out = pd.concat([interp_gps['nfmlat'], interp_gps['nfmlon']], axis=1)
-        out.columns = ['Latitude', 'Longitude']
+        #out = pd.concat([interp_gps['nlat'], interp_gps['nlon']], axis=1)
+        #out.columns = ['Latitude', 'Longitude']
+        out = pd.concat([gps['utctime'], gps['nfmspeed'], gps['nfmlat'], gps['nfmlon'], gps['nfmyaw']], axis=1)
+        out.columns = ['utctime', 'speed', 'latitude', 'longitude', 'heading']
         #out.to_csv(os.path.join(DEST_DIR, gps_file + '.csv'), index=False)
         ops.dump(out, os.path.join(DEST_DIR, gps_file + '.pkl'))

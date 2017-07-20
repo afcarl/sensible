@@ -9,6 +9,7 @@ import sensible
 
 from sensible.sensors.sensible_threading import StoppableThread
 
+
 class SensorEmulator(StoppableThread):
     """Utility class for emulating a DSRC radio. Used for testing."""
     def __init__(self, port, pub_freq, file_names, delim=None, loop=True,

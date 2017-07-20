@@ -16,6 +16,9 @@ class DSRCTrackCfg:
         to a standard location on the vehicle, such as the center
         of the front bumper.
 
+        For EKF - compute R as a function of the state; ellipse with major axis
+        pointing in the direction of the heading & subtract away bias
+
         Motion models:
             1. CV: constant velocity
             2. CA: constant acceleration
@@ -29,12 +32,12 @@ class DSRCTrackCfg:
 
         # std dev of a gaussian distribution over a position (x,y) meters
         # corresponding to +- m
-        utm_easting_std_dev = 0.5 / self.z
+        utm_easting_std_dev = 1 / self.z
         utm_northing_std_dev = 2.25 / self.z
         # std dev corresponding to a standard normal (+- m/s)
-        speed_std_dev = 0.75 / self.z
+        speed_std_dev = 0.5 / self.z
         # std dev heading in degrees, (+- deg)
-        heading_std_dev = 0.5 / self.z
+        heading_std_dev = 0.1 / self.z
 
         self.motion_model = motion_model
         
@@ -91,7 +94,7 @@ class DSRCTrackCfg:
         F[3][5] = (self.dt ** 2) / 2
         F[4][5] = self.dt
 
-        Q = 0.001 * np.array([
+        Q = 0.0001 * np.array([
             [self.dt ** 5 / 20, self.dt ** 4 / 8, self.dt ** 3 / 6, 0, 0, 0],
             [self.dt ** 4 / 8, self.dt ** 3 / 3, self.dt ** 2 / 2, 0, 0, 0],
             [self.dt ** 3 / 6, self.dt ** 2 / 2, self.dt, 0, 0, 0],

@@ -14,4 +14,5 @@ This work is being done as a part of a larger project aimed at developing a comp
 * [ ] Update synchronizer to quantize incoming data to fuse at synchronized times
 * [ ] Vehicle lane estimation
 * [ ] Video camera sensor node and thread
+* [ ] Stop EKF/PF when vehicles are motionless
 * [ ] Radar - handle stuck/ghost tracks

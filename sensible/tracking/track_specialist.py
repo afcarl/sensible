@@ -39,6 +39,7 @@ class TrackSpecialist:
                  association_threshold=35,
                  verbose=False,
                  frequency=5,
+                 motion_model='CV',
                  track_confirmation_threshold=5,
                  track_zombie_threshold=5,
                  track_drop_threshold=10,
@@ -56,6 +57,7 @@ class TrackSpecialist:
         self._verbose = verbose
         self._logger = track_logger
         self._association_threshold = association_threshold
+        self._motion_model = motion_model
 
         self.track_confirmation_threshold = track_confirmation_threshold
         self.track_zombie_threshold = track_zombie_threshold
@@ -308,7 +310,7 @@ class TrackSpecialist:
         self._sensor_id_map[msg['id']] = self._sensor_id_idx
         self._sensor_id_idx += 1
         self._track_list[self._sensor_id_map[msg['id']]] = Track(
-            self._period, msg, sensor, self._n_scan, fusion_method)
+            self._period, msg, sensor, self._motion_model, self._n_scan, fusion_method)
         self._track_list[self._sensor_id_map[
             msg['id']]].store(msg, self._track_list)
         ops.show(
