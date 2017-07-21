@@ -146,10 +146,6 @@ if __name__ == '__main__':
     true_north = 90
     x = 240
     theta = np.deg2rad(x + true_north)
-    #if theta > 0:
-    #    theta %= np.pi/2
-    #else:
-    #    theta %= -np.pi/2
 
     cov = np.array([[lp_sample_var , 0],[0, lat_lp_sample_var]])
     #H = np.array([np.cos(theta), np.sin(theta)])

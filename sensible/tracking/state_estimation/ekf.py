@@ -51,6 +51,20 @@ class ExtendedKalmanFilter(KalmanFilter):
 
         m, _ = self.get_latest_message()
 
+        bias_estimate = self.sensor_cfg.bias_estimate(m[2], np.deg2rad(m[3]))
+        m[0:2] -= bias_estimate
+
+        # if the speed is 0, just set the message as the state
+        if m[2] == 0.0:
+            if self.sensor_cfg.motion_model == 'CV':
+                self.x_k.append(np.array([m[0], 0.0, m[1]], 0.0))
+            else:
+                self.x_k.append(np.array([m[0], 0.0, 0.0, m[1], 0.0, 0.0]))
+            self.P.append(self.P[-1])
+            self.K.append(self.K[-1])
+            self.y_k.append(None)
+            return
+
         x_k_bar = np.matmul(self.F, self.x_k[-1]) + np.matmul(self.Q, np.random.normal(size=self.sensor_cfg.state_dim))
         self.P.append(np.matmul(self.F, np.matmul(self.P[-1], self.F.T)) + self.Q)
 
@@ -71,6 +85,7 @@ class ExtendedKalmanFilter(KalmanFilter):
         if theta_pred < 0:
             theta_pred += 2 * np.pi
         h = np.array([x, y, np.sqrt(x_dot ** 2 + y_dot ** 2), np.rad2deg(theta_pred)])
+
         # jacobian of h evaluated at x_k_bar 
         if self.sensor_cfg.motion_model == 'CV':
             c = np.array([[1, 0, 0, 0],
@@ -88,14 +103,15 @@ class ExtendedKalmanFilter(KalmanFilter):
                           [0, np.rad2deg(-y_dot / (x_dot ** 2 * ((y_dot ** 2 / x_dot ** 2) + 1))), 0,
                            0, np.rad2deg(1 / (x_dot * ((y_dot ** 2 / x_dot ** 2) + 1))), 0]])
 
+        R = self.sensor_cfg.rotate_covariance(theta_pred)
         # measurement prediction
-        self.y_k.append(h + np.matmul(self.R, np.random.normal(size=self.sensor_cfg.measurement_dim)))
+        self.y_k.append(h + np.matmul(R, np.random.normal(size=self.sensor_cfg.measurement_dim)))
 
         # innovation
         e_k = (m - self.y_k[-1]) if m is not None else np.zeros([self.sensor_cfg.measurement_dim])
 
         # Kalman Gain
-        u = scipy.linalg.inv(np.matmul(np.matmul(c, self.P[-1]), c.T) + self.R)
+        u = scipy.linalg.inv(np.matmul(np.matmul(c, self.P[-1]), c.T) + R)
         self.K.append(np.matmul(self.P[-1], np.matmul(c.T, u)))
 
         # state update

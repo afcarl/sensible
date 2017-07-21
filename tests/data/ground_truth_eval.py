@@ -1,41 +1,12 @@
 import ops
 import os
+import context
 import sensible
 import numpy as np
 
 from sensible.tracking.track import Track
 from sensible.sensors.DSRC import DSRC
 
-"""
-Track 0, MM: CV, RMSE UTM Easting: 0.342325507492
-Track 0, MM: CV, RMSE UTM Northing: 3.67996041606
-Track 0, MM: CA, RMSE UTM Easting: 0.909723591125
-Track 0, MM: CA, RMSE UTM Northing: 24.419041425
-Track 1, MM: CV, RMSE UTM Easting: 0.510691044771
-Track 1, MM: CV, RMSE UTM Northing: 4.35841503925
-Track 1, MM: CA, RMSE UTM Easting: 1.2455773412
-Track 1, MM: CA, RMSE UTM Northing: 3.88304570435
-Track 2, MM: CV, RMSE UTM Easting: 0.212644096487
-Track 2, MM: CV, RMSE UTM Northing: 3.48643810347
-Track 2, MM: CA, RMSE UTM Easting: 0.964454187914
-Track 2, MM: CA, RMSE UTM Northing: 3.99050035058
-Track 3, MM: CV, RMSE UTM Easting: 0.394284936009
-Track 3, MM: CV, RMSE UTM Northing: 4.28648025769
-Track 3, MM: CA, RMSE UTM Easting: 0.648684076996
-Track 3, MM: CA, RMSE UTM Northing: 4.5529852018
-Track 4, MM: CV, RMSE UTM Easting: 0.135165217747
-Track 4, MM: CV, RMSE UTM Northing: 4.13603967613
-Track 4, MM: CA, RMSE UTM Easting: 1.14096963493
-Track 4, MM: CA, RMSE UTM Northing: 4.57283286202
-Track 5, MM: CV, RMSE UTM Easting: 0.257735378802
-Track 5, MM: CV, RMSE UTM Northing: 4.62248683208
-Track 5, MM: CA, RMSE UTM Easting: 0.929317169015
-Track 5, MM: CA, RMSE UTM Northing: 8.28115671382
-Track 6, MM: CV, RMSE UTM Easting: 0.344113873395
-Track 6, MM: CV, RMSE UTM Northing: 4.37801968038
-Track 6, MM: CA, RMSE UTM Easting: 1.02254029769
-Track 6, MM: CA, RMSE UTM Northing: 4.77830756708
-"""
 
 if __name__ == '__main__':
     # Test each run 1 by 1
@@ -53,7 +24,7 @@ if __name__ == '__main__':
     track_7_start = 10
 
     mms = ['CV', 'CA']
-
+    filters = ['KF', 'EKF', 'PF']
     fmesg = {
         'id': 0,
         'max_accel': -1,
@@ -68,7 +39,7 @@ if __name__ == '__main__':
             rmse_utm_x = []
             rmse_utm_y = []
 
-            ekf_track = Track(dt=0.1, first_msg=fmesg, motion_model=m, sensor=DSRC, n_scan=1)
+            track = Track(dt=0.1, first_msg=fmesg, motion_model=m, sensor=DSRC, n_scan=1, filter='PF')
 
             if ii == 2:
                 start = track_2_start
@@ -93,19 +64,20 @@ if __name__ == '__main__':
 
                 msg = np.array([utm_e, utm_n, v, theta])
 
-                ekf_track.state_estimator.y.append(msg)
-                ekf_track.state_estimator.t.append(None)
-                if len(ekf_track.state_estimator.y) >= 2 and len(ekf_track.state_estimator.x_k) == 0:
-                    ekf_track.state_estimator.x_k.append(ekf_track.state_estimator.sensor_cfg.init_state(
-                        ekf_track.state_estimator.y[-1],
-                        ekf_track.state_estimator.y[-2],
-                        0.1))
-                    ekf_track.state_estimator.x_k_fused.append(None)
-                    ekf_track.state_estimator.no_step = True
+                track.state_estimator.y.append(msg)
+                track.state_estimator.t.append(None)
+                if len(track.state_estimator.y) >= 2 and len(track.state_estimator.x_k) == 0:
+                    # track.state_estimator.x_k.append(track.state_estimator.sensor_cfg.init_state(
+                    #     track.state_estimator.y[-1],
+                    #     track.state_estimator.y[-2],
+                    #     0.1))
+                    track.state_estimator.x_k.append(track.state_estimator.init_state())
+                    track.state_estimator.x_k_fused.append(None)
+                    track.state_estimator.no_step = True
 
-                ekf_track.step()
+                track.step()
 
-                if len(ekf_track.state_estimator.x_k) == 0:
+                if len(track.state_estimator.x_k) == 0:
                     continue
                 else:
                     N += 1
@@ -113,7 +85,7 @@ if __name__ == '__main__':
                     gt_x = gps_x[ii][idx]
                     gt_y = gps_y[ii][idx]
 
-                    x_k = ekf_track.state_estimator.x_k[-1]
+                    x_k = track.state_estimator.x_k[-1]
 
                     rmse_utm_x.append((gt_x - x_k[0]) ** 2)
                     if m == 'CV':

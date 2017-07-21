@@ -1,13 +1,15 @@
 import sensible.util.time_stamp as ts
 from sensible.sensors import DSRC
+from sensible.tracking.state_estimation.kalman_filter import KalmanFilter
 from sensible.tracking.state_estimation.ekf import ExtendedKalmanFilter
+from sensible.tracking.state_estimation.pf import ParticleFilter
 from sensible.tracking.track_state import TrackState
 
 
 class Track(object):
     """Maintains state of a track and delegates state updates to a
     state estimator."""
-    def __init__(self, dt, first_msg, sensor, motion_model, n_scan, fusion_method=None):
+    def __init__(self, dt, first_msg, sensor, motion_model, n_scan, filter='EKF', fusion_method=None):
         self.n_consecutive_measurements = 0
         self.n_consecutive_missed = 0
         self.received_measurement = False
@@ -20,7 +22,19 @@ class Track(object):
         self.track_state = TrackState.UNCONFIRMED
         self.sensor = sensor
 
-        self.state_estimator = ExtendedKalmanFilter(sensor.get_filter(dt, motion_model=motion_model), n_scan)
+        spherical_R = False
+        if filter == 'KF':
+            f = KalmanFilter
+            spherical_R = True
+        elif filter == 'EKF':
+            f = ExtendedKalmanFilter
+        elif filter == 'PF':
+            f = ParticleFilter
+        else:
+            raise ValueError("Acceptable filters: {KF | EKF | PF}")
+
+        self.state_estimator = f(sensor.get_filter(dt,
+                                motion_model=motion_model, spherical_R=spherical_R), sliding_window=n_scan)
 
         # TODO: make an estimated value
         self.lane = first_msg['lane']

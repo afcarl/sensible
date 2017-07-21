@@ -3,7 +3,7 @@ import utm
 
 
 class DSRCTrackCfg:
-    def __init__(self, dt, motion_model='CV'):
+    def __init__(self, dt, motion_model='CV', spherical_R=False):
         """
         For CA:
             x_k = [x (UTM Easting), x_dot, x_double_dot, y (UTM Northing), y_dot, y_double_dot]
@@ -32,12 +32,16 @@ class DSRCTrackCfg:
 
         # std dev of a gaussian distribution over a position (x,y) meters
         # corresponding to +- m
-        utm_easting_std_dev = 1 / self.z
-        utm_northing_std_dev = 2.25 / self.z
+        # utm_easting_std_dev = 1 / self.z
+        # utm_northing_std_dev = 2.25 / self.z
         # std dev corresponding to a standard normal (+- m/s)
+        sigma_pos_max = 1.85 / self.z
+        sigma_pos_min = 0.51 / self.z
         speed_std_dev = 0.5 / self.z
         # std dev heading in degrees, (+- deg)
-        heading_std_dev = 0.1 / self.z
+        heading_std_dev = 0.5 / self.z
+
+        self.bias_constant = 0.167
 
         self.motion_model = motion_model
         
@@ -56,11 +60,18 @@ class DSRCTrackCfg:
         self.F, self.Q, self.init_state = mm()
 
         # measurement covariance
-        self.R = np.eye(self.measurement_dim)
-        self.R[0][0] = utm_easting_std_dev ** 2  # x
-        self.R[1][1] = utm_northing_std_dev ** 2  # y
-        self.R[2][2] = speed_std_dev ** 2  # v
-        self.R[3][3] = heading_std_dev ** 2  # heading
+        if not spherical_R:
+            self.R = np.eye(self.measurement_dim)
+            self.R[0][0] = sigma_pos_max ** 2  # x
+            self.R[1][1] = sigma_pos_min ** 2  # y
+            self.R[2][2] = speed_std_dev ** 2  # v
+            self.R[3][3] = heading_std_dev ** 2  # heading
+        else:
+            self.R = np.eye(self.measurement_dim)
+            self.R[0][0] = sigma_pos_max ** 2
+            self.R[1][1] = speed_std_dev ** 2
+            self.R[2][2] = sigma_pos_max ** 2
+            self.R[3][3] = speed_std_dev ** 2
 
         # initial state covariance
         self.P = 10 * self.Q
@@ -119,6 +130,27 @@ class DSRCTrackCfg:
         self.R[1][1] = (y_rms / self.z) ** 2
         return self.R
 
+    def rotate_covariance(self, theta):
+        rot = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
+        R_bar = np.matmul(np.matmul(rot, self.R[0:2, 0:2]), rot.T)
+        R = np.copy(self.R)
+        R[0:2, 0:2] = R_bar
+        return R
+
+    def batch_rotate_covariance(self, theta):
+        N = np.shape(theta)[0]
+        rot = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
+        rr = np.matmul(rot.T, self.R[0:2, 0:2])
+        R_bar = np.matmul(rr, np.transpose(rot, (1, 0, 2)).T)
+        R = np.repeat(self.R.reshape(1, self.measurement_dim, self.measurement_dim), N, axis=0)
+        R[:, 0:2, 0:2] = R_bar
+        return R
+
+    def bias_estimate(self, v, theta):
+        rot = np.array([[np.cos(np.pi), -np.sin(np.pi)], [np.sin(np.pi), np.cos(np.pi)]])
+        x = np.array([self.bias_constant * v * np.cos(theta), self.bias_constant * v * np.sin(theta)])
+        return np.matmul(rot, x)
+
     @staticmethod
     def parse_msg(msg, stationary_R=False):
         """
@@ -147,3 +179,20 @@ class DSRCTrackCfg:
             return measurement, x_rms, y_rms
         else:
             return measurement
+
+if __name__ == '__main__':
+    import scipy.stats
+    import numpy as np
+
+    test = DSRCTrackCfg(dt=0.2)
+
+    theta = 0.5 * np.ones(10)
+
+    R = test.batch_rotate_covariance(theta)
+    h = np.array([theta, theta, theta, theta]).T
+
+    z = np.ones(4)
+
+    #scipy.stats.norm(h.T, R).pdf(np.repeat(np.reshape(z, (1, 4)), 10, axis=0))
+    out = (np.linalg.det(2 * np.pi * R) ** -0.5) * \
+          np.exp(-0.5 * np.matmul(np.matmul((z - h).T, scipy.linalg.inv(R)), (z - h)))

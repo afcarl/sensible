@@ -79,29 +79,72 @@ class KalmanFilter(StateEstimator):
             dist_cc += np.matmul(dx.T, np.matmul(scipy.linalg.inv(p1 + p2 - cross_cov - cross_cov), dx))
         return dist_cc
 
-    # def step(self):
-    #     m, _ = self.get_latest_message()
-    #
-    #     x_k_bar = np.matmul(self.F, self.x_k[-1]) + np.matmul(self.Q, np.random.normal(size=self.sensor_cfg.state_dim))
-    #     # state covariance prediction
-    #     self.P.append(np.matmul(self.F, np.matmul(self.P[-1], self.F.T)) + self.Q)
-    #     # measurement prediction
-    #     self.y_k.append(x_k_bar + np.matmul(self.R, np.random.normal(size=self.sensor_cfg.state_dim)))
-    #     # innovation
-    #     # if no new measurements, e_k is 0.
-    #     e_k = (m - self.y_k[-1]) if m is not None else np.zeros([self.sensor_cfg.state_dim])
-    #
-    #     # K_k = P * inv(P + R)
-    #     u = scipy.linalg.inv(self.P[-1] + self.R)
-    #     self.K.append(np.matmul(self.P[-1], u))
-    #     # l = scipy.linalg.cho_factor(self.P + self.R)
-    #     # u = scipy.linalg.cho_solve(l, np.eye(4))
-    #     # K_k = np.matmul(self.P, scipy.linalg.solve(l[0].T, u, sym_pos=True, lower=True))
-    #     # state update
-    #     self.x_k.append(x_k_bar + np.matmul(self.K[-1], e_k))
-    #     # covariance update
-    #     self.P[-1] -= np.matmul(self.K[-1], self.P[-1])
-    #
-    #     if not np.all(np.diagonal(self.P[-1]) >= 0.):
-    #         print("  [!] State covariance no longer positive semi-definite!")
-    #         print("{}".format(self.P[-1]))
+    def step(self):
+        m, _ = self.get_latest_message()
+
+        if len(self.x_k) < 1:
+            return
+        elif self.no_step:
+            self.no_step = False
+            return
+
+        if m is not None:
+            bias_estimate = self.sensor_cfg.bias_estimate(m[2], np.deg2rad(m[3]))
+            m[0:2] -= bias_estimate
+
+            # if the speed is 0, just set the message as the state
+            if m[2] == 0.0:
+                if self.sensor_cfg.motion_model == 'CV':
+                    self.x_k.append(np.array([m[0], 0.0, m[1]], 0.0))
+                else:
+                    self.x_k.append(np.array([m[0], 0.0, 0.0, m[1], 0.0, 0.0]))
+                self.P.append(self.P[-1])
+                self.K.append(self.K[-1])
+                self.y_k.append(None)
+                return
+
+        x_k_bar = np.matmul(self.F, self.x_k[-1]) + np.matmul(self.Q, np.random.normal(size=self.sensor_cfg.state_dim))
+        # state covariance prediction
+        self.P.append(np.matmul(self.F, np.matmul(self.P[-1], self.F.T)) + self.Q)
+
+        if self.sensor_cfg.motion_model == 'CV':
+            x = x_k_bar[0]
+            y = x_k_bar[2]
+            x_dot = x_k_bar[1]
+            y_dot = x_k_bar[3]
+            C = np.eye(4)
+        elif self.sensor_cfg.motion_model == 'CA':
+            x = x_k_bar[0]
+            y = x_k_bar[3]
+            x_dot = x_k_bar[1]
+            y_dot = x_k_bar[4]
+            C = np.zeros((4, 6))
+            C[0, 0] = 1
+            C[1, 1] = 1
+            C[2, 3] = 1
+            C[3, 4] = 1
+
+        # measurement prediction
+        self.y_k.append(np.matmul(C, x_k_bar) + np.matmul(self.R,
+                                                          np.random.normal(size=self.sensor_cfg.measurement_dim)))
+        # innovation
+        # if no new measurements, e_k is 0.
+        if m is not None:
+            m = np.array([m[0], m[2] * np.cos(np.deg2rad(m[3])),
+                          m[1], m[2] * np.sin(np.deg2rad(m[3]))])
+        e_k = (m - self.y_k[-1]) if m is not None else np.zeros([self.sensor_cfg.state_dim])
+
+        # K_k = P * inv(P + R)
+        u = scipy.linalg.inv(np.matmul(C, np.matmul(self.P[-1], C.T)) + self.R)
+        self.K.append(np.matmul(self.P[-1], np.matmul(C.T, u)))
+        # l = scipy.linalg.cho_factor(self.P + self.R)
+        # u = scipy.linalg.cho_solve(l, np.eye(4))
+        # K_k = np.matmul(self.P, scipy.linalg.solve(l[0].T, u, sym_pos=True, lower=True))
+        # state update
+        self.x_k.append(x_k_bar + np.matmul(self.K[-1], e_k))
+        # covariance update
+        self.P[-1] -= np.matmul(np.matmul(self.K[-1], C), self.P[-1])
+
+        if not np.all(np.diagonal(self.P[-1]) >= 0.):
+            print("  [!] State covariance no longer positive semi-definite!")
+            print("{}".format(self.P[-1]))

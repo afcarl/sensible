@@ -33,8 +33,8 @@ class DSRC:
         return "DSRC"
 
     @staticmethod
-    def get_filter(dt, motion_model='CV'):
-        return DSRCTrackCfg(dt, motion_model=motion_model)
+    def get_filter(dt, motion_model='CV', spherical_R=False):
+        return DSRCTrackCfg(dt, motion_model=motion_model, spherical_R=spherical_R)
 
     @staticmethod
     def parse(msg):
