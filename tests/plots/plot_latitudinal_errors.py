@@ -1,5 +1,6 @@
 #import matplotlib
 #matplotlib.use('Qt4Agg')
+import context
 import matplotlib.pyplot as plt
 import sensible.util.ops as ops
 import utm
@@ -10,7 +11,7 @@ RADAR_LAT = 29.6216931
 RADAR_LON = -82.3867591
 # compute UTM coordinates of the radar
 x, y, zone, letter = utm.from_latlon(RADAR_LAT, RADAR_LON)
-data_dir1 = '..\data\SW-16-SW-13'
+data_dir1 = os.path.join('..', 'data', 'SW-16-SW-13')
 data_dir2 = 'new_data'
 
 if __name__ == '__main__':
@@ -154,7 +155,8 @@ if __name__ == '__main__':
         #     elif 121.92 < yy <= 152.4:
         #         errs_hp_radar_lat_incremental_feet[4].append(x1 - x2)
         #     idx += 1
-
+        
+        """
         #data_dir = ''
         if ii < 7:
             # PLACE PER-TRACK PLOTTING HERE
@@ -215,7 +217,7 @@ if __name__ == '__main__':
                 os.path.join(data_dir1, 'imgs/hp-vs-lp-gps-lat-errors-hist-track-' + str(0 + 1) + '.png'),
                 dpi=100)
             plt.close()
-
+            """
         # PLACE PER-TRACK PLOTTING HERE
         # plt.scatter(range(len(suitcase_x[ii][start:])), suitcase_x[ii][start:], c='r', label='WAAS-GPS')
         # plt.scatter(range(len(gps_x[ii][start:])), gps_x[ii][start:], c='b', label='GPS/IMU')
@@ -255,7 +257,7 @@ if __name__ == '__main__':
 
     ops.dump(errs_x, os.path.join(data_dir1, 'suitcase_gps_x_errors.pkl'))
     ops.dump(errs_heading, os.path.join(data_dir1, 'suitcase_gps_heading_errors.pkl'))
-
+    """
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.hist(errs_x, bins=10)
@@ -346,3 +348,4 @@ if __name__ == '__main__':
     # fig.set_size_inches(8, 6)
     # plt.grid(True)
     # fig.savefig('imgs/radar-speed-lat-error.png', dpi=100)
+    """

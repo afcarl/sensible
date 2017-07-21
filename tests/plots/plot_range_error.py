@@ -1,10 +1,11 @@
+import context
 import matplotlib.pyplot as plt
 import sensible.util.ops as ops
 import utm
 import numpy as np
 import os
 
-data_dir1 = '..\data\SW-16-SW-13'
+data_dir1 = os.path.join('..', 'data' ,'SW-16-SW-13')
 data_dir2 = 'new_data'
 N_TRACKS = 7
 RADAR_LAT = 29.6216931
@@ -157,7 +158,8 @@ if __name__ == '__main__':
         #     elif 121.92 < y2 <= 152.4:
         #         errs_lp_radar_range_incremental_feet[4].append(y1 - y2)
         #     idx += 1
-
+        
+        """
         if ii < 7:
             # PLACE PER-TRACK PLOTTING HERE
             plt.scatter(range(len(suitcase_y2[ii][start:])), suitcase_y2[ii][start:], c='r', label='WAAS-GPS')
@@ -210,6 +212,7 @@ if __name__ == '__main__':
             plt.grid(True)
             fig.savefig(os.path.join(data_dir1, 'imgs/hp-vs-lp-gps-range-errors-hist-track-' + str(0+1) + '.png'), dpi=100)
             plt.close()
+            """
         # # histogram
         # fig, axarr = plt.subplots(2)
         # axarr[0].hist(errs_lp_radar_range_all[errs_lp_radar_start: errs_lp_radar_start + len(suitcase_y[ii]) - start], bins=15)
@@ -254,7 +257,8 @@ if __name__ == '__main__':
         # plt.close()
 
     ops.dump(errs_y, os.path.join(data_dir1, 'suitcase_gps_y_errors.pkl'))
-
+    
+    """
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.hist(errs_y, bins=10)
@@ -365,3 +369,4 @@ if __name__ == '__main__':
     # plt.grid(True)
     # fig.savefig('imgs/radar-speed-range-error.png', dpi=100)
     # plt.close()
+    """

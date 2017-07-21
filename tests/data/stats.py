@@ -1,7 +1,8 @@
 #import matplotlib
 #matplotlib.use('Qt4Agg')
+
 import matplotlib.pyplot as plt
-import sensible.util.ops as ops
+import ops as ops
 import utm
 import numpy as np
 import os
@@ -12,7 +13,7 @@ import matplotlib.pyplot as plt
 # RADAR_LON = -82.3867591
 # # compute UTM coordinates of the radar
 # x, y, zone, letter = utm.from_latlon(RADAR_LAT, RADAR_LON)
-data_dir = '../data/SW-16-SW-13'
+data_dir = 'SW-16-SW-13'
 
 if __name__ == '__main__':
     # radar_y = ops.load_pkl(os.path.join(data_dir, 'radar_y.pkl'))
@@ -101,6 +102,7 @@ if __name__ == '__main__':
 
     lp_sample_mu = np.mean(errs_y, axis=0)
     lp_sample_var = np.var(errs_y, axis=0, ddof=1)
+    lp_sample_std = np.std(errs_y, ddof=1)
 
     lp_heading_sample_mu = np.mean(errs_heading, axis=0)
     lp_heading_sample_var = np.var(errs_heading, axis=0, ddof=1)
@@ -110,6 +112,7 @@ if __name__ == '__main__':
 
     lat_lp_sample_mu = np.mean(errs_x, axis=0)
     lat_lp_sample_var = np.var(errs_x, axis=0, ddof=1)
+    lat_lp_sample_std = np.std(errs_x, ddof=1)
 
     # speed_lp_sample_mu = np.mean(errs_lp_radar_speed_all, axis=0)
     # speed_lp_sample_var = np.var(errs_lp_radar_speed_all, axis=0, ddof=1)
@@ -120,7 +123,7 @@ if __name__ == '__main__':
 
     print('\nLP vs HP range')
     print('mu: ', lp_sample_mu)
-    print('var: ', lp_sample_var)
+    print('2-std: ', 2*lp_sample_std)
 
     print('\nLP vs HP heading')
     print('mu: ', lp_heading_sample_mu)
@@ -132,7 +135,7 @@ if __name__ == '__main__':
 
     print('\nLP vs HP lat')
     print('mu: ', lat_lp_sample_mu)
-    print('var: ', lat_lp_sample_var)
+    print('2-std: ', 2*lat_lp_sample_std)
     #
     # print('\nLP vs radar speed')
     # print('mu: ', speed_lp_sample_mu)
@@ -140,19 +143,28 @@ if __name__ == '__main__':
 
     #Gaussian measurement noise
     N = 500
-    theta = np.deg2rad(360 - 90) % np.pi
+    true_north = 90
+    x = 240
+    theta = np.deg2rad(x + true_north)
+    #if theta > 0:
+    #    theta %= np.pi/2
+    #else:
+    #    theta %= -np.pi/2
+
     cov = np.array([[lp_sample_var , 0],[0, lat_lp_sample_var]])
     #H = np.array([np.cos(theta), np.sin(theta)])
     #cov = cov * H
     rot = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
-    cov = np.matmul(rot, cov)
+    cov = np.matmul(np.matmul(rot, cov), rot.T)
     print('cov: {}'.format(cov))
     fig = plt.figure()
     for i in range(N):
         s = np.random.multivariate_normal(np.zeros(2), cov)
         plt.scatter(s[0], s[1])
-
-    plt.show()
+    
+    plt.xlim(-5, 5)
+    plt.ylim(-5, 5)
+#    plt.show()
 
     # bias estimate is rot(180) * [max(0.167 * x_dot (m/s) , 3), max(0.167 * y_dot (m/s) , 3)]
     # rot = np.array([[np.cos(np.pi), -np.sin(np.pi)], [np.sin(np.pi), np.cos(np.pi)]])
