@@ -37,9 +37,9 @@ class DSRCTrackCfg:
         # std dev corresponding to a standard normal (+- m/s)
         sigma_pos_max = 1.85 / self.z
         sigma_pos_min = 0.51 / self.z
-        speed_std_dev = 0.5 / self.z
+        speed_std_dev = 0.25 / self.z
         # std dev heading in degrees, (+- deg)
-        heading_std_dev = 0.5 / self.z
+        heading_std_dev = 0.1 / self.z
 
         self.bias_constant = 0.167
 

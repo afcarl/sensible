@@ -57,7 +57,7 @@ class ExtendedKalmanFilter(KalmanFilter):
         # if the speed is 0, just set the message as the state
         if m[2] == 0.0:
             if self.sensor_cfg.motion_model == 'CV':
-                self.x_k.append(np.array([m[0], 0.0, m[1]], 0.0))
+                self.x_k.append(np.array([m[0], 0.0, m[1], 0.0]))
             else:
                 self.x_k.append(np.array([m[0], 0.0, 0.0, m[1], 0.0, 0.0]))
             self.P.append(self.P[-1])
