@@ -32,7 +32,7 @@ class DSRCTrackCfg:
         # std dev of a gaussian distribution over a position (x,y) meters
         # corresponding to +- m
         # std dev corresponding to a standard normal (+- m/s)
-        sigma_pos_max = 0.5  # 1.85
+        sigma_pos_max = 0.5  # 1.85  - high was 0.9 m low was 0.2
         sigma_pos_min = 0.25  # 0.51
         speed_std_dev = 0.1  # 0.25
         # std dev heading in degrees, (+- deg)

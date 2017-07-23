@@ -80,14 +80,14 @@ class ParticleFilter(StateEstimator):
             y_dot = self._particles[:, 4]
 
         theta_pred = np.arctan2(y_dot, x_dot)
-        theta_pred[theta_pred < 0] += 2 * np.pi
+        deg_pred = np.rad2deg(theta_pred)
 
-        h = np.array([x, y, np.sqrt(x_dot ** 2 + y_dot ** 2), np.rad2deg(theta_pred)]).T
+        h = np.array([x, y, np.sqrt(x_dot ** 2 + y_dot ** 2), deg_pred]).T
         # shape (N, measurement_dim, measurement_dim)
-        R = self.sensor_cfg.batch_rotate_covariance(theta_pred)
+        R = self.sensor_cfg.R
 
         for i in range(self._num_particles):
-            self._weights[i] *= scipy.stats.multivariate_normal(h[i], R[i]).pdf(z)
+            self._weights[i] *= scipy.stats.multivariate_normal(h[i], R).pdf(z)
         self._weights += 1.e-300 # avoid round-off to zero
         self._weights /= sum(self._weights)  # normalize
 

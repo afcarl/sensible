@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser('experiment settings')
 
-    parser.add_argument('--use-bias-estimation', type=str2bool, default=True)
+    parser.add_argument('--use-bias-estimation', type=str2bool, default=False)
     parser.add_argument('--bias-constant', default=0.167)
     parser.add_argument('--run-name', type=str)
 
@@ -135,8 +135,8 @@ if __name__ == '__main__':
                         tracks[ii][filt][m]['utm_e'].append(gt_x)
                         tracks[ii][filt][m]['utm_n'].append(gt_y)
                         continue
-                    if filt is 'PF':
-                        continue
+                    #if filt is 'PF':
+                    #    continue
 
                     theta = (-theta + 90.)
 
