@@ -19,7 +19,7 @@ class ParticleFilter(StateEstimator):
     Weights: [ 0.36320182  0.63679818]
 
     """
-    def __init__(self, cfg, num_particles=200, sliding_window=1, use_bias_estimation=True, fused_track=False):
+    def __init__(self, cfg, num_particles=5000, sliding_window=1, use_bias_estimation=True, fused_track=False):
         super(ParticleFilter, self).__init__(fused_track, sliding_window, fused_track, use_bias_estimation)
         self.state_dim = cfg.state_dim
         self.Q = cfg.Q

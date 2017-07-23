@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
     lp_sample_mu = np.mean(errs_y, axis=0)
     lp_sample_var = np.var(errs_y, axis=0, ddof=1)
-    lp_sample_std = np.std(errs_y, ddof=1)
+    lp_sample_std = np.std(errs_y)
 
     lp_heading_sample_mu = np.mean(errs_heading, axis=0)
     lp_heading_sample_var = np.var(errs_heading, axis=0, ddof=1)
@@ -112,7 +112,7 @@ if __name__ == '__main__':
 
     lat_lp_sample_mu = np.mean(errs_x, axis=0)
     lat_lp_sample_var = np.var(errs_x, axis=0, ddof=1)
-    lat_lp_sample_std = np.std(errs_x, ddof=1)
+    lat_lp_sample_std = np.std(errs_x)
 
     # speed_lp_sample_mu = np.mean(errs_lp_radar_speed_all, axis=0)
     # speed_lp_sample_var = np.var(errs_lp_radar_speed_all, axis=0, ddof=1)
@@ -123,7 +123,7 @@ if __name__ == '__main__':
 
     print('\nLP vs HP range')
     print('mu: ', lp_sample_mu)
-    print('2-std: ', 2*lp_sample_std)
+    print('std: ', lp_sample_std)
 
     print('\nLP vs HP heading')
     print('mu: ', lp_heading_sample_mu)
@@ -135,12 +135,13 @@ if __name__ == '__main__':
 
     print('\nLP vs HP lat')
     print('mu: ', lat_lp_sample_mu)
-    print('2-std: ', 2*lat_lp_sample_std)
+    print('std: ', lat_lp_sample_std)
     #
     # print('\nLP vs radar speed')
     # print('mu: ', speed_lp_sample_mu)
     # print('var: ', speed_lp_sample_var)
 
+    """
     #Gaussian measurement noise
     N = 500
     true_north = 0
@@ -152,7 +153,7 @@ if __name__ == '__main__':
     #cov = cov * H
     rot = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
     cov = np.matmul(np.matmul(rot, cov), rot.T)
-    print('cov: {}'.format(cov))
+    #print('cov: {}'.format(cov))
     fig = plt.figure()
     for i in range(N):
         s = np.random.multivariate_normal(np.zeros(2), cov)
@@ -173,4 +174,4 @@ if __name__ == '__main__':
     #     yy.append(x)
     #     plt.scatter(yy[-1][0], yy[-1][1])
     # plt.show()
-
+    """

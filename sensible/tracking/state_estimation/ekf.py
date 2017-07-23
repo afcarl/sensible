@@ -24,7 +24,7 @@ class ExtendedKalmanFilter(KalmanFilter):
 
     def __init__(self, ekf_config, sliding_window, use_bias_estimation, fused_track=False):
         super(ExtendedKalmanFilter, self).__init__(ekf_config, sliding_window,
-                fused_track, use_bias_estimation)
+                                                   use_bias_estimation, fused_track)
 
     def step(self):
         if len(self.x_k) < 1:
