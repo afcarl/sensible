@@ -6,6 +6,8 @@ import numpy as np
 import sys
 import argparse
 
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 
 from sensible.tracking.track import Track
