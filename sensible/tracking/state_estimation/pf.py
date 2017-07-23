@@ -19,8 +19,8 @@ class ParticleFilter(StateEstimator):
     Weights: [ 0.36320182  0.63679818]
 
     """
-    def __init__(self, cfg, num_particles=2000, sliding_window=1, fused_track=False):
-        super(ParticleFilter, self).__init__(fused_track, sliding_window, False)
+    def __init__(self, cfg, num_particles=200, sliding_window=1, use_bias_estimation=True, fused_track=False):
+        super(ParticleFilter, self).__init__(fused_track, sliding_window, fused_track, use_bias_estimation)
         self.state_dim = cfg.state_dim
         self.Q = cfg.Q
         self.F = cfg.F
@@ -64,8 +64,9 @@ class ParticleFilter(StateEstimator):
 
         # for all N particles, generate vectors of dim measurement_dim with mean z and
         # noise added by sampling from the noise distribution
-        bias_estimate = self.sensor_cfg.bias_estimate(z[2], np.deg2rad(z[3]))
-        z[0:2] -= bias_estimate
+        if self.use_bias_estimation:
+            bias_estimate = self.sensor_cfg.bias_estimate(z[2], np.deg2rad(z[3]))
+            z[0:2] -= bias_estimate
 
         if self.sensor_cfg.motion_model == 'CV':
             x = self._particles[:, 0]
@@ -128,12 +129,9 @@ class ParticleFilter(StateEstimator):
             return
 
         m, _ = self.get_latest_message()
-        # if the speed is 0, just set the message as the state
-        if m[2] == 0.0:
-            if self.sensor_cfg.motion_model == 'CV':
-                self.x_k.append(np.array([m[0], 0.0, m[1]], 0.0))
-            else:
-                self.x_k.append(np.array([m[0], 0.0, 0.0, m[1], 0.0, 0.0]))
+        
+        if abs(m[2]) < 0.8:
+            self.x_k.append(self.x_k[-1])
             self.P.append(self.P[-1])
 
         # step the particles forward

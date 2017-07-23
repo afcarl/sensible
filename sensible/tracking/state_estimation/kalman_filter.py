@@ -12,8 +12,9 @@ class KalmanFilter(StateEstimator):
     vehicles following a standard constant velocity model.
     """
 
-    def __init__(self, sensor_kf, sliding_window, fused_track=False):
-        super(KalmanFilter, self).__init__(fused_track, sliding_window, sensor_kf.stationary_R)
+    def __init__(self, sensor_kf, sliding_window, use_bias_estimation, fused_track=False):
+        super(KalmanFilter, self).__init__(fused_track, sliding_window,
+                sensor_kf.stationary_R, use_bias_estimation)
         self.Q = sensor_kf.Q
         self.F = sensor_kf.F
         self.R = sensor_kf.R
@@ -89,18 +90,17 @@ class KalmanFilter(StateEstimator):
             return
 
         if m is not None:
-            bias_estimate = self.sensor_cfg.bias_estimate(m[2], np.deg2rad(m[3]))
-            m[0:2] -= bias_estimate
+            
+            if self.use_bias_estimation:
+                bias_estimate = self.sensor_cfg.bias_estimate(m[2], np.deg2rad(m[3]))
+                m[0:2] -= bias_estimate
 
             # if the speed is 0, just set the message as the state
-            if m[2] == 0.0:
-                if self.sensor_cfg.motion_model == 'CV':
-                    self.x_k.append(np.array([m[0], 0.0, m[1], 0.0]))
-                else:
-                    self.x_k.append(np.array([m[0], 0.0, 0.0, m[1], 0.0, 0.0]))
+            if abs(m[2]) < 0.8:
+                self.x_k.append(self.x_k[-1])
                 self.P.append(self.P[-1])
                 self.K.append(self.K[-1])
-                self.y_k.append(None)
+                self.y_k.append(self.y_k[-1])
                 return
 
         x_k_bar = np.matmul(self.F, self.x_k[-1]) + np.matmul(self.Q, np.random.normal(size=self.sensor_cfg.state_dim))
@@ -133,7 +133,6 @@ class KalmanFilter(StateEstimator):
             m = np.array([m[0], m[2] * np.cos(np.deg2rad(m[3])),
                           m[1], m[2] * np.sin(np.deg2rad(m[3]))])
         e_k = (m - self.y_k[-1]) if m is not None else np.zeros([self.sensor_cfg.state_dim])
-
         # K_k = P * inv(P + R)
         u = scipy.linalg.inv(np.matmul(C, np.matmul(self.P[-1], C.T)) + self.R)
         self.K.append(np.matmul(self.P[-1], np.matmul(C.T, u)))

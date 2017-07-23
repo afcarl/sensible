@@ -19,7 +19,7 @@ class StateEstimator(object):
 
     """
 
-    def __init__(self, fused_track, sliding_window, stationary_R):
+    def __init__(self, fused_track, sliding_window, stationary_R, use_bias_estimation):
         self.y = []  # messages
         self.x_k = []  # filtered track state
         self.y_k = []  # filtered measurement
@@ -28,6 +28,7 @@ class StateEstimator(object):
         self.stationary_R = stationary_R
         self.fused_track = fused_track
         self.sliding_window = sliding_window
+        self.use_bias_estimation = use_bias_estimation
         self.no_step = False
 
     def get_latest_message(self):

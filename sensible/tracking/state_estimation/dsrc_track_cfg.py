@@ -32,22 +32,20 @@ class DSRCTrackCfg:
 
         # std dev of a gaussian distribution over a position (x,y) meters
         # corresponding to +- m
-        # utm_easting_std_dev = 1 / self.z
-        # utm_northing_std_dev = 2.25 / self.z
         # std dev corresponding to a standard normal (+- m/s)
-        sigma_pos_max = 1.85 / self.z
-        sigma_pos_min = 0.51 / self.z
-        speed_std_dev = 0.25 / self.z
+        sigma_pos_max = 0.01 / self.z # 1.85
+        sigma_pos_min = 0.01 / self.z # 0.51
+        speed_std_dev = 0.2 / self.z # 0.25
         # std dev heading in degrees, (+- deg)
-        heading_std_dev = 0.1 / self.z
+        heading_std_dev = 0.05 / self.z
 
-        self.bias_constant = 0.167
+        self.bias_constant = 0.167  # 0.167
 
         self.motion_model = motion_model
         
         if motion_model == 'CV':
             mm = self.constant_velocity
-            self.accel_std_dev = 4 / self.z  # (+- m/s^2)
+            self.accel_std_dev = 2 / self.z  # (+- m/s^2)
             self.state_dim = 4
 
         elif motion_model == 'CA':
@@ -105,7 +103,7 @@ class DSRCTrackCfg:
         F[3][5] = (self.dt ** 2) / 2
         F[4][5] = self.dt
 
-        Q = 0.0001 * np.array([
+        Q = 1 * np.array([
             [self.dt ** 5 / 20, self.dt ** 4 / 8, self.dt ** 3 / 6, 0, 0, 0],
             [self.dt ** 4 / 8, self.dt ** 3 / 3, self.dt ** 2 / 2, 0, 0, 0],
             [self.dt ** 3 / 6, self.dt ** 2 / 2, self.dt, 0, 0, 0],
@@ -118,9 +116,9 @@ class DSRCTrackCfg:
             """ [x, xdot, xddot, y, ydot, yddot] """
             xdot = y_k[2] * np.cos(np.deg2rad(y_k[3]))
             ydot = y_k[2] * np.sin(np.deg2rad(y_k[3]))
-            xddot = (xdot - (y_k_prev[2] * np.cos(np.deg2rad(y_k[3])))) / dt
-            yddot = (ydot - (y_k_prev[2] * np.sin(np.deg2rad(y_k[3])))) / dt
-
+            xddot = (xdot - (y_k_prev[2] * np.cos(np.deg2rad(y_k_prev[3])))) / dt
+            yddot = (ydot - (y_k_prev[2] * np.sin(np.deg2rad(y_k_prev[3])))) / dt
+            
             return np.array([y_k[0], xdot, xddot,
                              y_k[1], ydot, yddot])
         return F, Q, init_state
@@ -135,7 +133,7 @@ class DSRCTrackCfg:
         R_bar = np.matmul(np.matmul(rot, self.R[0:2, 0:2]), rot.T)
         R = np.copy(self.R)
         R[0:2, 0:2] = R_bar
-        return R
+        return self.R
 
     def batch_rotate_covariance(self, theta):
         N = np.shape(theta)[0]
@@ -165,10 +163,7 @@ class DSRCTrackCfg:
 
         # convert from degrees from true north to
         # degrees from x axis (UTM easting)
-        if heading >= 0 or heading < 270.0:
-            heading += 90.
-        else:
-            heading -= 270.
+        theta = (-theta + 90.) % 360.
 
         measurement = np.array([x_hat, y_hat, msg['speed'], heading])
 

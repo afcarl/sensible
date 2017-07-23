@@ -143,8 +143,8 @@ if __name__ == '__main__':
 
     #Gaussian measurement noise
     N = 500
-    true_north = 90
-    x = 240
+    true_north = 0
+    x = 10
     theta = np.deg2rad(x + true_north)
 
     cov = np.array([[lp_sample_var , 0],[0, lat_lp_sample_var]])
@@ -160,7 +160,7 @@ if __name__ == '__main__':
     
     plt.xlim(-5, 5)
     plt.ylim(-5, 5)
-#    plt.show()
+    plt.show()
 
     # bias estimate is rot(180) * [max(0.167 * x_dot (m/s) , 3), max(0.167 * y_dot (m/s) , 3)]
     # rot = np.array([[np.cos(np.pi), -np.sin(np.pi)], [np.sin(np.pi), np.cos(np.pi)]])
