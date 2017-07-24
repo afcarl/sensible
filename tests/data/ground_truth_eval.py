@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from sensible.tracking.track import Track
 from sensible.sensors.DSRC import DSRC
 
+from tqdm import tqdm
 
 def str2bool(v):
     return v.lower() in ('true', '1')
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser('experiment settings')
 
     parser.add_argument('--use-bias-estimation', type=str2bool, default=False)
-    parser.add_argument('--bias-constant', default=0.167)
+    parser.add_argument('--bias-constant', type=float, default=0.167)
     parser.add_argument('--run-name', type=str)
 
     args = vars(parser.parse_args())
@@ -122,8 +123,8 @@ if __name__ == '__main__':
 
                 N = 0
                 # Suitcase vs HP GPS northing error
-                for idx, (utm_e, utm_n, theta, v) in enumerate(zip(suitcase_x[ii],
-                                                                 suitcase_y[ii], suitcase_heading[ii], suitcase_speed[ii])):
+                for idx, (utm_e, utm_n, theta, v) in enumerate(tqdm(zip(suitcase_x[ii],
+                                                                 suitcase_y[ii], suitcase_heading[ii], suitcase_speed[ii]))):
                     if idx < start:
                         continue
                     
