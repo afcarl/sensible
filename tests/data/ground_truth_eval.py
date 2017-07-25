@@ -15,6 +15,7 @@ from sensible.sensors.DSRC import DSRC
 
 from tqdm import tqdm
 
+OUT_DIR = 'results3'
 
 def str2bool(v):
     return v.lower() in ('true', '1')
@@ -24,8 +25,8 @@ def light(l):
     return "green" if l is 'G' else "red"
 
 if __name__ == '__main__':
-    if not os.path.isdir('results'):
-        os.mkdir('results')
+    if not os.path.isdir(OUT_DIR):
+        os.mkdir(OUT_DIR)
 
     parser = argparse.ArgumentParser('experiment settings')
 
@@ -41,6 +42,8 @@ if __name__ == '__main__':
     data_dir = 'test_data'
     data_dir2 = 'SW-16-SW-13'
     
+    plt_title = '$\\alpha$-{}'.format(args['bias_constant'])
+
     suitcase_x = ops.load_pkl(os.path.join(data_dir, 'suitcase_gps_x.pkl'))
     suitcase_y = ops.load_pkl(os.path.join(data_dir, 'suitcase_gps_y.pkl'))
     suitcase_heading = ops.load_pkl(os.path.join(data_dir, 'suitcase_heading.pkl'))
@@ -261,19 +264,23 @@ if __name__ == '__main__':
         rects7 = ax.bar(ind + 6*width, pf_1_means, width, color=blood_orange, yerr=pf_1_std_errs)
         rects8 = ax.bar(ind + 7*width, pf_2_means, width, color=pink, yerr=pf_2_std_errs)
 
-        # add some text for labels, title and axes ticks
-        ax.set_ylabel('RMSE (meters)')
-        ax.set_title('{}-{}-light'.format(args['run_name'], light(l)))
+        hfont = {'fontname': 'Arial', 'size': 22}
+        hfont2 = {'fontname': 'Arial', 'size': 16}
+
+        # add some 'text for labels, title and axes ticks
+        ax.set_ylabel('RMSE (meters)', hfont2)
+        ax.set_title('{}-{}-light'.format(plt_title, light(l)), **hfont)
         ax.set_xticks(ind + width / 2)
-        ax.set_xticklabels(('UTM Easting', 'UTM Northing'))
+        ax.set_xticklabels(('UTM Easting', 'UTM Northing'), **hfont2)
+        plt.setp(ax.get_yticklabels(), fontsize=18)
         ax.grid(True)
         ax.legend((rects1[0], rects2[0], rects3[0], rects4[0], rects5[0], rects6[0],rects7[0], rects8[0]), 
-                ('Baseline CV', 'Baseline CA', 'KF CV', 'KF CA', 'EKF CV', 'EKF CA', 'PF CV', 'PF CA'), loc='best')
+                ('Baseline CV', 'Baseline CA', 'KF CV', 'KF CA', 'EKF CV', 'EKF CA', 'PF CV', 'PF CA'), loc='best', fontsize=14)
         fig.set_size_inches(8, 8)
 
-        fig.savefig(os.path.join('results', '{}-{}-light.png'.format(args['run_name'], light(l))), dpi=100)
+        fig.savefig(os.path.join(OUT_DIR, '{}-{}-light.png'.format(args['run_name'], light(l))), dpi=100)
         plt.close()
 
-    ops.dump(rmse, os.path.join('results', '{}-rmse.pkl'.format(args['run_name'])))
-    ops.dump(tracks, os.path.join('results', '{}-tracks.pkl'.format(args['run_name'])))
+    ops.dump(rmse, os.path.join(OUT_DIR, '{}-rmse.pkl'.format(args['run_name'])))
+    ops.dump(tracks, os.path.join(OUT_DIR, '{}-tracks.pkl'.format(args['run_name'])))
 
