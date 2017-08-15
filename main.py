@@ -8,6 +8,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Arguments for Sensible')
 
     parser.add_argument('--run-for', default=20, help='Num seconds to run application for')
+
+    # Radar configuration
     parser.add_argument('--radar-lat', default=29.6216931, help='Latitude of radar')
     parser.add_argument('--radar-lon', default=-82.3867591, help='Longitude of radar')
     parser.add_argument('--radar-com-port', default='COM3', help='Serial port for radar comms')
@@ -17,10 +19,13 @@ if __name__ == '__main__':
     parser.add_argument('--radar-orientation', default=3.62, help='Degrees the radar is rotated counter-clockwise')
     parser.add_argument('--radar-local-port', default=5200, help='Port for comms between radar and'
                                                                  ' central tracking component')
+    # DSRC configuration
     parser.add_argument('--dsrc-ip-address', default='169.254.30.4', help='IP address for comms with DSRC radio')
     parser.add_argument('--dsrc-remote-port', default=4200, help='Port for receiving incoming radio messages')
     parser.add_argument('--dsrc-local-port', default=4202, help='Port for comms between dsrc and'
                                                                 ' central tracking component')
+    parser.add_argument('--dsrc-motion-model', default='CV', help='Motion model for DSRC state estimation {CV|CA|IMM}')
+    # T2TA config
     parser.add_argument('--n-scan', default=1, help='Sliding window size for data-association')
     parser.add_argument('--association-threshold', default=35, help='Acceptance of null-hypothesis for Chi-squared test'
                                                                     ' for data association')

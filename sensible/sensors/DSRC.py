@@ -1,13 +1,12 @@
 from __future__ import division
 
-import numpy as np
-
 import xml.etree.cElementTree as ElementTree
 from collections import deque
-from datetime import datetime
-from sensible.tracking.dsrc_track_cfg import DSRCTrackCfg
-from sensible.tracking.vehicle_type import VehicleType
 
+import numpy as np
+
+from sensible.tracking.state_estimation.dsrc_track_cfg import DSRCTrackCfg
+from sensible.tracking.vehicle_type import VehicleType
 from sensible.util import ops
 
 try:  # python 2.7
@@ -34,8 +33,9 @@ class DSRC:
         return "DSRC"
 
     @staticmethod
-    def get_filter(dt):
-        return DSRCTrackCfg(dt)
+    def get_filter(dt, bias_constant, motion_model='CV', spherical_R=False):
+        return DSRCTrackCfg(dt, bias=bias_constant, motion_model=motion_model,
+                            spherical_R=spherical_R)
 
     @staticmethod
     def parse(msg):

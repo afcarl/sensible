@@ -101,7 +101,7 @@ def initialize_logs():
 def show(string, verbose):
     global system_logger
     if system_logger is None:
-        print("  [!] Need to call ops.initializer_logs() first")
+        print("  [!] Need to call ops.initialize_logs() first")
     else:
         ts = datetime.utcnow()
         ts = '[{}:{}:{}]'.format(ts.hour, ts.minute, (ts.second * 1000) + (ts.microsecond/1000))
