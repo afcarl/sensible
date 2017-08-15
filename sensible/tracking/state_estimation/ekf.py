@@ -37,7 +37,7 @@ class ExtendedKalmanFilter(KalmanFilter):
 
         if self.use_bias_estimation:
             bias_estimate = self.sensor_cfg.bias_estimate(m[2], np.deg2rad(m[3]))
-            m[0:2] -= bias_estimate
+            m[0:2] += bias_estimate
 
         if abs(m[2]) < 0.8:
             self.x_k.append(self.x_k[-1])

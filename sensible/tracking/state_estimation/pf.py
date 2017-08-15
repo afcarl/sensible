@@ -66,7 +66,7 @@ class ParticleFilter(StateEstimator):
         # noise added by sampling from the noise distribution
         if self.use_bias_estimation:
             bias_estimate = self.sensor_cfg.bias_estimate(z[2], np.deg2rad(z[3]))
-            z[0:2] -= bias_estimate
+            z[0:2] += bias_estimate
 
         if self.sensor_cfg.motion_model == 'CV':
             x = self._particles[:, 0]

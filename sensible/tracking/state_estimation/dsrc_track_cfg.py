@@ -144,9 +144,7 @@ class DSRCTrackCfg:
         return R
 
     def bias_estimate(self, v, theta):
-        rot = np.array([[np.cos(np.pi), -np.sin(np.pi)], [np.sin(np.pi), np.cos(np.pi)]])
-        x = np.array([self.bias_constant * v * np.cos(theta), self.bias_constant * v * np.sin(theta)])
-        return np.matmul(rot, x)
+        return np.array([self.bias_constant * v * np.cos(theta), self.bias_constant * v * np.sin(theta)])
 
     @staticmethod
     def parse_msg(msg, stationary_R=False):
