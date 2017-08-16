@@ -310,7 +310,8 @@ class TrackSpecialist:
         self._sensor_id_map[msg['id']] = self._sensor_id_idx
         self._sensor_id_idx += 1
         self._track_list[self._sensor_id_map[msg['id']]] = Track(
-            self._period, msg, sensor, self._motion_model, self._n_scan, fusion_method)
+            self._period, msg, sensor, self._motion_model, self._n_scan,
+            fusion_method=fusion_method, use_bias_estimation=False)
         self._track_list[self._sensor_id_map[
             msg['id']]].store(msg, self._track_list)
         ops.show(
