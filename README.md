@@ -2,6 +2,8 @@
 
 **Sens**ible is a multi-sensor multi-target sensor-fusion library geared towards urban traffic applications. It is built on ZeroMQ's Pub-Sub design pattern for flexibility and scalability.
 
+This is a research work in progress- efforts are being made to document and test as much as possible :)
+
 The framework supports distributed, real-time processing and filtering of incoming data from different types of sensors, followed by centralized data association and filtering. In the future, in order to support tracking of a large number of vehicles, the centralized tracking component could be re-written for a multi-core implementation that leverages techniques from high-performance computing. 
 
 Sensible is mainly useful for others doing research in sensor fusion for traffic applications; as such, the algorithms for state estimation and data association can easily be swapped out for experimentation purposes. 
