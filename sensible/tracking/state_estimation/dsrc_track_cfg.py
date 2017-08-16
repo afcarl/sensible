@@ -24,7 +24,8 @@ class DSRCTrackCfg:
             2. CA: constant acceleration
         """
         self.dt = dt
-        self.stationary_R = False
+        # TODO: don't accept RMS updates until this is fixed
+        self.stationary_R = True
         self.measurement_dim = 4
 
         ### SET MEASUREMENT UNCERTAINTY PARAMETERS HERE ###

@@ -11,7 +11,6 @@ import utm
 class RadarTrackCfg:
 
     def __init__(self, dt):
-        self.z = 3.49  # z-score corresponding to 95 %
         self.dt = dt
         self.state_dim = 2
         self.stationary_R = True
@@ -21,7 +20,7 @@ class RadarTrackCfg:
         # max accel is +- 3 m/s^2
         self.accel = 4  # m/s^2
         # standard deviation of the noice process that models the acceleration
-        sigma_a = self.accel / self.z
+        sigma_a = self.accel
 
         # Process noise covariance
         # TODO: test other dynamics models
@@ -30,9 +29,9 @@ class RadarTrackCfg:
                                        [(self.dt ** 3) / 2, self.dt ** 2]]))
 
         # standard deviation of range estimate
-        sigma_1 = 3 / self.z  # 1 std dev is +- 1.5 m
+        sigma_1 = 3  # 1 std dev is +- 1.5 m
         # standard deviation corresponding to a standard normal
-        sigma_2 = 0.5 / self.z  # 1 std dev is +- 0.25 m/s
+        sigma_2 = 0.5  # 1 std dev is +- 0.25 m/s
 
         # measurement covariance
         self.R = np.eye(self.state_dim)

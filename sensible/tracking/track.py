@@ -10,7 +10,8 @@ class Track(object):
     """Maintains state of a track and delegates state updates to a
     state estimator."""
     def __init__(self, dt, first_msg, sensor, motion_model, n_scan,
-            filter='EKF', fusion_method=None, use_bias_estimation=True, bias_constant=0.167):
+            filter='EKF', fusion_method=None, use_bias_estimation=True,
+            bias_constant=0.167):
         self.n_consecutive_measurements = 0
         self.n_consecutive_missed = 0
         self.received_measurement = False
@@ -35,9 +36,11 @@ class Track(object):
             raise ValueError("Acceptable filters: {KF | EKF | PF}")
 
         self.state_estimator = f(sensor.get_filter(dt,
-                                motion_model=motion_model, spherical_R=spherical_R,
+                                motion_model=motion_model,
+                                spherical_R=spherical_R,
                                 bias_constant=bias_constant),
-                                sliding_window=n_scan, use_bias_estimation=use_bias_estimation)
+                                sliding_window=n_scan,
+                                use_bias_estimation=use_bias_estimation)
 
         # TODO: make an estimated value
         self.lane = first_msg['lane']
