@@ -35,12 +35,11 @@ class Track(object):
         else:
             raise ValueError("Acceptable filters: {KF | EKF | PF}")
 
-        self.state_estimator = f(sensor.get_filter(dt,
-                                motion_model=motion_model,
-                                spherical_R=spherical_R,
-                                bias_constant=bias_constant),
-                                sliding_window=n_scan,
-                                use_bias_estimation=use_bias_estimation)
+        self.state_estimator = f(sensor.get_filter(dt, bias_constant,
+                                 motion_model=motion_model,
+                                 spherical_R=spherical_R),
+                                 sliding_window=n_scan,
+                                 use_bias_estimation=use_bias_estimation)
 
         # TODO: make an estimated value
         self.lane = first_msg['lane']
