@@ -80,7 +80,6 @@ class DSRC:
         #h = ts.hour
         #m = ts.minute
         #s = int(ts.second * 1000 + round(ts.microsecond/1000))
-
         return {
             'msg_count': msg_count,
             'id': veh_id,

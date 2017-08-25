@@ -40,6 +40,8 @@ class ExtendedKalmanFilter(KalmanFilter):
             m[0:2] += bias_estimate
 
         if m is not None and abs(m[2]) < 0.8:
+            if len(self.K) == 0:
+                return
             self.x_k.append(self.x_k[-1])
             self.P.append(self.P[-1])
             self.K.append(self.K[-1])

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-RUN_FOR=300
+# Run for X seconds
+RUN_FOR=900
+
 #RADAR_COM_PORT="/dev/ttyUSB0"
 #RADAR_LANE=4
 #RADAR_ORIENTATION=156.63

@@ -97,6 +97,8 @@ class KalmanFilter(StateEstimator):
 
             # if the speed is 0, just set the message as the state
             if abs(m[2]) < 0.8:
+                if len(self.K) == 0:
+                    return
                 self.x_k.append(self.x_k[-1])
                 self.P.append(self.P[-1])
                 self.K.append(self.K[-1])

@@ -10,7 +10,7 @@ class Track(object):
     """Maintains state of a track and delegates state updates to a
     state estimator."""
     def __init__(self, dt, first_msg, sensor, motion_model, n_scan,
-            filter='EKF', fusion_method=None, use_bias_estimation=True,
+            filter='KF', fusion_method=None, use_bias_estimation=True,
             bias_constant=0.167):
         self.n_consecutive_measurements = 0
         self.n_consecutive_missed = 0
