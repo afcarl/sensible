@@ -37,8 +37,9 @@ class DSRCTrackCfg:
         sigma_pos_min = 0.25  # 0.51
         speed_std_dev = 0.1  # 0.25
         # std dev heading in degrees, (+- deg)
+        # for EKF, set this to a much higher value (2-3 degrees?)
         heading_std_dev = 0.1
-
+        
         self.bias_constant = bias  # default 0.167
 
         self.motion_model = motion_model
@@ -75,7 +76,7 @@ class DSRCTrackCfg:
         self.P = 10 * self.Q
 
     def constant_velocity(self):
-        # Dynamics
+        # Kinematics
         F = np.eye(self.state_dim)
         F[0][1] = self.dt
         F[2][3] = self.dt

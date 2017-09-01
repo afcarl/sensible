@@ -3,7 +3,7 @@ from __future__ import division
 import socket
 import time
 
-import context
+import tests.context
 
 import sensible
 

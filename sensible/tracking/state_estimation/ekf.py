@@ -39,15 +39,20 @@ class ExtendedKalmanFilter(KalmanFilter):
             bias_estimate = self.sensor_cfg.bias_estimate(m[2], np.deg2rad(m[3]))
             m[0:2] += bias_estimate
 
-        if m is not None and abs(m[2]) < 0.8:
+        # If the incoming measurement has small speed, the speed/heading
+        # information becomes garbage
+        if m is not None and abs(m[2]) < 0.8 or \
+            m is None and abs(self.y_k[-1][2]) < 0.8:
             if len(self.K) == 0:
                 return
+            if m is not None and self.y_k[-1][2] > 0.8:
+                self.y_k[-1][2] = 0.
             self.x_k.append(self.x_k[-1])
             self.P.append(self.P[-1])
             self.K.append(self.K[-1])
             self.y_k.append(self.y_k[-1])
             return
-
+        
         x_k_bar = np.matmul(self.F, self.x_k[-1]) + np.matmul(self.Q, np.random.normal(size=self.sensor_cfg.state_dim))
         self.P.append(np.matmul(self.F, np.matmul(self.P[-1], self.F.T)) + self.Q)
 

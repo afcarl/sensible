@@ -32,7 +32,7 @@ if __name__ == '__main__':
     # loggers
     sensible.ops.initialize_logs()
 
-    ts = sensible.TrackSpecialist(sensors, bsm_port, run_for, sensible.ops.track_logger, association_threshold=150,
+    ts = sensible.TrackSpecialist(sensors, bsm_port, run_for, sensible.ops.track_logger, association_threshold=500,
                                   n_scan=1, frequency=freq, verbose=True)
 
     dsrc_recv = sensible.DSRC()
@@ -61,17 +61,17 @@ if __name__ == '__main__':
     dsrc_synchronizer = sensible.Synchronizer(publish_freq=5, queue=dsrc_recv.queue, port=dsrc_send_port,
                                               topic=dsrc_recv.topic(), verbose=False, name="DSRCSynchronizer")
 
-    #radar_synchronizer.start()
+    radar_synchronizer.start()
     dsrc_synchronizer.start()
-    #radar_sender.start()
+    radar_sender.start()
     dsrc_sender.start()
     dsrc_thread.start()
 
     ts.run()
 
-    #radar_synchronizer.stop()
+    radar_synchronizer.stop()
     dsrc_synchronizer.stop()
-    #radar_sender.stop()
+    radar_sender.stop()
     dsrc_sender.stop()
     dsrc_thread.stop()
 

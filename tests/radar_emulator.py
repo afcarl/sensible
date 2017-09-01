@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 import pandas as pd
 
-import context
+import tests.context
 
 from sensible.sensors.sensible_threading import StoppableThread
 

@@ -84,12 +84,16 @@ def merge_n_lists(big_list):
 def initialize_logs():
     global system_logger
     global track_logger
+
+    if not os.path.isdir('logs'):
+        os.mkdir('logs')
+
     if track_logger is None:
         # Track logger
         t = time.localtime()
         timestamp = time.strftime('%m-%d-%Y_%H%M', t)
         track_logger = open(os.path.join('logs', "trackLog_" + timestamp + ".csv"), 'wb')
-        logger_title = "TrackID,TrackState,Filtered,timestamp,xPos,xSpeed,yPos,ySpeed,Sensor,Served\n"
+        logger_title = b"TrackID,TrackState,Filtered,timestamp,xPos,xSpeed,yPos,ySpeed,Sensor,Served\n"
         track_logger.write(logger_title)
     if system_logger is None:
         # System logger

@@ -47,28 +47,28 @@ class KalmanFilter(StateEstimator):
         Q = np.array(self.Q)
 
         dist_cc = 0.
-        for i in range(self.sliding_window):
-            if np.shape(self.P[i])[0] == 4:
-                p1 = self.P[i][2:4, 2:4]
-                K1 = np.array(self.K[i][2:4, 2:4])
-                K2 = K2_[i]
+        for i in range(1, self.sliding_window+1):
+            if self.sensor_cfg.state_dim == 4:
+                p1 = self.P[-i][2:4, 2:4]
+                K1 = np.array(self.K[-i][2:4, 2:4])
+                K2 = K2_[-i]
                 Q = np.array(self.Q[2:4, 2:4])
                 F = np.array(self.F[2:4, 2:4])
 
-            if np.shape(p2_[i])[0] == 4:
-                p2 = p2_[i][2:4, 2:4]
-                K2 = K2_[i][2:4, 2:4]
-                K1 = np.array(self.K[i])
+            if np.shape(p2_[-i])[0] == 4:
+                p2 = p2_[-i][2:4, 2:4]
+                K2 = K2_[-i][2:4, 2:4]
+                K1 = np.array(self.K[-i])
 
-            if np.shape(s1[i])[0] == 4:
-                ss1 = s1[i][2:4]
+            if np.shape(s1[i-1])[0] == 4:
+                ss1 = s1[i-1][2:4]
             else:
-                ss1 = s1[i]
+                ss1 = s1[i-1]
 
-            if np.shape(s2[i])[0] == 4:
-                ss2 = s2[i][2:4]
+            if np.shape(s2[i-1])[0] == 4:
+                ss2 = s2[i-1][2:4]
             else:
-                ss2 = s2[i]
+                ss2 = s2[i-1]
 
             dx = ss1 - ss2
 
@@ -89,16 +89,19 @@ class KalmanFilter(StateEstimator):
             self.no_step = False
             return
 
-        if m is not None:
-            
-            if self.use_bias_estimation:
+        if m is not None and self.use_bias_estimation:
                 bias_estimate = self.sensor_cfg.bias_estimate(m[2], np.deg2rad(m[3]))
                 m[0:2] += bias_estimate
 
-            # if the speed is 0, just set the message as the state
-            if abs(m[2]) < 0.8:
+        # if the speed is 0, just set the message as the state for DSRC
+        if self.sensor_cfg.state_dim > 2:
+
+            if m is not None and abs(m[2]) < 0.8 or \
+                m is None and len(self.y_k) > 0 and abs(self.y_k[-1][2]) < 0.8:
                 if len(self.K) == 0:
                     return
+                if m is not None and self.y_k[-1][2] > 0.8:
+                    self.y_k[-1][2] = 0.
                 self.x_k.append(self.x_k[-1])
                 self.P.append(self.P[-1])
                 self.K.append(self.K[-1])
@@ -110,11 +113,14 @@ class KalmanFilter(StateEstimator):
         self.P.append(np.matmul(self.F, np.matmul(self.P[-1], self.F.T)) + self.Q)
 
         if self.sensor_cfg.motion_model == 'CV':
-            x = x_k_bar[0]
-            y = x_k_bar[2]
-            x_dot = x_k_bar[1]
-            y_dot = x_k_bar[3]
-            C = np.eye(4)
+            if self.sensor_cfg.state_dim == 4:
+                x = x_k_bar[0]
+                y = x_k_bar[2]
+                x_dot = x_k_bar[1]
+                y_dot = x_k_bar[3]
+                C = np.eye(4)
+            elif self.sensor_cfg.state_dim == 2:
+                C = np.eye(2)
         elif self.sensor_cfg.motion_model == 'CA':
             x = x_k_bar[0]
             y = x_k_bar[3]
@@ -131,7 +137,7 @@ class KalmanFilter(StateEstimator):
                                                           np.random.normal(size=self.sensor_cfg.measurement_dim)))
         # innovation
         # if no new measurements, e_k is 0.
-        if m is not None:
+        if m is not None and self.sensor_cfg.measurement_dim == 4:
             m = np.array([m[0], m[2] * np.cos(np.deg2rad(m[3])),
                           m[1], m[2] * np.sin(np.deg2rad(m[3]))])
         e_k = (m - self.y_k[-1]) if m is not None else np.zeros([self.sensor_cfg.state_dim])

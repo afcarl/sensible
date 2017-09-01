@@ -10,7 +10,7 @@ class Track(object):
     """Maintains state of a track and delegates state updates to a
     state estimator."""
     def __init__(self, dt, first_msg, sensor, motion_model, n_scan,
-            filter='KF', fusion_method=None, use_bias_estimation=True,
+            track_filter, fusion_method=None, use_bias_estimation=True,
             bias_constant=0.167):
         self.n_consecutive_measurements = 0
         self.n_consecutive_missed = 0
@@ -25,12 +25,12 @@ class Track(object):
         self.sensor = sensor
 
         spherical_R = False
-        if filter == 'KF':
+        if track_filter == 'KF':
             f = KalmanFilter
             spherical_R = True
-        elif filter == 'EKF':
+        elif track_filter == 'EKF':
             f = ExtendedKalmanFilter
-        elif filter == 'PF':
+        elif track_filter == 'PF':
             f = ParticleFilter
         else:
             raise ValueError("Acceptable filters: {KF | EKF | PF}")
@@ -41,7 +41,6 @@ class Track(object):
                                  sliding_window=n_scan,
                                  use_bias_estimation=use_bias_estimation)
 
-        # TODO: make an estimated value
         self.lane = first_msg['lane']
         self.veh_len = first_msg['veh_len']
         self.max_accel = first_msg['max_accel']
@@ -58,13 +57,13 @@ class Track(object):
         # compile states and covariances
         mu = []
         sigma = []
-        s, t = self.state_estimator.state(get_unfused=True)
+        s, t = self.state_estimator.state(get_fused=False)
         p = self.state_estimator.P
         mu.append(s[0])
         sigma.append(p[-1])
 
         for track in tracks:
-            s, t = track.state_estimator.state(get_unfused=True)
+            s, t = track.state_estimator.state(get_fused=False)
             mu.append(s[0])
             sigma.append(track.state_estimator.P[-1])
         fused_mu, fused_sigma = self.fusion_method(mu, sigma)

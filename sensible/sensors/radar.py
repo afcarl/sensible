@@ -52,8 +52,8 @@ class Radar:
         return "Radar"
 
     @staticmethod
-    def get_filter(dt):
-        return RadarTrackCfg(dt)
+    def get_filter(dt, bias_constant, motion_model, spherical_R):
+        return RadarTrackCfg(dt, motion_model)
 
     @staticmethod
     def zone_bsm(msg, track_id):
@@ -106,7 +106,7 @@ class Radar:
         if self._mode == "Tracking" and zone >= 0:
             raise ValueError("Expected a zone number of -1")
 
-        if msg['xVel'] > -4 or msg['xVel'] < -21:  # 9 mph to 47 mph
+        if msg['xVel'] > -2 or msg['xVel'] < -21:  # 4.5 mph to 47 mph
             return None
         else:
             dt = datetime.utcnow()

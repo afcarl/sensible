@@ -39,6 +39,7 @@ class TrackSpecialist:
                  association_threshold=35,
                  verbose=False,
                  frequency=5,
+                 track_filter='KF',
                  motion_model='CV',
                  track_confirmation_threshold=5,
                  track_zombie_threshold=5,
@@ -57,6 +58,7 @@ class TrackSpecialist:
         self._verbose = verbose
         self._logger = track_logger
         self._association_threshold = association_threshold
+        self._filter = track_filter
         self._motion_model = motion_model
 
         self.track_confirmation_threshold = track_confirmation_threshold
@@ -307,17 +309,22 @@ class TrackSpecialist:
         elif topic == Radar.topic():
             sensor = Radar
 
+        # Add the new (key, value) pair to the sensor id map
         self._sensor_id_map[msg['id']] = self._sensor_id_idx
         self._sensor_id_idx += 1
+        
+        # Create the new track
         self._track_list[self._sensor_id_map[msg['id']]] = Track(
             self._period, msg, sensor, self._motion_model, self._n_scan,
-            fusion_method=fusion_method, use_bias_estimation=False)
+            fusion_method=fusion_method, use_bias_estimation=False,
+            track_filter=self._filter)
+        # Add the new track to the track list
         self._track_list[self._sensor_id_map[
             msg['id']]].store(msg, self._track_list)
+        
         ops.show(
             "  [*] Creating track {} for {} track with ID {}\n".format(self._sensor_id_map[msg['id']],
                                                                      topic, msg['id']), self._verbose)
-
     def delete_track(self, track_id):
         """remove it from the track list."""
         ops.show("  [*] Dropping track {}\n".format(track_id), self._verbose)
@@ -371,14 +378,14 @@ class TrackSpecialist:
                         except socket.error as e:
                             # log the error
                             ops.show("  [*] Couldn't send BSM for track [{}]"
-                                     " due to error: {}\n".format(track_id,  e.message), self._verbose)
+                                     " due to error: {0}\n".format(track_id,  e), self._verbose)
 
     def log_track(self, track_id, track):
         if self._logger is not None and len(track.state_estimator.x_k) > 2:
             kf_str, msg_str = track.state_estimator.to_string()
 
             if track.state_estimator.fused_track:
-                kf_unfused_str, msg_str = track.state_estimator.to_string(get_unfused=True)
+                kf_unfused_str, msg_str = track.state_estimator.to_string(get_fused=True)
 
             if track.state_estimator.fused_track:
                 label = '2'

@@ -40,15 +40,15 @@ class StateEstimator(object):
         time = t if t is not None else ts.unavailable()
         return self.y[-1], time
 
-    def state(self, window=1, get_unfused=False):
+    def state(self, window=1, get_fused=False):
         """Return the latest Kalman Filter prediction of the state, and the timestamp."""
         t = self.t[-window:]
         time = ops.replace_none(t, ts.unavailable())
-        if not self.fused_track or None in self.x_k_fused[-window:] or get_unfused:
+        if not self.fused_track or not get_fused:
             return self.x_k[-window:], time
         else:
             return self.x_k_fused[-window:], time
-
+    
     def measurement(self, window=1):
         """Return the latest Kalman Filter prediction of the measurement, and the timestamp."""
         t = self.t[-window:]
@@ -85,8 +85,8 @@ class StateEstimator(object):
         ops.dump({'time': t.to_string(), 'm': xk, 'cov': cov},
                  os.path.join(destination, 'kf-state-', t.to_fname_string(), '.pkl'))
 
-    def to_string(self):
-        kf_state, t = self.measurement()
+    def to_string(self, get_fused=False):
+        kf_state, t = self.state(get_fused=get_fused)
         kf_state = kf_state[0]
         t = t[0]
 
